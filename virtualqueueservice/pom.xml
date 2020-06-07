@@ -8,10 +8,10 @@
 		<version>2.3.0.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.google.gpay.virtualqueue</groupId>
+	<groupId>com.google.gpay</groupId>
 	<artifactId>virtualqueueservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>virtualqueue</name>
+	<name>Virtual Queue Service</name>
 	<description>Virtual Queue Project</description>
 
 	<properties>

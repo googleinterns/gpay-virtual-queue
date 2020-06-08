@@ -1,13 +1,13 @@
-package com.google.gpay.virtualqueueservice;
+package com.google.gpay.virtualqueueservice.virtualqueueservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class VirtualQueueApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(VirtualQueueApplication.class, args);
 	}
 
 }

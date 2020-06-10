@@ -31,8 +31,8 @@ public class Token {
         STATUS_UNKNOWN, ACTIVE, EXPIRED, CANCELLED_BY_CUSTOMER, CANCELLED_BY_SHOP_OWNER;
     }
 
-    private Integer shopId;
+    private UUID tokenId;
+    private UUID shopId;
     private Integer tokenNumber;
     private Status status;
-    private UUID tokenId;
 }

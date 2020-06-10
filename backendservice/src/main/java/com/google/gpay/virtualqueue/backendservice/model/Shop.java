@@ -29,7 +29,6 @@ public class Shop {
     private String shopName;
     private String address;
     private String phoneNumber;
-    private Integer lastTokenAllotted;
     private String shopType;
 
     public Shop(String shopOwnerUid, String shopName, String address, String phoneNumber,

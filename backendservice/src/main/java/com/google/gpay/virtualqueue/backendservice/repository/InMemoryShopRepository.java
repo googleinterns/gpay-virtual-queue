@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 import com.google.gpay.virtualqueue.backendservice.model.ShopOwner;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
+import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 
 import org.springframework.stereotype.Repository;
 
@@ -33,18 +34,28 @@ import lombok.Getter;
 @Repository
 @Getter
 public class InMemoryShopRepository implements VirtualQueueRepository {
-	private Map<UUID, Token> tokenMapping = new HashMap<>();
-	private Map<UUID, Shop> shopMapping = new HashMap<>();
-	private Map<UUID, List<Token>> tokens;
-	private Map<UUID, AtomicInteger> lastAllottedToken;
-	private Map<String, ShopOwner> shopOwner_mappings;
+	private Map<UUID, Token> tokenMap = new HashMap<>();
+	private Map<UUID, Shop> shopMap = new HashMap<>();
+	private Map<UUID, List<Token>> tokens = new HashMap<>();
+	private Map<UUID, AtomicInteger> lastAllottedToken = new HashMap<>();
+	private Map<String, ShopOwner> shopOwnerMap = new HashMap<>();
 
-	public UUID createShop(Shop shop) {
+	public UUID createShop(CreateShopRequest shop) {
+		Shop newShop = new Shop();
+		newShop.setShopOwnerUid(shop.getShopOwnerUid());
+		newShop.setShopName(shop.getShopName());
+		newShop.setAddress(shop.getAddress());
+		newShop.setPhoneNumber(shop.getPhoneNumber());
+		newShop.setShopType(shop.getShopType());
+
 		UUID uuid = UUID.randomUUID();
-		shop.setShopId(uuid);
-		shopMapping.put(uuid, shop);
+		newShop.setShopId(uuid);
+
+		shopMap.put(uuid, newShop);
+
 		AtomicInteger lastToken = new AtomicInteger(0);
 		lastAllottedToken.put(uuid, lastToken);
-		return shop.getShopId();
+		
+		return newShop.getShopId();
 	}
 }

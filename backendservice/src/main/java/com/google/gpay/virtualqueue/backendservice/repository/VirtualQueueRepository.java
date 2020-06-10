@@ -17,7 +17,6 @@ limitations under the License.
 package com.google.gpay.virtualqueue.backendservice.repository;
 
 import java.util.UUID;
-
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 
 public interface VirtualQueueRepository {

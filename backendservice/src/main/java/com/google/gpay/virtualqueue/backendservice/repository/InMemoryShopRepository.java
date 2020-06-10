@@ -33,8 +33,8 @@ import lombok.Getter;
 @Repository
 @Getter
 public class InMemoryShopRepository implements VirtualQueueRepository {
-	private Map<UUID, Token> token_mappings = new HashMap<>();
-	private Map<UUID, Shop> shop_mappings = new HashMap<>();
+	private Map<UUID, Token> tokenMapping = new HashMap<>();
+	private Map<UUID, Shop> shopMapping = new HashMap<>();
 	private Map<UUID, List<Token>> tokens;
 	private Map<UUID, AtomicInteger> lastAllottedToken;
 	private Map<String, ShopOwner> shopOwner_mappings;
@@ -42,7 +42,7 @@ public class InMemoryShopRepository implements VirtualQueueRepository {
 	public UUID createShop(Shop shop) {
 		UUID uuid = UUID.randomUUID();
 		shop.setShopId(uuid);
-		shop_mappings.put(uuid, shop);
+		shopMapping.put(uuid, shop);
 		AtomicInteger lastToken = new AtomicInteger(0);
 		lastAllottedToken.put(uuid, lastToken);
 		return shop.getShopId();

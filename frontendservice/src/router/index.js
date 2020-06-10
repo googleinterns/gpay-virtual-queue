@@ -18,7 +18,7 @@ import VueRouter from "vue-router";
 //ToDo: kschauhan - import vue components, edit paths and router when more .vue files are pushed
 
 import About from "@/views/About";
-import About from "@/views/Home";
+import Home from "@/views/Home";
 
 Vue.use(VueRouter);
 

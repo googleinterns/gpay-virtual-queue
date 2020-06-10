@@ -26,13 +26,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Token {
-
-    enum Status {
-        STATUS_UNKNOWN, ACTIVE, EXPIRED, CANCELLED_BY_CUSTOMER, CANCELLED_BY_SHOP_OWNER;
-    }
-
     private UUID tokenId;
     private UUID shopId;
     private Integer tokenNumber;
+    enum Status {
+        STATUS_UNKNOWN, ACTIVE, EXPIRED, CANCELLED_BY_CUSTOMER, CANCELLED_BY_SHOP_OWNER;
+    }
     private Status status;
 }

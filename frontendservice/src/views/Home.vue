@@ -9,7 +9,8 @@ specific language governing permissions and limitations under the License. */
 <template>
   <div class="home">
     <h1>Here Ishita's page will be present</h1>
-    <p v-if="isLoggedIn">Welcome! Your UID is {{ Uid }}</p>
+    <p>Welcome! Your UID is {{ uid }}</p>
+    <p>Welcome! Your userName is {{ userName }}</p>
     <br />
     <p>
       Lorem Ipsum is simply dummy text of the printing and typesetting industry.
@@ -50,18 +51,18 @@ export default {
 
   data() {
     return {
+      userName: "",
+      uid: "",
       isLoggedIn: false,
-      currentUser: false,
       isVerified: false,
-      Uid: "",
     };
   },
   created() {
     var user = firebase.auth().currentUser;
     if (user) {
-      this.Uid = user.uid;
+      this.userName = user.displayName;
+      this.uid = user.uid;
       this.isLoggedIn = true;
-      this.currentUser = firebase.auth().currentUser.email;
       if (user.emailVerified) {
         this.isVerified = true;
       }
@@ -82,7 +83,7 @@ export default {
 
 <style scoped>
 button {
-  margin-top: 10px;
+  margin-top: 1%;
   width: 10%;
   cursor: pointer;
 }

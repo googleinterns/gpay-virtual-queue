@@ -60,4 +60,9 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	public Map<UUID, Shop> getAllShops() {
 		return shopMap;
 	}
+
+	public List<Token> getTokensByShopId(UUID shopId) {
+		List<Token> tokensOfParticularShop = shopIdToListOfTokensMap.get(shopId);
+		return tokensOfParticularShop;
+	}
 }

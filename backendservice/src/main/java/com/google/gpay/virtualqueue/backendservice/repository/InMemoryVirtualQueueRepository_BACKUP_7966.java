@@ -52,6 +52,10 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		newShop.setShopId(uuid);
 
 		shopMap.put(uuid, newShop);
+
+		AtomicInteger lastToken = new AtomicInteger(0);
+		lastAllottedToken.put(uuid, lastToken);
+
 		shopIdToLastAllotedTokenMap.put(uuid, new AtomicInteger(0));
 
 		return newShop.getShopId();

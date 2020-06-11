@@ -25,16 +25,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Shop {
     private UUID shopId;
-    private String shopOwnerUid;
+    private String shopOwnerId;
     private String shopName;
     private String address;
     private String phoneNumber;
     private String shopType;
 
-    public Shop(String shopOwnerUid, String shopName, String address, String phoneNumber,
+    public Shop(String shopOwnerId, String shopName, String address, String phoneNumber,
             String shopType) {
         super();
-        this.shopOwnerUid = shopOwnerUid;
+        this.shopOwnerId = shopOwnerId;
         this.shopName = shopName;
         this.address = address;
         this.phoneNumber = phoneNumber;

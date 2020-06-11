@@ -40,13 +40,13 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	private Map<UUID, AtomicInteger> shopIdToLastAllotedTokenMap = new HashMap<>();
 	private Map<String, ShopOwner> shopOwnerIdToShopOwnerMap = new HashMap<>();
 
-	public UUID createShop(CreateShopRequest shop) {
+	public UUID createShop(CreateShopRequest shopToBeAdded) {
 		Shop newShop = new Shop();
-		newShop.setShopOwnerUid(shop.getShopOwnerUid());
-		newShop.setShopName(shop.getShopName());
-		newShop.setAddress(shop.getAddress());
-		newShop.setPhoneNumber(shop.getPhoneNumber());
-		newShop.setShopType(shop.getShopType());
+		newShop.setShopOwnerId(shopToBeAdded.getShopOwnerId());
+		newShop.setShopName(shopToBeAdded.getShopName());
+		newShop.setAddress(shopToBeAdded.getAddress());
+		newShop.setPhoneNumber(shopToBeAdded.getPhoneNumber());
+		newShop.setShopType(shopToBeAdded.getShopType());
 
 		UUID uuid = UUID.randomUUID();
 		newShop.setShopId(uuid);

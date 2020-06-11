@@ -21,5 +21,5 @@ import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 
 public interface VirtualQueueRepository {
 
-	public UUID createShop(CreateShopRequest shop);
+	public UUID createShop(CreateShopRequest shopToBeAdded);
 }

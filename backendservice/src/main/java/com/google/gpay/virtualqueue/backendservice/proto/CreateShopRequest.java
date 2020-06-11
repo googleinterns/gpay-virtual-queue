@@ -20,7 +20,7 @@ import lombok.Data;
 
 @Data
 public class CreateShopRequest {
-    private String shopOwnerUid;
+    private String shopOwnerId;
     private String shopName;
     private String address;
     private String phoneNumber;

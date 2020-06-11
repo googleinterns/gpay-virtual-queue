@@ -8,28 +8,19 @@ specific language governing permissions and limitations under the License. */
 
 <template>
   <div class="home">
-    <h1>Welcome!</h1>
-    <p v-if="loggedIn">Your username is {{ userName }}</p>
-    <br>
-    <p>This page will be common for all our users - customers as well as shop-owners. There will be a navbar having the required navigation links myShops, createShop, myTokens links depending on whether the user is loggedIn or verified.
-    <br>
-    <div v-if="isVerified">
-      <router-link to="/create-shop">Create new shop</router-link>
-    </div>
-    <div v-if="isVerified">
-      <router-link to="/my-shops">My Shops</router-link>
-    </div>
+    <h1>Welcome customer!</h1>
+    <p>
+      This page will be Home page for the customers. There will be a navbar
+      having the required navigation links myTokens etc and allShops will be
+      displayed with Search feature. Bavanya will be implementing this part.
+    </p>
     <div>
       <router-link to="/my-tokens">My Tokens</router-link>
-    </div>
-    <div v-if="isLoggedIn && !isVerified">
-      <router-link to="/verify">Verify Me!</router-link>
     </div>
     <div v-if="!isLoggedIn">
       <router-link to="/about">Back</router-link>
     </div>
     <br />
-    <button v-if="isLoggedIn" @click="logout">Logout</button>
   </div>
 </template>
 
@@ -37,42 +28,24 @@ specific language governing permissions and limitations under the License. */
 import firebase from "firebase";
 
 export default {
-  name: "home",
+  name: "customerHome",
 
   data() {
     return {
-      userName: "",
-      uid: "",
       isLoggedIn: false,
-      isVerified: false,
     };
   },
   created() {
     var user = firebase.auth().currentUser;
     if (user) {
-      this.userName = user.displayName;
-      this.uid = user.uid;
       this.isLoggedIn = true;
-      if (user.emailVerified) {
-        this.isVerified = true;
-      }
     }
-  },
-  methods: {
-    logout: function() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          this.$router.replace("login");
-        });
-    },
   },
 };
 </script>
 
 <style scoped>
-button {
+a {
   margin-top: 1%;
   width: 10%;
   cursor: pointer;

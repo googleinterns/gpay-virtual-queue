@@ -34,24 +34,24 @@ import lombok.Getter;
 @Repository
 @Getter
 public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
-	private Map<UUID, Token> tokenIdToTokenMap = new HashMap<>();
-	private Map<UUID, Shop> shopIdToShopMap = new HashMap<>();
+	private Map<UUID, Token> tokenMap = new HashMap<>();
+	private Map<UUID, Shop> shopMap = new HashMap<>();
 	private Map<UUID, List<Token>> shopIdToListOfTokensMap = new HashMap<>();
 	private Map<UUID, AtomicInteger> shopIdToLastAllotedTokenMap = new HashMap<>();
-	private Map<String, ShopOwner> shopOwnerIdToShopOwnerMap = new HashMap<>();
+	private Map<String, ShopOwner> shopOwnerMap = new HashMap<>();
 
-	public UUID createShop(CreateShopRequest shopToBeAdded) {
+	public UUID createShop(CreateShopRequest createShopRequest) {
 		Shop newShop = new Shop();
-		newShop.setShopOwnerId(shopToBeAdded.getShopOwnerId());
-		newShop.setShopName(shopToBeAdded.getShopName());
-		newShop.setAddress(shopToBeAdded.getAddress());
-		newShop.setPhoneNumber(shopToBeAdded.getPhoneNumber());
-		newShop.setShopType(shopToBeAdded.getShopType());
+		newShop.setShopOwnerId(createShopRequest.getShopOwnerId());
+		newShop.setShopName(createShopRequest.getShopName());
+		newShop.setAddress(createShopRequest.getAddress());
+		newShop.setPhoneNumber(createShopRequest.getPhoneNumber());
+		newShop.setShopType(createShopRequest.getShopType());
 
 		UUID uuid = UUID.randomUUID();
 		newShop.setShopId(uuid);
 
-		shopIdToShopMap.put(uuid, newShop);
+		shopMap.put(uuid, newShop);
 		shopIdToLastAllotedTokenMap.put(uuid, new AtomicInteger(0));
 		
 		return newShop.getShopId();

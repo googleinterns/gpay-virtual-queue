@@ -20,6 +20,7 @@ import VueRouter from "vue-router";
 import About from "@/views/About";
 import CustomerHome from "@/views/CustomerHome";
 import ShopOwnerHome from "@/views/ShopOwnerHome";
+import SignUp from "@/views/SignUp";
 
 Vue.use(VueRouter);
 
@@ -53,6 +54,14 @@ const router = new VueRouter({
       meta: {
         requiresLogin: true,
       },
+    },
+    {
+      path: "/sign-up",
+      name: "SignUp",
+      component: SignUp,
+      meta: {
+        requiresLogout: true,
+      }
     },
   ],
 });

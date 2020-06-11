@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ShopService {
-
 	@Autowired
 	VirtualQueueRepository virtualQueueRepository;
 

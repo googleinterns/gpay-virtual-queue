@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ShopController {
     @Autowired
     public ShopService shopService;
+    
     @PostMapping("/shop")
     public CreateShopResponse addShop(@RequestBody CreateShopRequest createShopRequest) {
         return shopService.createShop(createShopRequest);

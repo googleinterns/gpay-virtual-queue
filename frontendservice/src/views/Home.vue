@@ -8,21 +8,11 @@ specific language governing permissions and limitations under the License. */
 
 <template>
   <div class="home">
-    <h1>Here Ishita's page will be present</h1>
-    <p>Welcome! Your UID is {{ uid }}</p>
-    <p>Welcome! Your userName is {{ userName }}</p>
-    <br />
-    <p>
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-      Lorem Ipsum has been the industry's standard dummy text ever since the
-      1500s, when an unknown printer took a galley of type and scrambled it to
-      make a type specimen book. It has survived not only five centuries, but
-      also the leap into electronic typesetting, remaining essentially
-      unchanged. It was popularised in the 1960s with the release of Letraset
-      sheets containing Lorem Ipsum passages, and more recently with desktop
-      publishing software like Aldus PageMaker including versions of Lorem
-      Ipsum.
-    </p>
+    <h1>Welcome!</h1>
+    <p v-if="loggedIn">Your username is {{ userName }}</p>
+    <br>
+    <p>This page will be common for all our users - customers as well as shop-owners. There will be a navbar having the required navigation links myShops, createShop, myTokens links depending on whether the user is loggedIn or verified.
+    <br>
     <div v-if="isVerified">
       <router-link to="/create-shop">Create new shop</router-link>
     </div>

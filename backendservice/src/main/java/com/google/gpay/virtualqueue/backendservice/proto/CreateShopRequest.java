@@ -14,30 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package com.google.gpay.virtualqueue.backendservice.model;
-
-import java.util.UUID;
+package com.google.gpay.virtualqueue.backendservice.proto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-public class Shop {
-    private UUID shopId;
+public class CreateShopRequest {
     private String shopOwnerId;
     private String shopName;
     private String address;
     private String phoneNumber;
     private String shopType;
-
-    public Shop(String shopOwnerId, String shopName, String address, String phoneNumber,
-            String shopType) {
-        super();
-        this.shopOwnerId = shopOwnerId;
-        this.shopName = shopName;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.shopType = shopType;
-    }
 }

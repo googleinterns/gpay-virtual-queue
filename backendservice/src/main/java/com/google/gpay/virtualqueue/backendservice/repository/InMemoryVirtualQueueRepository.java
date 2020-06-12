@@ -62,7 +62,6 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	}
 
 	public List<Token> getTokensByShopId(UUID shopId) {
-		List<Token> tokensOfParticularShop = shopIdToListOfTokensMap.get(shopId);
-		return tokensOfParticularShop;
+		return shopIdToListOfTokensMap.get(shopId);
 	}
 }

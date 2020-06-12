@@ -23,6 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
+import com.google.gpay.virtualqueue.backendservice.model.Shop.ShopStatus;
 import com.google.gpay.virtualqueue.backendservice.model.ShopOwner;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
@@ -47,7 +48,8 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		newShop.setAddress(createShopRequest.getAddress());
 		newShop.setPhoneNumber(createShopRequest.getPhoneNumber());
 		newShop.setShopType(createShopRequest.getShopType());
-
+		newShop.setStatus(ShopStatus.ACTIVE);
+		
 		UUID uuid = UUID.randomUUID();
 		newShop.setShopId(uuid);
 

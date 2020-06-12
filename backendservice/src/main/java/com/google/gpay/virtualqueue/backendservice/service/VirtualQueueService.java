@@ -16,8 +16,6 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.service;
 
-import java.util.UUID;
-
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
 import com.google.gpay.virtualqueue.backendservice.repository.VirtualQueueRepository;
@@ -31,9 +29,8 @@ public class VirtualQueueService {
 	VirtualQueueRepository virtualQueueRepository;
 
 	public CreateShopResponse createShop(CreateShopRequest createShopRequest) {
-		UUID shopId = virtualQueueRepository.createShop(createShopRequest);
 		CreateShopResponse createShopResponse = new CreateShopResponse();
-		createShopResponse.setShopId(shopId);
+		createShopResponse.setShopId(virtualQueueRepository.createShop(createShopRequest));
 		return createShopResponse;
 	}
 }

@@ -71,6 +71,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 				newShopMap.put(mapKey, mapValue);
 			}
 		}
+		
 		return newShopMap;
 	}
 }

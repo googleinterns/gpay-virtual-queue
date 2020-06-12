@@ -49,7 +49,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		newShop.setPhoneNumber(createShopRequest.getPhoneNumber());
 		newShop.setShopType(createShopRequest.getShopType());
 		newShop.setStatus(ShopStatus.ACTIVE);
-		
+
 		UUID uuid = UUID.randomUUID();
 		newShop.setShopId(uuid);
 
@@ -60,6 +60,17 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	}
 
 	public Map<UUID, Shop> getAllShops() {
-		return shopMap;
+
+		Map<UUID, Shop> newShopMap = new HashMap<>();
+
+		for (Map.Entry<UUID, Shop> mapOfShop : shopMap.entrySet()) {
+			UUID mapKey = mapOfShop.getKey();
+			Shop mapValue = mapOfShop.getValue();
+
+			if (mapValue.getStatus() == ShopStatus.ACTIVE) {
+				newShopMap.put(mapKey, mapValue);
+			}
+		}
+		return newShopMap;
 	}
 }

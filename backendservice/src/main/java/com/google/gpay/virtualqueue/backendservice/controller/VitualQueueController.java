@@ -18,7 +18,7 @@ package com.google.gpay.virtualqueue.backendservice.controller;
 
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
-import com.google.gpay.virtualqueue.backendservice.service.ShopService;
+import com.google.gpay.virtualqueue.backendservice.service.VirtualQueueService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,12 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-public class ShopController {
+public class VitualQueueController {
     @Autowired
-    public ShopService shopService;
+    public VirtualQueueService virtualQueueService;
     
     @PostMapping("/shop")
     public CreateShopResponse addShop(@RequestBody CreateShopRequest createShopRequest) {
-        return shopService.createShop(createShopRequest);
+        return virtualQueueService.createShop(createShopRequest);
     }
 }

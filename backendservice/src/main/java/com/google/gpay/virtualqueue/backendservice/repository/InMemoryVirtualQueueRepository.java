@@ -62,7 +62,6 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 
 	public List<Shop> getAllShops() {
 
-		Map<UUID, Shop> newShopMap = new HashMap<>();
 		List<Shop> shopList = new ArrayList<>();
 
 		for (Map.Entry<UUID, Shop> mapOfShop : shopMap.entrySet()) {

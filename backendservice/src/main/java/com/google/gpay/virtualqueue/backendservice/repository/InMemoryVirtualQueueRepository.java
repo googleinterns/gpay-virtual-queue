@@ -16,6 +16,7 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,19 +60,20 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return newShop.getShopId();
 	}
 
-	public Map<UUID, Shop> getAllShops() {
+	public List<Shop> getAllShops() {
 
 		Map<UUID, Shop> newShopMap = new HashMap<>();
+		List<Shop> shopList = new ArrayList<>();
 
 		for (Map.Entry<UUID, Shop> mapOfShop : shopMap.entrySet()) {
 			UUID mapKey = mapOfShop.getKey();
 			Shop mapValue = mapOfShop.getValue();
 
 			if (mapValue.getStatus() == ShopStatus.ACTIVE) {
-				newShopMap.put(mapKey, mapValue);
+				shopList.add(mapValue);
 			}
 		}
-		
-		return newShopMap;
+
+		return shopList;
 	}
 }

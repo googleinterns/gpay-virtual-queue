@@ -18,7 +18,8 @@ import VueRouter from "vue-router";
 //ToDo: kschauhan - import vue components, edit paths and router when more .vue files are pushed
 
 import About from "@/views/About";
-import Home from "@/views/Home";
+import CustomerHome from "@/views/CustomerHome";
+import ShopOwnerHome from "@/views/ShopOwnerHome";
 
 Vue.use(VueRouter);
 
@@ -38,11 +39,37 @@ const router = new VueRouter({
       component: About,
     },
     {
-      path: "/home",
-      name: "Home",
-      component: Home,
+      path: "/customer",
+      name: "CustomerHome",
+      component: CustomerHome,
+      meta: {
+        requiresLogout: true,
+      },
+    },
+    {
+      path: "/shop-owner",
+      name: "ShopOwnerHome",
+      component: ShopOwnerHome,
+      meta: {
+        requiresLogin: true,
+      },
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const currentUser = firebase.auth().currentUser;
+  var verified = false;
+  if (currentUser) {
+    verified = currentUser.emailVerified;
+  }
+
+  const requiresLogout = to.matched.some((record) => record.meta.requiresLogout);
+  const requiresLogin = to.matched.some((record) => record.meta.requiresLogin);
+
+  if (requiresLogout && currentUser) next("shop-owner");
+  else if (requiresLogin && !currentUser) next("customer");
+  else next();
 });
 
 export default router;

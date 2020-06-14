@@ -10,10 +10,11 @@ specific language governing permissions and limitations under the License. */
   <div class="home">
     <h1>Welcome customer!</h1>
     <p>
-      This page will be Home page for the customers. There will be a navbar
-      having the required navigation links myTokens etc and allShops will be
-      displayed with Search feature. Bavanya will be implementing this part.
+      This page will be Home page for the customers. 
     </p>
+    <p>
+      ToDo: Implement CustomerHome page features including NavBar, Search Bar, MyTokens and AllShops.
+    </p>  
     <div>
       <router-link to="/my-tokens">My Tokens</router-link>
     </div>

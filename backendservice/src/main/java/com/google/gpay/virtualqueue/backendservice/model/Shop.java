@@ -19,10 +19,12 @@ package com.google.gpay.virtualqueue.backendservice.model;
 import java.util.UUID;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Getter
 public class Shop {
     private UUID shopId;
     private String shopOwnerId;
@@ -30,6 +32,11 @@ public class Shop {
     private String address;
     private String phoneNumber;
     private String shopType;
+
+    public enum ShopStatus {
+        STATUS_UNKNOWN, ACTIVE, INACTIVE, DELETED;
+    }
+    private ShopStatus status;
 
     public Shop(String shopOwnerId, String shopName, String address, String phoneNumber,
             String shopType) {

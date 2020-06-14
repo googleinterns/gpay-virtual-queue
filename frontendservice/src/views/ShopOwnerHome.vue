@@ -10,11 +10,11 @@ specific language governing permissions and limitations under the License. */
   <div class="home">
     <h1 v-if="isLoggedIn">Welcome! {{ name }}</h1>
     <p>
-      This page will be Home page for the shop-owners. There will be a navbar
-      having the required navigation links myShops, createShop etc depending on
-      whether the user is verified or not. Ishita will be implementing this
-      part.
+      This page will be Home page for the sop-owners. 
     </p>
+    <p>
+      ToDo: Implement ShopOwnerHome page features including NavBar, Search Bar, MyShops and AddShop.
+    </p> 
     <div v-if="isVerified">
       <router-link to="/create-shop">Create new shop</router-link>
     </div>

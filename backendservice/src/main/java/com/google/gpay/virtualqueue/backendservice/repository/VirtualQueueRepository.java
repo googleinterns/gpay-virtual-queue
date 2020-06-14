@@ -30,5 +30,5 @@ public interface VirtualQueueRepository {
 
     public Map<UUID, Shop> getAllShops();
 
-    public List<Token> getTokensByShopId(UUID shopId);
+    public List<Token> getTokens(UUID shopId);
 }

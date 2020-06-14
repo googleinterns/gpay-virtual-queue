@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 import com.google.gpay.virtualqueue.backendservice.model.Shop.ShopStatus;
+import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.model.ShopOwner;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
@@ -49,7 +50,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		newShop.setPhoneNumber(createShopRequest.getPhoneNumber());
 		newShop.setShopType(createShopRequest.getShopType());
 		newShop.setStatus(ShopStatus.ACTIVE);
-		
+
 		UUID uuid = UUID.randomUUID();
 		newShop.setShopId(uuid);
 
@@ -61,5 +62,18 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 
 	public Map<UUID, Shop> getAllShops() {
 		return shopMap;
+	}
+
+	public List<Token> getTokensByShopId(UUID shopId) {
+		if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
+			List<Token> tokensOfParticularShop = shopIdToListOfTokensMap.get(shopId);
+			for (Token tokenOfParticularShop : tokensOfParticularShop) {
+				if (tokenOfParticularShop.getStatus() == Status.ACTIVE) {
+					tokensOfParticularShop.add(tokenOfParticularShop);
+				}
+			}
+			return tokensOfParticularShop;
+		}
+		return null;
 	}
 }

@@ -30,7 +30,7 @@ public class Token {
     private UUID shopId;
     private Integer tokenNumber;
     
-    enum Status {
+    public enum Status {
         STATUS_UNKNOWN, ACTIVE, EXPIRED, CANCELLED_BY_CUSTOMER, CANCELLED_BY_SHOP_OWNER;
     }
     private Status status;

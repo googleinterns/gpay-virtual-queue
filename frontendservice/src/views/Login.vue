@@ -72,11 +72,11 @@ export default {
         });
     },
     toggle() {
-      var x = this.$refs.password;
-      if (x.type === "password") {
-        x.type = "text";
+      var passwordRef = this.$refs.password;
+      if (passwordRef.type === "password") {
+        passwordRef.type = "text";
       } else {
-        x.type = "password";
+        passwordRef.type = "password";
       }
       this.isHidden = !this.isHidden;
     },

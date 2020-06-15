@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
-import com.google.gpay.virtualqueue.backendservice.proto.GetTokensForShopResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.GetTokensResponse;
 import com.google.gpay.virtualqueue.backendservice.repository.VirtualQueueRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +37,10 @@ public class VirtualQueueService {
 		return createShopResponse;
 	}
 
-	public GetTokensForShopResponse getTokens(UUID shopId) {
-		GetTokensForShopResponse getTokensForShopResponse = new GetTokensForShopResponse();
-		getTokensForShopResponse.setTokenList(virtualQueueRepository.getTokens(shopId));
-		return getTokensForShopResponse;
+	public GetTokensResponse getTokens(UUID shopId) {
+		GetTokensResponse getTokensResponse = new GetTokensResponse();
+		getTokensResponse.setTokenList(virtualQueueRepository.getTokens(shopId));
+		getTokensResponse.setShopId(shopId);
+		return getTokensResponse;
 	}
 }

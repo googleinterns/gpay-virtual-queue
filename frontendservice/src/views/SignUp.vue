@@ -54,11 +54,11 @@ export default {
   },
   methods: {
     toggle() {
-      var x = this.$refs.password;
-      if (x.type === "password") {
-        x.type = "text";
+      var passwordRef = this.$refs.password;
+      if (passwordRef.type === "password") {
+        passwordRef.type = "text";
       } else {
-        x.type = "password";
+        passwordRef.type = "password";
       }
       this.isHidden = !this.isHidden;
     },
@@ -123,37 +123,41 @@ export default {
 };
 </script>
 
+
 <style scoped>
-.sign-up {
-  margin-top: 2%;
-  margin-bottom: 1%;
-}
-.input-icons i {
-  position: absolute;
-}
-.icon {
-  padding-top: 1.4rem;
-  padding-left: 0.2rem;
-  color: #00d1b2;
-  min-width: 5%;
-  text-align: center;
-}
-.input-field {
-  padding: 1%;
-  text-align: center;
-}
-input {
-  margin: 1%;
-  width: 40%;
-}
 h1 {
   color: #00d1b2;
   font-size: 2rem;
 }
+.sign-up {
+  margin-top: 2%;
+  margin-bottom: 1%;
+  text-align: center;
+}
+.input-field:focus {
+  border: 2px solid #00d1b2;
+}
+.input-icons {
+  display: flex;
+  width: 40%;
+  margin: 15px auto;
+}
+.icon {
+  padding: 1rem;
+  background: #00d1b2;
+  color: white;
+  min-width: 5%;
+  height: 3rem;
+  width: 3rem;
+}
+.input-field {
+  width: 100%;
+  padding: 2%;
+  outline: none;
+}
 a {
   margin-top: 1%;
   margin-bottom: 1%;
-  width: 10%;
   cursor: pointer;
 }
 span {

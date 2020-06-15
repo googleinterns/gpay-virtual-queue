@@ -16,7 +16,6 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.proto;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,5 +28,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class GetTokensResponse {
     private UUID shopId;
-    private List<Token> tokenList = new ArrayList<>();
+    private List<Token> tokenList;
 }

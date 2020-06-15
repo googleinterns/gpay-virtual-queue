@@ -78,7 +78,33 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		}
 
 		// TODO(b/158975796): Simplify logging across all backend APIs
-		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE, "Tried to fetch tokens of a shop which is not in the ACTIVE state.");
+		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
+				"Tried to fetch tokens of a shop which is not in the ACTIVE state.");
 		return new ArrayList<>();
+	}
+
+	public Token getNewToken(UUID shopId) {
+		if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
+			Integer newTokenNumber = shopIdToLastAllotedTokenMap.get(shopId).incrementAndGet();
+			UUID uuid = UUID.randomUUID();
+			Token newToken = new Token();
+			newToken.setTokenId(uuid);
+			newToken.setShopId(shopId);
+			newToken.setTokenNumber(newTokenNumber);
+			newToken.setStatus(Token.Status.ACTIVE);
+			tokenMap.put(uuid, newToken);
+			if (newTokenNumber != 1) {
+				List<Token> newTokenList = shopIdToListOfTokensMap.get(shopId);
+				newTokenList.add(newToken);
+				shopIdToListOfTokensMap.put(shopId, newTokenList);
+			} else {
+				List<Token> newTokenList = new ArrayList<>();
+				newTokenList.add(newToken);
+				shopIdToListOfTokensMap.put(shopId, newTokenList);
+			}
+			return newToken;
+		}
+		// TODO: Throw exception here
+		return new Token();
 	}
 }

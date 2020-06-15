@@ -16,14 +16,19 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 import com.google.gpay.virtualqueue.backendservice.model.Shop.ShopStatus;
+import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.model.ShopOwner;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
@@ -49,7 +54,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		newShop.setPhoneNumber(createShopRequest.getPhoneNumber());
 		newShop.setShopType(createShopRequest.getShopType());
 		newShop.setStatus(ShopStatus.ACTIVE);
-		
+
 		UUID uuid = UUID.randomUUID();
 		newShop.setShopId(uuid);
 
@@ -61,5 +66,16 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 
 	public Map<UUID, Shop> getAllShops() {
 		return shopMap;
+	}
+
+	public List<Token> getTokens(UUID shopId) {
+		if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
+			return shopIdToListOfTokensMap.get(shopId).stream().filter(token -> token.getStatus() == Status.ACTIVE)
+					.collect(Collectors.toList());
+		}
+
+		// TODO(b/158975796): Simplify logging across all backend APIs
+		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE, "Tried to fetch tokens of a shop which is not in the ACTIVE state.");
+		return new ArrayList<>();
 	}
 }

@@ -22,8 +22,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import java.util.stream.Collectors;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
@@ -64,8 +66,9 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return newShop.getShopId();
 	}
 
-	public Map<UUID, Shop> getAllShops() {
-		return shopMap;
+	public List<Shop> getAllShops() {
+		return shopMap.entrySet().stream().filter(shop -> ShopStatus.ACTIVE.equals(shop.getValue().getStatus()))
+				.map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
 	public List<Token> getTokens(UUID shopId) {

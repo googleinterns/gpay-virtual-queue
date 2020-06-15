@@ -62,7 +62,6 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	}
 
 	public List<Shop> getAllShops() {
-
 		return shopMap.entrySet().stream().filter(shop -> ShopStatus.ACTIVE.equals(shop.getValue().getStatus()))
 				.map(Map.Entry::getValue).collect(Collectors.toList());
 	}

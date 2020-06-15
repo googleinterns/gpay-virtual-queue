@@ -43,6 +43,6 @@ public class VirtualQueueService {
 	}
 
 	public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId) {
-		return new GetShopsByShopOwnerResponse(shopOwnerId, virtualQueueRepository.getShopsByShopOwner(shopOwnerId));
+		return virtualQueueRepository.getShopsByShopOwner(shopOwnerId);
 	}
 }

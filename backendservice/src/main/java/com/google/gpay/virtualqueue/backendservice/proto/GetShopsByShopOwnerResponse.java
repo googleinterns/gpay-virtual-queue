@@ -19,6 +19,7 @@ package com.google.gpay.virtualqueue.backendservice.proto;
 import java.util.List;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
+import com.google.gpay.virtualqueue.backendservice.model.ShopOwner;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class GetShopsByShopOwnerResponse {
-    String shopOwnerId;
+    ShopOwner shopOwner;
     List<Shop> shops;
 }

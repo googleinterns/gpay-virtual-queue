@@ -34,6 +34,7 @@ import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.model.ShopOwner;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
 
 import org.springframework.stereotype.Repository;
 
@@ -82,8 +83,9 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return new ArrayList<>();
 	}
 
-	public List<Shop> getShopsByShopOwner(String ShopOwnerId) {
-		return shopMap.entrySet().stream().filter(map -> map.getValue().getShopOwnerId().equals(ShopOwnerId))
+	public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId) {
+		List<Shop> shops = shopMap.entrySet().stream().filter(map -> map.getValue().getShopOwnerId().equals(shopOwnerId))
 				.map(map -> map.getValue()).collect(Collectors.toList());
+		return new GetShopsByShopOwnerResponse(shopOwnerMap.get(shopOwnerId), shops);
 	}
 }

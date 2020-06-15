@@ -22,6 +22,7 @@ import java.util.UUID;
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
 
 public interface VirtualQueueRepository {
 
@@ -31,5 +32,5 @@ public interface VirtualQueueRepository {
 
     public List<Token> getTokens(UUID shopId);
 
-    public List<Shop> getShopsByShopOwner(String ShopOwnerId);
+    public GetShopsByShopOwnerResponse getShopsByShopOwner(String ShopOwnerId);
 }

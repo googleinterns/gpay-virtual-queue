@@ -38,9 +38,4 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
-body {
-  background-image: url("https://img.freepik.com/free-photo/black-friday-composition-with-four-bags-cart_23-2147709334.jpg?size=626&ext=jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
 </style>

@@ -8,19 +8,18 @@ specific language governing permissions and limitations under the License. */
 
 <template>
   <div class="home">
-    <h1>Welcome!</h1>
-    <p v-if="loggedIn">Your username is {{ userName }}</p>
-    <br>
-    <p>This page will be common for all our users - customers as well as shop-owners. There will be a navbar having the required navigation links myShops, createShop, myTokens links depending on whether the user is loggedIn or verified.
-    <br>
+    <h1 v-if="isLoggedIn">Welcome! {{ name }}</h1>
+    <p>
+      This page will be Home page for the sop-owners. 
+    </p>
+    <p>
+      ToDo: Implement ShopOwnerHome page features including NavBar, Search Bar, MyShops and AddShop.
+    </p> 
     <div v-if="isVerified">
       <router-link to="/create-shop">Create new shop</router-link>
     </div>
     <div v-if="isVerified">
       <router-link to="/my-shops">My Shops</router-link>
-    </div>
-    <div>
-      <router-link to="/my-tokens">My Tokens</router-link>
     </div>
     <div v-if="isLoggedIn && !isVerified">
       <router-link to="/verify">Verify Me!</router-link>
@@ -29,7 +28,7 @@ specific language governing permissions and limitations under the License. */
       <router-link to="/about">Back</router-link>
     </div>
     <br />
-    <button v-if="isLoggedIn" @click="logout">Logout</button>
+    <a class="button is-danger" v-if="isLoggedIn" @click="logout">Logout</a>
   </div>
 </template>
 
@@ -37,11 +36,11 @@ specific language governing permissions and limitations under the License. */
 import firebase from "firebase";
 
 export default {
-  name: "home",
+  name: "shopOwnerHome",
 
   data() {
     return {
-      userName: "",
+      name: "",
       uid: "",
       isLoggedIn: false,
       isVerified: false,
@@ -50,7 +49,7 @@ export default {
   created() {
     var user = firebase.auth().currentUser;
     if (user) {
-      this.userName = user.displayName;
+      this.name = user.displayName;
       this.uid = user.uid;
       this.isLoggedIn = true;
       if (user.emailVerified) {

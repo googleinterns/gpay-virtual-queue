@@ -72,14 +72,14 @@ specific language governing permissions and limitations under the License. */
       </div>
     </div>
     <a v-if="!isLoggedIn" class="button">
-      <router-link to="/home">Enter as customer</router-link>
+      <router-link to="/customer">Enter as customer</router-link>
     </a>
     <br />
     <a v-if="!isLoggedIn" class="button">
       <router-link to="/login">Enter as shop-owner</router-link>
     </a>
     <a v-if="isLoggedIn" class="button">
-      <router-link to="/home">Continue to Home</router-link>
+      <router-link to="/shop-owner">Continue to Home</router-link>
     </a>
   </div>
 </template>

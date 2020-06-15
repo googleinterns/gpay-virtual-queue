@@ -16,6 +16,10 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.service;
 
+import java.util.List;
+import java.util.UUID;
+
+import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
 import com.google.gpay.virtualqueue.backendservice.repository.VirtualQueueRepository;
@@ -32,5 +36,9 @@ public class VirtualQueueService {
 		CreateShopResponse createShopResponse = new CreateShopResponse();
 		createShopResponse.setShopId(virtualQueueRepository.createShop(createShopRequest));
 		return createShopResponse;
+	}
+
+	public List<Token> getTokens(UUID shopId) {
+		return virtualQueueRepository.getTokens(shopId);
 	}
 }

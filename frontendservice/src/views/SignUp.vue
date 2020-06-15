@@ -67,8 +67,15 @@ export default {
       this.emailAlert = "";
       this.passwordAlert = "";
       this.firebaseAlert = "";
-      var emailRegex = new RegExp(/\w+@\w+.\w+/g); //////check thissss
+
+      //to check if the input email follows correct format like *@*.*
+      //eg - virtualqueues1@gmail.com is valid
+      var emailRegex = new RegExp(/\w+@\w+.\w+/g);
+      //to check if the input password contains any digit
+      //eg - xyz123 is valid
       var passwordRegex1 = new RegExp(/[0-9]/g);
+      //to check if the input password contains any special character (!, @, #, %, &, _ or -)
+      //eg - abcde! is valid
       var passwordRegex2 = new RegExp(/(!|@|#|%|&|_|-)/g);
       var emailResult = this.email.match(emailRegex);
       var passwordResult1 = this.password.match(passwordRegex1);

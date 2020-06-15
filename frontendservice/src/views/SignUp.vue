@@ -123,7 +123,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 h1 {
   color: #00d1b2;

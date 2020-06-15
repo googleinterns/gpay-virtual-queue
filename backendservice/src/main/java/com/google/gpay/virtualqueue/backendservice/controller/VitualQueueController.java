@@ -16,12 +16,11 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.controller;
 
-import java.util.List;
 import java.util.UUID;
 
-import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.GetTokensForShopResponse;
 import com.google.gpay.virtualqueue.backendservice.service.VirtualQueueService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,7 @@ public class VitualQueueController {
     }
 
     @GetMapping("/token/{shopId}")
-    public List<Token> getTokens(@PathVariable UUID shopId) {
+    public GetTokensForShopResponse getTokens(@PathVariable UUID shopId) {
 		return virtualQueueService.getTokens(shopId);
 	}
 }

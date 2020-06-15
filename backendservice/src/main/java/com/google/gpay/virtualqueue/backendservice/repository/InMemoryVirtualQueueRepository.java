@@ -81,4 +81,9 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE, "Tried to fetch tokens of a shop which is not in the ACTIVE state.");
 		return new ArrayList<>();
 	}
+
+	public List<Shop> getShopsByShopOwnerId(String ShopOwnerId) {
+		return shopMap.entrySet().stream().filter(map -> map.getValue().getShopOwnerId().equals(ShopOwnerId))
+				.map(map -> map.getValue()).collect(Collectors.toList());
+	}
 }

@@ -14,22 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package com.google.gpay.virtualqueue.backendservice.repository;
+package com.google.gpay.virtualqueue.backendservice.proto;
 
 import java.util.List;
-import java.util.UUID;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
-import com.google.gpay.virtualqueue.backendservice.model.Token;
-import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 
-public interface VirtualQueueRepository {
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-    public UUID createShop(CreateShopRequest createShopRequest);
-  
-    public List<Shop> getAllShops();
-
-    public List<Token> getTokens(UUID shopId);
-
-    public List<Shop> getShopsByShopOwnerId(String ShopOwnerId);
+@Data
+@AllArgsConstructor
+public class GetShopsOfShopOwnerResponse {
+    String shopOwnerId;
+    List<Shop> shopsOfShopOwner;
 }

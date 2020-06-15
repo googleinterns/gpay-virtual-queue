@@ -22,12 +22,12 @@ import java.util.UUID;
 
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Setter;
 
 @Data
-@Setter
+@AllArgsConstructor
 public class GetTokensResponse {
-    private List<Token> tokenList = new ArrayList<>();
     private UUID shopId;
+    private List<Token> tokenList = new ArrayList<>();
 }

@@ -38,9 +38,6 @@ public class VirtualQueueService {
 	}
 
 	public GetTokensResponse getTokens(UUID shopId) {
-		GetTokensResponse getTokensResponse = new GetTokensResponse();
-		getTokensResponse.setTokenList(virtualQueueRepository.getTokens(shopId));
-		getTokensResponse.setShopId(shopId);
-		return getTokensResponse;
+		return new GetTokensResponse(shopId, virtualQueueRepository.getTokens(shopId));
 	}
 }

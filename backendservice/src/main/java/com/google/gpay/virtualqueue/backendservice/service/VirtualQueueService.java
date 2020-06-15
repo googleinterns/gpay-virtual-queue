@@ -42,7 +42,7 @@ public class VirtualQueueService {
 		return new GetTokensResponse(shopId, virtualQueueRepository.getTokens(shopId));
 	}
 
-	public GetShopsOfShopOwnerResponse getShopsByShopOwnerId(String shopOwnerId) {
-		return new GetShopsOfShopOwnerResponse(shopOwnerId, virtualQueueRepository.getShopsByShopOwnerId(shopOwnerId));
+	public GetShopsOfShopOwnerResponse getShopsByShopOwner(String shopOwnerId) {
+		return new GetShopsOfShopOwnerResponse(shopOwnerId, virtualQueueRepository.getShopsByShopOwner(shopOwnerId));
 	}
 }

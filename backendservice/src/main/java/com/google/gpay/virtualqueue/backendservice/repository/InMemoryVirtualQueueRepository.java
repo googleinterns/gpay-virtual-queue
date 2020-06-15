@@ -82,7 +82,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return new ArrayList<>();
 	}
 
-	public List<Shop> getShopsByShopOwnerId(String ShopOwnerId) {
+	public List<Shop> getShopsByShopOwner(String ShopOwnerId) {
 		return shopMap.entrySet().stream().filter(map -> map.getValue().getShopOwnerId().equals(ShopOwnerId))
 				.map(map -> map.getValue()).collect(Collectors.toList());
 	}

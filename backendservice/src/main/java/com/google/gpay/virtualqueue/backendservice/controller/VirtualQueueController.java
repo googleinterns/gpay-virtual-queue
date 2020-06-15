@@ -49,7 +49,7 @@ public class VirtualQueueController {
     }
     
     @GetMapping("/shop/{shopOwnerId}")
-    public GetShopsOfShopOwnerResponse getShopsByShopOwnerId(@PathVariable String shopOwnerId) {
-        return virtualQueueService.getShopsByShopOwnerId(shopOwnerId);
+    public GetShopsOfShopOwnerResponse getShopsByShopOwner(@PathVariable String shopOwnerId) {
+        return virtualQueueService.getShopsByShopOwner(shopOwnerId);
     }
 }

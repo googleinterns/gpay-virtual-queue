@@ -82,7 +82,8 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE, "Tried to fetch tokens of a shop which is not in the ACTIVE state.");
 		return new ArrayList<>();
 	}
-
+	
+	// Function returns all shops keeping in mind the feature of restoring shops
 	public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId) {
 		List<Shop> shops = shopMap
 							.entrySet()

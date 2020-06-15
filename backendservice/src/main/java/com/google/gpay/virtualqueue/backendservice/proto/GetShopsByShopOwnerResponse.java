@@ -25,7 +25,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class GetShopsOfShopOwnerResponse {
+public class GetShopsByShopOwnerResponse {
     String shopOwnerId;
-    List<Shop> shopsOfShopOwner;
+    List<Shop> shops;
 }

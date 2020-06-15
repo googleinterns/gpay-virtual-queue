@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
-import com.google.gpay.virtualqueue.backendservice.proto.GetShopsOfShopOwnerResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetTokensResponse;
 import com.google.gpay.virtualqueue.backendservice.service.VirtualQueueService;
 
@@ -49,7 +49,7 @@ public class VirtualQueueController {
     }
     
     @GetMapping("/shop/{shopOwnerId}")
-    public GetShopsOfShopOwnerResponse getShopsByShopOwner(@PathVariable String shopOwnerId) {
+    public GetShopsByShopOwnerResponse getShopsByShopOwner(@PathVariable String shopOwnerId) {
         return virtualQueueService.getShopsByShopOwner(shopOwnerId);
     }
 }

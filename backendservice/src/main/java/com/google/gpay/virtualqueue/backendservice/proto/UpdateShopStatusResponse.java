@@ -26,5 +26,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UpdateShopStatusResponse {
-    private Shop updatedShop;
+    private Shop shop;
 }

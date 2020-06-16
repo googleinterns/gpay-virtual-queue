@@ -7,8 +7,8 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License. */
 
 <template>
-  <div class="sign-up">
-    <h1>Sign Up</h1>
+  <div class="signup">
+    <h1 class="header">Sign Up</h1>
     <span id="info">New to Virtual Queues? Create an account now!</span>
     <div class="input-icons">
       <i class="fa fa-user icon"></i>
@@ -146,7 +146,7 @@ export default {
   margin-bottom: 1%;
   margin-top: 1%;
 }
-h1 {
+.header {
   color: #00d1b2;
   font-size: 2rem;
 }
@@ -176,7 +176,7 @@ h1 {
   margin: 15px auto;
   width: 40%;
 }
-.sign-up {
+.signup {
   margin-bottom: 1%;
   margin-top: 2%;
   text-align: center;

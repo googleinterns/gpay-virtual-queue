@@ -25,6 +25,7 @@ import SignUp from "@/views/SignUp";
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+  mode: 'history',
   routes: [
     {
       path: "*",
@@ -56,7 +57,7 @@ const router = new VueRouter({
       },
     },
     {
-      path: "/sign-up",
+      path: "/signup",
       name: "SignUp",
       component: SignUp,
       meta: {

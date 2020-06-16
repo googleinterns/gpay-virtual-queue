@@ -92,9 +92,8 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 			Token newToken = new Token(uuid, shopId, newTokenNumber);
 			newToken.setStatus(Token.Status.ACTIVE);
 			tokenMap.put(uuid, newToken);
-			List<Token> newTokenList = shopIdToListOfTokensMap.get(shopId);
-			newTokenList.add(newToken);
-			shopIdToListOfTokensMap.put(shopId, newTokenList);
+			shopIdToListOfTokensMap.get(shopId).add(newToken);
+			shopIdToListOfTokensMap.put(shopId, shopIdToListOfTokensMap.get(shopId));
 
 			return newToken;
 		}

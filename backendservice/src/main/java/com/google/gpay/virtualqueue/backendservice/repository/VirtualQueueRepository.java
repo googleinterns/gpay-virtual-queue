@@ -34,6 +34,8 @@ public interface VirtualQueueRepository {
 
     public List<Token> getTokens(UUID shopId);
 
+    public Token getNewToken(UUID shopId);
+
     public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId);
 
 	public UpdateTokenStatusResponse updateToken(UpdateTokenStatusRequest updateTokenStatusRequest);

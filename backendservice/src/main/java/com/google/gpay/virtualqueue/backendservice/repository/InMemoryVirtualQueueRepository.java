@@ -36,6 +36,8 @@ import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateShopStatusRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateShopStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
 
 import org.springframework.stereotype.Repository;
@@ -97,5 +99,10 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	public UpdateTokenStatusResponse updateToken(UpdateTokenStatusRequest updateTokenStatusRequest) {
 		tokenMap.get(updateTokenStatusRequest.getTokenId()).setStatus(updateTokenStatusRequest.getTokenStatus());
 		return new UpdateTokenStatusResponse(tokenMap.get(updateTokenStatusRequest.getTokenId()));
+	}
+
+	public UpdateShopStatusResponse updateShop(UpdateShopStatusRequest updateShopStatusRequest) {
+		shopMap.get(updateShopStatusRequest.getShopId()).setStatus(updateShopStatusRequest.getShopStatus());
+		return new UpdateShopStatusResponse(shopMap.get(updateShopStatusRequest.getShopId()));
 	}
 }

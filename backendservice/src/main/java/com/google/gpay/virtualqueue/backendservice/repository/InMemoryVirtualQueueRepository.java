@@ -34,6 +34,7 @@ import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.model.ShopOwner;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.DeleteTokenResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
 
 import org.springframework.stereotype.Repository;
@@ -92,5 +93,14 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 							.map(map -> map.getValue())
 							.collect(Collectors.toList());
 		return new GetShopsByShopOwnerResponse(shopOwnerMap.get(shopOwnerId), shops);
+	}
+
+	public DeleteTokenResponse deleteToken(UUID tokenId, Boolean isLoggedin) {
+		if (!isLoggedin) {
+			tokenMap.get(tokenId).setStatus(Status.CANCELLED_BY_CUSTOMER);
+		} else {
+			tokenMap.get(tokenId).setStatus(Status.CANCELLED_BY_SHOP_OWNER);
+		}
+		return new DeleteTokenResponse(tokenMap.get(tokenId));
 	}
 }

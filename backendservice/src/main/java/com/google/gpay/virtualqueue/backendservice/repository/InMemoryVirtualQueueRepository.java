@@ -79,7 +79,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 					.collect(Collectors.toList());
 		}
 
-		// TODO(b/158975796): Simplify logging across all backend APIs
+		// TODO(b/158975796): Simplify logging across all backend APIs.
 		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
 				"Tried to fetch tokens of a shop which is not in the ACTIVE state.");
 		return new ArrayList<>();
@@ -98,7 +98,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 
 			return newToken;
 		}
-		// TODO: Throw exception here
+		// TODO: Throw exception here.
 		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
 				"Tried to get new token of a shop which is not in the ACTIVE state.");
 		return new Token();

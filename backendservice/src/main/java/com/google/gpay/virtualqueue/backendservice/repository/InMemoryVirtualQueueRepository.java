@@ -104,6 +104,8 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return newToken;
 	    }
 	  // TODO: Throw exception here
+	  Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
+				"Tried to get new token of a shop which is not in the ACTIVE state.");
 	  return new Token();
 
 	// Method returns all shops keeping in mind the feature of restoring shops later on.

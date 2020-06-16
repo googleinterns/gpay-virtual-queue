@@ -47,7 +47,7 @@ public class VirtualQueueService {
 		return virtualQueueRepository.getShopsByShopOwner(shopOwnerId);
 	}
 
-	public DeleteTokenResponse deleteToken(UUID tokenId, Boolean isLoggedin) {
-		return virtualQueueRepository.deleteToken(tokenId, isLoggedin);
+	public DeleteTokenResponse deleteToken(UUID tokenId, Boolean isLoggedIn) {
+		return virtualQueueRepository.deleteToken(tokenId, isLoggedIn);
 	}
 }

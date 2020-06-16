@@ -35,5 +35,5 @@ public interface VirtualQueueRepository {
 
     public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId);
 
-	public DeleteTokenResponse deleteToken(UUID tokenId, Boolean isLoggedin);
+	public DeleteTokenResponse deleteToken(UUID tokenId, Boolean isLoggedIn);
 }

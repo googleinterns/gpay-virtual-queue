@@ -80,27 +80,28 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		}
 
 		// TODO(b/158975796): Simplify logging across all backend APIs
-		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE, "Tried to fetch tokens of a shop which is not in the ACTIVE state.");
+		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
+				"Tried to fetch tokens of a shop which is not in the ACTIVE state.");
 		return new ArrayList<>();
 	}
 
 	// Method returns all shops keeping in mind the feature of restoring shops later on.
 	public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId) {
-		List<Shop> shops = shopMap
-							.entrySet()
-							.stream()
-							.filter(map -> map.getValue().getShopOwnerId().equals(shopOwnerId))
-							.map(map -> map.getValue())
-							.collect(Collectors.toList());
+		List<Shop> shops = shopMap.entrySet().stream()
+				.filter(map -> map.getValue().getShopOwnerId().equals(shopOwnerId)).map(map -> map.getValue())
+				.collect(Collectors.toList());
 		return new GetShopsByShopOwnerResponse(shopOwnerMap.get(shopOwnerId), shops);
 	}
 
-	public DeleteTokenResponse deleteToken(UUID tokenId, Boolean isLoggedin) {
-		if (!isLoggedin) {
+	public DeleteTokenResponse deleteToken(UUID tokenId, Boolean isLoggedIn) {
+		if (!isLoggedIn) {
 			tokenMap.get(tokenId).setStatus(Status.CANCELLED_BY_CUSTOMER);
 		} else {
 			tokenMap.get(tokenId).setStatus(Status.CANCELLED_BY_SHOP_OWNER);
 		}
+		UUID shopId = tokenMap.get(tokenId).getShopId();
+		shopIdToListOfTokensMap.get(shopId).stream().filter(token -> token.getTokenId() != tokenId)
+				.collect(Collectors.toList()).add(tokenMap.get(tokenId));
 		return new DeleteTokenResponse(tokenMap.get(tokenId));
 	}
 }

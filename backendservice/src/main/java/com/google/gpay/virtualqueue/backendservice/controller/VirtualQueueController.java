@@ -56,7 +56,7 @@ public class VirtualQueueController {
     }
 
     @DeleteMapping("/token/{tokenId}")
-    public DeleteTokenResponse deleteToken(@PathVariable UUID tokenId, @RequestBody Boolean isLoggedin){
-        return virtualQueueService.deleteToken(tokenId, isLoggedin);
+    public DeleteTokenResponse deleteToken(@PathVariable UUID tokenId, @RequestBody boolean isLoggedIn){
+        return virtualQueueService.deleteToken(tokenId, isLoggedIn);
     }
 }

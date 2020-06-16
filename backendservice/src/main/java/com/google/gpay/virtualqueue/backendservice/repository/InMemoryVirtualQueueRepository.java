@@ -34,8 +34,9 @@ import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.model.ShopOwner;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
-import com.google.gpay.virtualqueue.backendservice.proto.DeleteTokenResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
 
 import org.springframework.stereotype.Repository;
 
@@ -93,15 +94,8 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return new GetShopsByShopOwnerResponse(shopOwnerMap.get(shopOwnerId), shops);
 	}
 
-	public DeleteTokenResponse deleteToken(UUID tokenId, Boolean isLoggedIn) {
-		if (!isLoggedIn) {
-			tokenMap.get(tokenId).setStatus(Status.CANCELLED_BY_CUSTOMER);
-		} else {
-			tokenMap.get(tokenId).setStatus(Status.CANCELLED_BY_SHOP_OWNER);
-		}
-		UUID shopId = tokenMap.get(tokenId).getShopId();
-		shopIdToListOfTokensMap.get(shopId).stream().filter(token -> token.getTokenId() != tokenId)
-				.collect(Collectors.toList()).add(tokenMap.get(tokenId));
-		return new DeleteTokenResponse(tokenMap.get(tokenId));
+	public UpdateTokenStatusResponse updateToken(UpdateTokenStatusRequest updateTokenStatusRequest) {
+		tokenMap.get(updateTokenStatusRequest.getTokenId()).setStatus(updateTokenStatusRequest.getTokenStatus());
+		return new UpdateTokenStatusResponse(tokenMap.get(updateTokenStatusRequest.getTokenId()));
 	}
 }

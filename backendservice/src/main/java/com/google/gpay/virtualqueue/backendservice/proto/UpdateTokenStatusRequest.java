@@ -16,15 +16,16 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.proto;
 
-import com.google.gpay.virtualqueue.backendservice.model.Token;
+import java.util.UUID;
+
+import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Setter;
 
 @Data
-@Setter
 @AllArgsConstructor
-public class DeleteTokenResponse {
-    private Token deletedToken;
+public class UpdateTokenStatusRequest {
+    UUID tokenId;
+    Status tokenStatus;
 }

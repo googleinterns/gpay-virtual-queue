@@ -20,17 +20,18 @@ import java.util.UUID;
 
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
-import com.google.gpay.virtualqueue.backendservice.proto.DeleteTokenResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetTokensResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
 import com.google.gpay.virtualqueue.backendservice.service.VirtualQueueService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,8 +56,8 @@ public class VirtualQueueController {
         return virtualQueueService.getShopsByShopOwner(shopOwnerId);
     }
 
-    @DeleteMapping("/token/{tokenId}")
-    public DeleteTokenResponse deleteToken(@PathVariable UUID tokenId, @RequestBody boolean isLoggedIn){
-        return virtualQueueService.deleteToken(tokenId, isLoggedIn);
+    @PutMapping("/token")
+    public UpdateTokenStatusResponse updateToken(@RequestBody UpdateTokenStatusRequest updateTokenStatusRequest) {
+        return virtualQueueService.updateToken(updateTokenStatusRequest);
     }
 }

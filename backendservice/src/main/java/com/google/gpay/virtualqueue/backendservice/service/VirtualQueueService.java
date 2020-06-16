@@ -20,9 +20,10 @@ import java.util.UUID;
 
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
-import com.google.gpay.virtualqueue.backendservice.proto.DeleteTokenResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetTokensResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
 import com.google.gpay.virtualqueue.backendservice.repository.VirtualQueueRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class VirtualQueueService {
 		return virtualQueueRepository.getShopsByShopOwner(shopOwnerId);
 	}
 
-	public DeleteTokenResponse deleteToken(UUID tokenId, Boolean isLoggedIn) {
-		return virtualQueueRepository.deleteToken(tokenId, isLoggedIn);
+	public UpdateTokenStatusResponse updateToken(UpdateTokenStatusRequest updateTokenStatusRequest) {
+		return virtualQueueRepository.updateToken(updateTokenStatusRequest);
 	}
 }

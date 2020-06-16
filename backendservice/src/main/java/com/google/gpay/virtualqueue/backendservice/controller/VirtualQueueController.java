@@ -21,8 +21,10 @@ import java.util.UUID;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetAllShopsResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetTokensResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
 import com.google.gpay.virtualqueue.backendservice.service.VirtualQueueService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,5 +59,10 @@ public class VirtualQueueController {
     @GetMapping("/shops")
     public GetAllShopsResponse getAllShops() {
         return virtualQueueService.getAllShops();
+    }
+
+    @PutMapping("/token")
+    public UpdateTokenStatusResponse updateToken(@RequestBody UpdateTokenStatusRequest updateTokenStatusRequest) {
+        return virtualQueueService.updateToken(updateTokenStatusRequest);
     }
 }

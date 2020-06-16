@@ -86,7 +86,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 
 	public Token getNewToken(UUID shopId) {
 	    if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
-        Integer newTokenNumber = shopIdToLastAllotedTokenMap.get(shopId).incrementAndGet();
+                Integer newTokenNumber = shopIdToLastAllotedTokenMap.get(shopId).incrementAndGet();
 		UUID uuid = UUID.randomUUID();
 		Token newToken = new Token(uuid, shopId, newTokenNumber);
 		newToken.setStatus(Token.Status.ACTIVE);

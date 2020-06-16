@@ -17,11 +17,11 @@ import java.util.List;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Setter;
 
 @Data
-@Setter
+@AllArgsConstructor
 public class GetAllShopsResponse {
     private List<Shop> shops;
 }

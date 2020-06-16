@@ -16,12 +16,17 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.service;
 
+import java.util.List;
 import java.util.UUID;
 
+import com.google.gpay.virtualqueue.backendservice.model.Shop;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.GetAllShopsResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetTokensResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
 import com.google.gpay.virtualqueue.backendservice.repository.VirtualQueueRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +47,14 @@ public class VirtualQueueService {
 		return new GetTokensResponse(shopId, virtualQueueRepository.getTokens(shopId));
 	}
 
+	public GetAllShopsResponse getAllShops() {
+		return new GetAllShopsResponse(virtualQueueRepository.getAllShops());
+
 	public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId) {
 		return virtualQueueRepository.getShopsByShopOwner(shopOwnerId);
+	}
+
+	public UpdateTokenStatusResponse updateToken(UpdateTokenStatusRequest updateTokenStatusRequest) {
+		return virtualQueueRepository.updateToken(updateTokenStatusRequest);
 	}
 }

@@ -34,7 +34,9 @@ import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.model.ShopOwner;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
 
 import org.springframework.stereotype.Repository;
 
@@ -78,7 +80,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 			return shopIdToListOfTokensMap.get(shopId).stream().filter(token -> token.getStatus() == Status.ACTIVE)
 					.collect(Collectors.toList());
 		}
-
+    
 		// TODO(b/158975796): Simplify logging across all backend APIs.
 		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
 				"Tried to fetch tokens of a shop which is not in the ACTIVE state.");
@@ -108,5 +110,10 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 				.collect(Collectors.toList());
 		return new GetShopsByShopOwnerResponse(shopOwnerMap.get(shopOwnerId), shops);
 
+	}
+
+	public UpdateTokenStatusResponse updateToken(UpdateTokenStatusRequest updateTokenStatusRequest) {
+		tokenMap.get(updateTokenStatusRequest.getTokenId()).setStatus(updateTokenStatusRequest.getTokenStatus());
+		return new UpdateTokenStatusResponse(tokenMap.get(updateTokenStatusRequest.getTokenId()));
 	}
 }

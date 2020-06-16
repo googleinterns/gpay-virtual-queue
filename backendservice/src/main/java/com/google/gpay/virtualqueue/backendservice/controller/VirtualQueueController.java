@@ -16,24 +16,40 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.controller;
 
+import java.util.UUID;
+
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.GetTokensResponse;
 import com.google.gpay.virtualqueue.backendservice.service.VirtualQueueService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-public class VitualQueueController {
+public class VirtualQueueController {
     @Autowired
     public VirtualQueueService virtualQueueService;
     
     @PostMapping("/shop")
     public CreateShopResponse addShop(@RequestBody CreateShopRequest createShopRequest) {
         return virtualQueueService.createShop(createShopRequest);
+    }
+
+    @GetMapping("/token/{shopId}")
+    public GetTokensResponse getTokens(@PathVariable UUID shopId) {
+		return virtualQueueService.getTokens(shopId);
+    }
+    
+    @GetMapping("/shop/{shopOwnerId}")
+    public GetShopsByShopOwnerResponse getShopsByShopOwner(@PathVariable String shopOwnerId) {
+        return virtualQueueService.getShopsByShopOwner(shopOwnerId);
     }
 }

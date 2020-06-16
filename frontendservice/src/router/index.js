@@ -21,10 +21,12 @@ import About from "@/views/About";
 import CustomerHome from "@/views/CustomerHome";
 import ShopOwnerHome from "@/views/ShopOwnerHome";
 import Login from "@/views/Login";
+import SignUp from "@/views/SignUp";
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+  mode: 'history',
   routes: [
     {
       path: "*",
@@ -59,6 +61,14 @@ const router = new VueRouter({
       path: "/login",
       name: "Login",
       component: Login,
+      meta: {
+        requiresLogout: true,
+      }
+    },
+    {
+      path: "/signup",
+      name: "SignUp",
+      component: SignUp,
       meta: {
         requiresLogout: true,
       }

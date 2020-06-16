@@ -13,7 +13,8 @@ limitations under the License.
 
 <template>
   <div class="login">
-    <h1>Sign In</h1>
+    <h1 class="header">Sign In</h1>
+    <span id="info">Please enter your account credentials here.</span>
     <div class="input-icons">
       <i class="fa fa-envelope icon"></i>
       <input class="input-field" type="text" v-model="email" placeholder="Email" />
@@ -22,7 +23,7 @@ limitations under the License.
       <i @click="toggle" :class="{'fa fa-eye icon': isHidden, 'fa fa-eye-slash icon': !isHidden}"></i>
       <input class="input-field" ref="password" type="password" v-model="password" placeholder="Password" />
     </div>
-    <p>{{invalidInputAlert}}</p>
+    <p id="alert">{{invalidInputAlert}}</p>
     <router-link to="/forgot-password">Forgot Password</router-link>
     <br>
     <a class="button is-primary" @click="login">Sign in</a>
@@ -38,7 +39,7 @@ limitations under the License.
     <br>
     <div>
       Don't have an account yet? You can create one
-      <router-link to="/sign-up">here</router-link>.
+      <router-link to="/signup">here</router-link>.
     </div>
     <div>
       Or go back to
@@ -98,62 +99,57 @@ export default {
 </script>
 
 <style scoped>
-h1 {
+#alert {
+  color: red; 
+  font-size: 0.8rem;
+  margin-bottom: 1%;
+}
+.button {
+  cursor: pointer;
+  margin-bottom: 1%;
+  margin-top: 1%;
+}
+.header {
   color: #00d1b2;
   font-size: 2rem;
 }
-span {
-  display: block;
+.icon {
+  background: #00d1b2;
+  color: white;
+  height: 3rem;
+  min-width: 5%;
+  padding: 1rem;
+  width: 3rem;
+}
+#info {
   color: rgb(0, 0, 0);
+  display: block;
   margin-top: 1%;
 }
-.login {
-  margin-top: 2%;
-}
-a {
-  margin-top: 1%;
-  margin-bottom: 1%;
-  width: 10%;
-  cursor: pointer;
-}
-p {
-  margin-bottom: 1%;
-  font-size: 0.8rem;
-  color: red;
-}
-p a {
-  text-decoration: underline;
-  cursor: pointer;
+.input-field {
+  outline: none;
+  padding: 2%;
+  width: 100%;
 }
 .input-field:focus {
   border: 2px solid #00d1b2;
 }
 .input-icons {
   display: flex;
-  width: 40%;
   margin: 15px auto;
+  width: 40%;
 }
-.icon {
-  padding: 1rem;
-  background: #00d1b2;
-  color: white;
-  min-width: 5%;
-  height: 3rem;
-  width: 3rem;
-}
-.input-field {
-  width: 100%;
-  padding: 2%;
-  outline: none;
+.login {
+  margin-top: 2%;
 }
 .social-button {
-  width: 75px;
   background: white;
-  padding: 10px;
+  border: 0;
   border-radius: 100%;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   outline: 0;
-  border: 0;
+  padding: 10px;
+  width: 75px;
 }
 .social-button:active {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);

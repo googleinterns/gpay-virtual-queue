@@ -84,27 +84,27 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	}
 
 	public Token getNewToken(UUID shopId) {
-		if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
-			Integer newTokenNumber = shopIdToLastAllotedTokenMap.get(shopId).incrementAndGet();
-			UUID uuid = UUID.randomUUID();
-			Token newToken = new Token();
-			newToken.setTokenId(uuid);
-			newToken.setShopId(shopId);
-			newToken.setTokenNumber(newTokenNumber);
-			newToken.setStatus(Token.Status.ACTIVE);
-			tokenMap.put(uuid, newToken);
-			if (newTokenNumber != 1) {
-				List<Token> newTokenList = shopIdToListOfTokensMap.get(shopId);
-				newTokenList.add(newToken);
-				shopIdToListOfTokensMap.put(shopId, newTokenList);
-			} else {
-				List<Token> newTokenList = new ArrayList<>();
-				newTokenList.add(newToken);
-				shopIdToListOfTokensMap.put(shopId, newTokenList);
-			}
-			return newToken;
+	    if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
+                Integer newTokenNumber = shopIdToLastAllotedTokenMap.get(shopId).incrementAndGet();
+		UUID uuid = UUID.randomUUID();
+		Token newToken = new Token();
+		newToken.setTokenId(uuid);
+		newToken.setShopId(shopId);
+		newToken.setTokenNumber(newTokenNumber);
+		newToken.setStatus(Token.Status.ACTIVE);
+		tokenMap.put(uuid, newToken);
+		if (newTokenNumber != 1) {
+		    List<Token> newTokenList = shopIdToListOfTokensMap.get(shopId);
+		    newTokenList.add(newToken);
+		    shopIdToListOfTokensMap.put(shopId, newTokenList);
+		} else {
+		    List<Token> newTokenList = new ArrayList<>();
+		    newTokenList.add(newToken);
+		    shopIdToListOfTokensMap.put(shopId, newTokenList);
 		}
-		// TODO: Throw exception here
-		return new Token();
+		return newToken;
+		}
+	  // TODO: Throw exception here
+	  return new Token();
 	}
 }

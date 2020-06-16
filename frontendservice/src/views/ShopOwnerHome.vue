@@ -10,7 +10,7 @@ specific language governing permissions and limitations under the License. */
   <div class="home">
     <h1 v-if="isLoggedIn">Welcome! {{ name }}</h1>
     <p>
-      This page will be Home page for the sop-owners. 
+      This page will be Home page for the shop-owners. 
     </p>
     <p>
       ToDo: Implement ShopOwnerHome page features including NavBar, Search Bar, MyShops and AddShop.

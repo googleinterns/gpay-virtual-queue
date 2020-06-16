@@ -85,7 +85,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 
 	public Token getNewToken(UUID shopId) {
 	    if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
-                Integer newTokenNumber = shopIdToLastAllotedTokenMap.get(shopId).incrementAndGet();
+              Integer newTokenNumber = shopIdToLastAllotedTokenMap.get(shopId).incrementAndGet();
 		UUID uuid = UUID.randomUUID();
 		Token newToken = new Token();
 		newToken.setTokenId(uuid);
@@ -103,7 +103,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		    shopIdToListOfTokensMap.put(shopId, newTokenList);
 		}
 		return newToken;
-		}
+	    }
 	  // TODO: Throw exception here
 	  return new Token();
 	}

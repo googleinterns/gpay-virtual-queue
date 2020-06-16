@@ -86,20 +86,18 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 
 	public Token getNewToken(UUID shopId) {
 	    if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
-              Integer newTokenNumber = shopIdToLastAllotedTokenMap.get(shopId).incrementAndGet();
+        Integer newTokenNumber = shopIdToLastAllotedTokenMap.get(shopId).incrementAndGet();
 		UUID uuid = UUID.randomUUID();
-		Token newToken = new Token();
-		newToken.setTokenId(uuid);
-		newToken.setShopId(shopId);
-		newToken.setTokenNumber(newTokenNumber);
+		Token newToken = new Token(uuid, shopId, newTokenNumber);
 		newToken.setStatus(Token.Status.ACTIVE);
 		tokenMap.put(uuid, newToken);
-		if (newTokenNumber != 1) {
-		    List<Token> newTokenList = shopIdToListOfTokensMap.get(shopId);
+		// newTokenNumber being 1 means the list of Tokens in shopIdToListOfTokensMap is empty.
+		if (newTokenNumber == 1) {
+			List<Token> newTokenList = new ArrayList<>();
 		    newTokenList.add(newToken);
 		    shopIdToListOfTokensMap.put(shopId, newTokenList);
 		} else {
-		    List<Token> newTokenList = new ArrayList<>();
+		    List<Token> newTokenList = shopIdToListOfTokensMap.get(shopId);
 		    newTokenList.add(newToken);
 		    shopIdToListOfTokensMap.put(shopId, newTokenList);
 		}
@@ -110,12 +108,9 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 
 	// Method returns all shops keeping in mind the feature of restoring shops later on.
 	public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId) {
-		List<Shop> shops = shopMap
-							.entrySet()
-							.stream()
-							.filter(map -> map.getValue().getShopOwnerId().equals(shopOwnerId))
-							.map(map -> map.getValue())
-							.collect(Collectors.toList());
+		List<Shop> shops = shopMap.entrySet().stream()
+				.filter(map -> map.getValue().getShopOwnerId().equals(shopOwnerId)).map(map -> map.getValue())
+				.collect(Collectors.toList());
 		return new GetShopsByShopOwnerResponse(shopOwnerMap.get(shopOwnerId), shops);
 
 	}

@@ -34,7 +34,9 @@ import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.model.ShopOwner;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
 
 import org.springframework.stereotype.Repository;
 
@@ -79,18 +81,21 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		}
 
 		// TODO(b/158975796): Simplify logging across all backend APIs
-		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE, "Tried to fetch tokens of a shop which is not in the ACTIVE state.");
+		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
+				"Tried to fetch tokens of a shop which is not in the ACTIVE state.");
 		return new ArrayList<>();
 	}
 
 	// Method returns all shops keeping in mind the feature of restoring shops later on.
 	public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId) {
-		List<Shop> shops = shopMap
-							.entrySet()
-							.stream()
-							.filter(map -> map.getValue().getShopOwnerId().equals(shopOwnerId))
-							.map(map -> map.getValue())
-							.collect(Collectors.toList());
+		List<Shop> shops = shopMap.entrySet().stream()
+				.filter(map -> map.getValue().getShopOwnerId().equals(shopOwnerId)).map(map -> map.getValue())
+				.collect(Collectors.toList());
 		return new GetShopsByShopOwnerResponse(shopOwnerMap.get(shopOwnerId), shops);
+	}
+
+	public UpdateTokenStatusResponse updateToken(UpdateTokenStatusRequest updateTokenStatusRequest) {
+		tokenMap.get(updateTokenStatusRequest.getTokenId()).setStatus(updateTokenStatusRequest.getTokenStatus());
+		return new UpdateTokenStatusResponse(tokenMap.get(updateTokenStatusRequest.getTokenId()));
 	}
 }

@@ -63,6 +63,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 
 		shopMap.put(uuid, newShop);
 		shopIdToLastAllotedTokenMap.put(uuid, new AtomicInteger(0));
+		shopIdToListOfTokensMap.put(uuid, new ArrayList<>());
 
 		return newShop.getShopId();
 	}
@@ -85,30 +86,26 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	}
 
 	public Token getNewToken(UUID shopId) {
-	    if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
-              Integer newTokenNumber = shopIdToLastAllotedTokenMap.get(shopId).incrementAndGet();
-		UUID uuid = UUID.randomUUID();
-		Token newToken = new Token(uuid, shopId, newTokenNumber);
-		newToken.setStatus(Token.Status.ACTIVE);
-		tokenMap.put(uuid, newToken);
-		// newTokenNumber being 1 means the list of Tokens in shopIdToListOfTokensMap is empty.
-		if (newTokenNumber == 1) {
-			List<Token> newTokenList = new ArrayList<>();
-		    newTokenList.add(newToken);
-		    shopIdToListOfTokensMap.put(shopId, newTokenList);
-		} else {
-		    List<Token> newTokenList = shopIdToListOfTokensMap.get(shopId);
-		    newTokenList.add(newToken);
-		    shopIdToListOfTokensMap.put(shopId, newTokenList);
-		}
-		return newToken;
-	    }
-	  // TODO: Throw exception here
-	  Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
-				"Tried to get new token of a shop which is not in the ACTIVE state.");
-	  return new Token();
+		if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
+			Integer newTokenNumber = shopIdToLastAllotedTokenMap.get(shopId).incrementAndGet();
+			UUID uuid = UUID.randomUUID();
+			Token newToken = new Token(uuid, shopId, newTokenNumber);
+			newToken.setStatus(Token.Status.ACTIVE);
+			tokenMap.put(uuid, newToken);
+			List<Token> newTokenList = shopIdToListOfTokensMap.get(shopId);
+			newTokenList.add(newToken);
+			shopIdToListOfTokensMap.put(shopId, newTokenList);
 
-	// Method returns all shops keeping in mind the feature of restoring shops later on.
+			return newToken;
+		}
+		// TODO: Throw exception here
+		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
+				"Tried to get new token of a shop which is not in the ACTIVE state.");
+		return new Token();
+	}
+
+	// Method returns all shops keeping in mind the feature of restoring shops later
+	// on.
 	public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId) {
 		List<Shop> shops = shopMap.entrySet().stream()
 				.filter(map -> map.getValue().getShopOwnerId().equals(shopOwnerId)).map(map -> map.getValue())

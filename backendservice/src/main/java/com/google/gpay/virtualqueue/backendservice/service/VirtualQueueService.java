@@ -45,9 +45,7 @@ public class VirtualQueueService {
 	}
 
 	public GetAllShopsResponse getAllShops() {
-		List<Shop> shopList = virtualQueueRepository.getAllShops();
 		GetAllShopsResponse getAllShopsResponse = new GetAllShopsResponse();
-		getAllShopsResponse.setShopList(shopList);
-		return getAllShopsResponse;
+		return getAllShopsResponse.setShops(virtualQueueRepository.getAllShops());
 	}
 }

@@ -23,5 +23,5 @@ import lombok.Setter;
 @Data
 @Setter
 public class GetAllShopsResponse {
-    private List<Shop> shopList;
+    private List<Shop> shops;
 }

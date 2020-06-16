@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.GetAllShopsResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetTokensResponse;
@@ -40,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VirtualQueueController {
     @Autowired
     public VirtualQueueService virtualQueueService;
-    
+
     @PostMapping("/shop")
     public CreateShopResponse addShop(@RequestBody CreateShopRequest createShopRequest) {
         return virtualQueueService.createShop(createShopRequest);
@@ -54,6 +55,10 @@ public class VirtualQueueController {
     @GetMapping("/shop/{shopOwnerId}")
     public GetShopsByShopOwnerResponse getShopsByShopOwner(@PathVariable String shopOwnerId) {
         return virtualQueueService.getShopsByShopOwner(shopOwnerId);
+
+    @GetMapping("/shops")
+    public GetAllShopsResponse getAllShops() {
+        return virtualQueueService.getAllShops();
     }
 
     @PutMapping("/token")

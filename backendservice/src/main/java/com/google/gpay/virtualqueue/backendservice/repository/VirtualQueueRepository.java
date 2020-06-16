@@ -29,7 +29,7 @@ import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusReques
 public interface VirtualQueueRepository {
 
     public UUID createShop(CreateShopRequest createShopRequest);
-  
+
     public List<Shop> getAllShops();
 
     public List<Token> getTokens(UUID shopId);

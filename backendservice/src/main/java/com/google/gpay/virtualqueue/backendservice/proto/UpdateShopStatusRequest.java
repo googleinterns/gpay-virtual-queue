@@ -14,15 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package com.google.gpay.virtualqueue.backendservice;
+package com.google.gpay.virtualqueue.backendservice.proto;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.UUID;
 
-@SpringBootApplication
-public class VirtualQueueServiceApplication {
+import com.google.gpay.virtualqueue.backendservice.model.Shop.ShopStatus;
 
-	public static void main(String[] args) {
-		SpringApplication.run(VirtualQueueServiceApplication.class, args);
-	}
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class UpdateShopStatusRequest {
+    UUID shopId;
+    ShopStatus shopStatus;
 }

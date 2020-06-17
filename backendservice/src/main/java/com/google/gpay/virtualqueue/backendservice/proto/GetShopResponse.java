@@ -22,5 +22,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class GetShopResponse {
     private Shop shop;
-    private Integer customersInQueue;
+    private long customersInQueue;
 }

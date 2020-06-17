@@ -46,5 +46,5 @@ public interface VirtualQueueRepository {
 
     public Shop getShopByShopId(UUID shopId);
 
-    public Integer getCustomersInQueue(UUID shopId);
+    public long getCustomersInQueue(UUID shopId);
 }

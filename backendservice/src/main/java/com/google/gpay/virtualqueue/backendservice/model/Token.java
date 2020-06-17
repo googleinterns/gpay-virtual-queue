@@ -29,9 +29,16 @@ public class Token {
     private UUID tokenId;
     private UUID shopId;
     private Integer tokenNumber;
-    
+
     public enum Status {
         STATUS_UNKNOWN, ACTIVE, EXPIRED, CANCELLED_BY_CUSTOMER, CANCELLED_BY_SHOP_OWNER;
     }
     private Status status;
+
+    public Token(UUID tokenId, UUID shopId, Integer tokenNumber) {
+        super();
+        this.tokenId = tokenId;
+        this.shopId = shopId;
+        this.tokenNumber = tokenNumber;
+    }
 }

@@ -67,7 +67,7 @@ public class VirtualQueueService {
 
 	public GetShopResponse getShopByShopId(UUID shopId) {
 		return new GetShopResponse(virtualQueueRepository.getShopByShopId(shopId),
-				virtualQueueRepository.getPeopleInQueue(shopId));
+				virtualQueueRepository.getCustomersInQueue(shopId));
 	}
 
 	public GetNewTokenResponse getNewToken(UUID shopId) {

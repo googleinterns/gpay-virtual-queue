@@ -34,12 +34,11 @@ specific language governing permissions and limitations under the License. */
 
 <script>
 export default {
-  name: "navbar-shop-owner"
+  name: "shop-owner-navbar"
 };
 </script>
 
 <style scoped>
-@import "~bulma/css/bulma.css";
 #google-logo {
   width: 4rem;
 }

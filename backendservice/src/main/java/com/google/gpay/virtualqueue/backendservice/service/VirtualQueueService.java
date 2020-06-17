@@ -21,6 +21,7 @@ import java.util.UUID;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetAllShopsResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.GetShopResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetTokensResponse;
@@ -60,6 +61,11 @@ public class VirtualQueueService {
 	}
 
 	public UpdateShopStatusResponse updateShop(UpdateShopStatusRequest updateShopStatusRequest) {
-        return virtualQueueRepository.updateShop(updateShopStatusRequest);
-    }
+		return virtualQueueRepository.updateShop(updateShopStatusRequest);
+	}
+
+	public GetShopResponse getShopByShopId(UUID shopId) {
+		return new GetShopResponse(virtualQueueRepository.getShopByShopId(shopId),
+				virtualQueueRepository.getPeopleInQueue(shopId));
+	}
 }

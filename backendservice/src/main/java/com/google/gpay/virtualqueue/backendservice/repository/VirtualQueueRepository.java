@@ -41,6 +41,10 @@ public interface VirtualQueueRepository {
     public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId);
 
     public UpdateTokenStatusResponse updateToken(UpdateTokenStatusRequest updateTokenStatusRequest);
-    
+
     public UpdateShopStatusResponse updateShop(UpdateShopStatusRequest updateShopStatusRequest);
+
+    public Shop getShopByShopId(UUID shopId);
+
+    public Integer getPeopleInQueue(UUID shopId);
 }

@@ -13,6 +13,8 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.proto;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +23,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class GetTokenInfoResponse {
-    private Integer customersAhead;
+    private AtomicInteger customersAhead;
     private Token token;
 }

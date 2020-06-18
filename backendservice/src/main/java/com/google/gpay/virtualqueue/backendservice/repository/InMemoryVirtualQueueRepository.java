@@ -133,24 +133,21 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return new Token();
 	}
 
-	public Integer getCustomersAheadByTokenId(UUID tokenId) {
+	public AtomicInteger getCustomersAheadByTokenId(UUID tokenId) {
+		AtomicInteger customersAhead = new AtomicInteger(0);
 		if (tokenMap.get(tokenId).getStatus() == Status.ACTIVE) {
 			UUID shopId = tokenMap.get(tokenId).getShopId();
 			List<Token> tokenList = shopIdToListOfTokensMap.get(shopId);
-			Integer peopleAhead = 0;
-			for (int i = 0; i < tokenList.size(); i++) {
-				if (tokenList.get(i).getTokenId().equals(tokenId)) {
-					return peopleAhead;
+			tokenList.stream().takeWhile(token -> !token.getTokenId().equals(tokenId)).forEach(token -> {
+				if (token.getStatus() == Status.ACTIVE) {
+					customersAhead.getAndIncrement();
 				}
-				if (tokenList.get(i).getStatus() == Status.ACTIVE) {
-					peopleAhead++;
-				}
-			}
-			return peopleAhead;
+			});
+			return customersAhead;
 		}
 		// TODO: Throw exception here.
 		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
 				"Tried to get customers ahead of a token which is not in the ACTIVE state.");
-		return -1;
+		return customersAhead;
 	}
 }

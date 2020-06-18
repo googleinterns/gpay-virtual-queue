@@ -37,15 +37,17 @@ export default {
   },
   methods: {
     reset() {
+      this.emailAlert = "";
+      if(this)
       firebase
         .auth()
         .sendPasswordResetEmail(this.email)
         .then(user => {
-          alert("Password reset mail sent. Reset your password and login.");
+          alert("Password reset mail sent to " + this.email + ". Reset your password and login.");
           this.$router.replace("login");
         })
         .catch(error => {
-          this.emailAlert = "Could not send mail to that email address. " + error.message;
+          this.emailAlert = "Could not send  mail to " + this.email + ". " + error.message;
         });
     }
   }

@@ -22,6 +22,7 @@ import CustomerHome from "@/views/CustomerHome";
 import ShopOwnerHome from "@/views/ShopOwnerHome";
 import Login from "@/views/Login";
 import SignUp from "@/views/SignUp";
+import CreateShop from "@/views/CreateShop"
 
 Vue.use(VueRouter);
 
@@ -73,6 +74,14 @@ const router = new VueRouter({
         requiresLogout: true,
       }
     },
+    {
+      path: "/shop-owner/createshop",
+      name: "CreateShop",
+      component: CreateShop,
+      meta: {
+        requiresLogin: true,
+      },
+    }
   ],
 });
 

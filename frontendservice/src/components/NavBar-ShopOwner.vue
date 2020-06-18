@@ -18,7 +18,7 @@ specific language governing permissions and limitations under the License. */
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
-          <a class="button is-primary">
+          <a class="button is-primary" href="/shop-owner/createshop">
             <strong>Add Shop</strong>
           </a>
         </div>

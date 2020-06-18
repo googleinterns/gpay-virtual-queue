@@ -129,6 +129,7 @@ export default {
           })
           .then(function(response) {
             // Todo: Exception handling.
+            // Todo: Clear phone number.
             document.getElementById("msg").innerHTML = "Shop Added!";
             document.getElementById("shopName").value = "";
             document.getElementById("address").value = "";

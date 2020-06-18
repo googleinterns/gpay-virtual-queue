@@ -22,6 +22,7 @@ import CustomerHome from "@/views/CustomerHome";
 import ShopOwnerHome from "@/views/ShopOwnerHome";
 import Login from "@/views/Login";
 import SignUp from "@/views/SignUp";
+import Verify from "@/views/Verify";
 
 Vue.use(VueRouter);
 
@@ -73,6 +74,14 @@ const router = new VueRouter({
         requiresLogout: true,
       }
     },
+    {
+      path: "/verify",
+      name: "Verify",
+      component: Verify,
+      meta: {
+        requiresUnverified: true,
+      },
+    }
   ],
 });
 
@@ -85,9 +94,12 @@ router.beforeEach((to, from, next) => {
 
   const requiresLogout = to.matched.some((record) => record.meta.requiresLogout);
   const requiresLogin = to.matched.some((record) => record.meta.requiresLogin);
+  const requiresUnverified = to.matched.some((record) => record.meta.requiresUnverified);
 
   if (requiresLogout && currentUser) next("shop-owner");
   else if (requiresLogin && !currentUser) next("customer");
+  else if (requiresUnverified && verified) next("shop-owner");
+  else if (requiresUnverified && !currentUser) next("customer");  
   else next();
 });
 

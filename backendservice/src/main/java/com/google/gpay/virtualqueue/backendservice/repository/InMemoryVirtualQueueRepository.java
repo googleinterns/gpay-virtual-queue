@@ -125,7 +125,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return new UpdateShopStatusResponse(shopMap.get(updateShopStatusRequest.getShopId()));
 	}
 
-	public Shop getShopByShopId(UUID shopId) {
+	public Shop getShop(UUID shopId) {
 		if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
 			return shopMap.get(shopId);
 		}
@@ -135,14 +135,14 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return new Shop();
 	}
 
-	public long getCustomersInQueue(UUID shopId) {
+	public AtomicInteger getCustomersInQueue(UUID shopId) {
 		List<Token> tokenList = shopIdToListOfTokensMap.get(shopId);
-		long customersInQueue = 0L;
-		for (int i = 0; i < tokenList.size(); i++) {
-			if (tokenList.get(i).getStatus() == Status.ACTIVE) {
-				customersInQueue++;
+		AtomicInteger customersInQueue = new AtomicInteger(0);
+		tokenList.stream().forEach(token -> {
+			if (token.getStatus() == Status.ACTIVE) {
+				customersInQueue.getAndIncrement();
 			}
-		}
+		});
 		return customersInQueue;
 	}
 }

@@ -78,7 +78,7 @@ public class VirtualQueueController {
 
     @GetMapping("/shops/{shopId}")
     public GetShopResponse getShopByShopId(@PathVariable UUID shopId) {
-        return virtualQueueService.getShopByShopId(shopId);
+        return virtualQueueService.getShop(shopId);
     }
 
     @PostMapping("/tokens/{shopId}")

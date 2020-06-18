@@ -65,8 +65,8 @@ public class VirtualQueueService {
 		return virtualQueueRepository.updateShop(updateShopStatusRequest);
 	}
 
-	public GetShopResponse getShopByShopId(UUID shopId) {
-		return new GetShopResponse(virtualQueueRepository.getShopByShopId(shopId),
+	public GetShopResponse getShop(UUID shopId) {
+		return new GetShopResponse(virtualQueueRepository.getShop(shopId),
 				virtualQueueRepository.getCustomersInQueue(shopId));
 	}
 

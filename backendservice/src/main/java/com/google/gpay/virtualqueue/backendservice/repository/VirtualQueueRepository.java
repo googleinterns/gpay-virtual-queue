@@ -18,6 +18,7 @@ package com.google.gpay.virtualqueue.backendservice.repository;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
@@ -44,7 +45,7 @@ public interface VirtualQueueRepository {
 
     public UpdateShopStatusResponse updateShop(UpdateShopStatusRequest updateShopStatusRequest);
 
-    public Shop getShopByShopId(UUID shopId);
+    public Shop getShop(UUID shopId);
 
-    public long getCustomersInQueue(UUID shopId);
+    public AtomicInteger getCustomersInQueue(UUID shopId);
 }

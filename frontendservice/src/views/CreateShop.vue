@@ -25,7 +25,7 @@ specific language governing permissions and limitations under the License. */
       </div>
       <div>
         <label class="label">Phone Number</label>
-        <vue-tel-input v-model="phone" @onInput="onInput"></vue-tel-input>
+        <vue-tel-input v-model="phone" @onInput="onInput" id="phoneNumber"></vue-tel-input>
       </div>
       <div class="field">
         <label class="label">Shop Type</label>
@@ -36,7 +36,7 @@ specific language governing permissions and limitations under the License. */
               <option>Food</option>
               <option>Furniture</option>
               <option>Electronics</option>
-              <option>Jwelery</option>
+              <option>Jewellery</option>
               <option>Agriculture</option>
             </select>
           </div>
@@ -89,23 +89,40 @@ export default {
       var shopType = document.getElementById("shopType").value;
       var checkBox = document.getElementById("conditions-check");
       var phoneNo = this.phoneNumber;
-
+      console.log(document.getElementById("phoneNumber"));
+      // Regex check only permit # . characters, digits and space
+      // eg - Haridwar123 is invalid.
       var addressRegex = new RegExp(/^[#.a-zA-Z0-9 ]+$/i);
+      // Regex check only permit characters, digits and space
+      // eg - Ishita Sweets is invalid.
       var nameRegex = new RegExp(/^[a-zA-Z0-9 ]+$/i);
 
-      if (checkBox.checked == false) {
-        document.getElementById("msg").innerHTML = "Please check this to continue.";
-      } else if (addressRegex.test(address) == false) {
-        document.getElementById("msg").innerHTML = "Invalid Address.";
-      } else if (nameRegex.test(shopName) == false) {
-        document.getElementById("msg").innerHTML = "Invalid Shop Name.";
-      } else if (this.isCorrect == false) {
-        document.getElementById("msg").innerHTML = "Invalid Phone number.";
-      } else {
+      if (!checkBox.checked) {
+        var checkBoxError = document.createElement("div");
+        checkBoxError.innerHTML = "Please check this to continue.";
+        document.getElementById("msg").appendChild(checkBoxError);
+      }
+      if (!addressRegex.test(address)) {
+        var addressError = document.createElement("div");
+        addressError.innerHTML = "Invalid address.";
+        document.getElementById("msg").appendChild(addressError);
+      }
+      if (!nameRegex.test(shopName)) {
+        var nameError = document.createElement("div");
+        nameError.innerHTML = "Invalid Shop Name.";
+        document.getElementById("msg").appendChild(nameError);
+      }
+      if (!this.isCorrect) {
+        var phoneNumberError = document.createElement("div");
+        phoneNumberError.innerHTML = "Invalid Phone Number.";
+        document.getElementById("msg").appendChild(phoneNumberError);
+      }
+      if (checkBox.checked && addressRegex.test(address) && nameRegex.test(shopName) && this.isCorrect) {
+        var self = this;
         axios
           .post("http://penguin.termina.linux.test:8080/shop", {
             shopOwnerId: firebase.auth().currentUser.uid,
-            shopName: shopname,
+            shopName: shopName,
             address: address,
             phoneNumber: phoneNo,
             shopType: shopType

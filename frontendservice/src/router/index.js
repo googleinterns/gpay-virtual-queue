@@ -88,7 +88,7 @@ const router = new VueRouter({
       name: "CreateShop",
       component: CreateShop,
       meta: {
-        requiresLogin: true,
+        requiresVerified: true
       },
     }
   ],
@@ -104,11 +104,16 @@ router.beforeEach((to, from, next) => {
   const requiresLogout = to.matched.some((record) => record.meta.requiresLogout);
   const requiresLogin = to.matched.some((record) => record.meta.requiresLogin);
   const requiresUnverified = to.matched.some((record) => record.meta.requiresUnverified);
+  const requiresVerified = to.matched.some((record) => record.meta.requiresVerified);
 
   if (requiresLogout && currentUser) next("shop-owner");
   else if (requiresLogin && !currentUser) next("customer");
   else if (requiresUnverified && verified) next("shop-owner");
   else if (requiresUnverified && !currentUser) next("customer");
+  else if (requiresVerified && !verified) {
+    if (currentUser) next("shop-owner");
+    else next("customer");
+  }
   else next();
 });
 

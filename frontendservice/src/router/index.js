@@ -23,6 +23,7 @@ import ShopOwnerHome from "@/views/ShopOwnerHome";
 import Login from "@/views/Login";
 import SignUp from "@/views/SignUp";
 import Verify from "@/views/Verify";
+import ForgotPassword from "@/views/ForgotPassword";
 
 Vue.use(VueRouter);
 
@@ -62,6 +63,14 @@ const router = new VueRouter({
       path: "/login",
       name: "Login",
       component: Login,
+      meta: {
+        requiresLogout: true,
+      }
+    },
+    {
+      path: "/forgot-password",
+      name: "ForgotPassword",
+      component: ForgotPassword,
       meta: {
         requiresLogout: true,
       }

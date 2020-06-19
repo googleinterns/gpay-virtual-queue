@@ -89,7 +89,6 @@ export default {
       var shopType = document.getElementById("shopType").value;
       var checkBox = document.getElementById("conditions-check");
       var phoneNo = this.phoneNumber;
-      console.log(document.getElementById("phoneNumber"));
       // Regex check only permit # . characters, digits and space
       // eg - Haridwar123 is valid.
       var addressRegex = new RegExp(/^[#.a-zA-Z0-9 ]+$/i);

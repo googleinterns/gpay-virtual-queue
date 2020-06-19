@@ -91,10 +91,10 @@ export default {
       var phoneNo = this.phoneNumber;
       console.log(document.getElementById("phoneNumber"));
       // Regex check only permit # . characters, digits and space
-      // eg - Haridwar123 is invalid.
+      // eg - Haridwar123 is valid.
       var addressRegex = new RegExp(/^[#.a-zA-Z0-9 ]+$/i);
       // Regex check only permit characters, digits and space
-      // eg - Ishita Sweets is invalid.
+      // eg - Ishita Sweets is valid.
       var nameRegex = new RegExp(/^[a-zA-Z0-9 ]+$/i);
 
       if (!checkBox.checked) {

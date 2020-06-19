@@ -12,19 +12,19 @@ specific language governing permissions and limitations under the License. */
       <img src="../assets/google-logo.png" class="navbar-item" id="google-logo" />
     </div>
     <div class="navbar-menu is-active">
-      <div class="navbar-start" >
+      <div class="navbar-start">
         <a class="navbar-item" href="/shop-owner/shops">My Shops</a>
         <a class="navbar-item" href="/shop-owner/about">About</a>
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
-          <a class="button is-primary">
+          <a class="button is-primary" href="/shop-owner/createshop">
             <strong>Add Shop</strong>
           </a>
         </div>
         <div class="navbar-item">
           <a class="button is-danger">
-            <strong>Logout</strong>
+            <strong @click="logout()">Logout</strong>
           </a>
         </div>
       </div>
@@ -33,8 +33,19 @@ specific language governing permissions and limitations under the License. */
 </template>
 
 <script>
+import firebase from "firebase";
 export default {
-  name: "shop-owner-navbar"
+  name: "shop-owner-navbar",
+  methods: {
+    logout: function() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.replace("login");
+        });
+    }
+  }
 };
 </script>
 

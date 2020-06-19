@@ -128,8 +128,8 @@ export default {
             shopType: shopType
           })
           .then(function(response) {
-            // Todo: Exception handling.
-            // Todo: Clear phone number.
+            // TODO: Exception handling.
+            // TODO: Clear phone number.
             document.getElementById("msg").innerHTML = "Shop Added!";
             document.getElementById("shopName").value = "";
             document.getElementById("address").value = "";

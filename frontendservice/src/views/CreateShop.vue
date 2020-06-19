@@ -96,45 +96,51 @@ export default {
       // Regex check only permit characters, digits and space
       // eg - Ishita Sweets is valid.
       var nameRegex = new RegExp(/^[a-zA-Z0-9 ]+$/i);
+      var isError = false;
 
       if (!checkBox.checked) {
         var checkBoxError = document.createElement("div");
         checkBoxError.innerHTML = "Please check this to continue.";
         document.getElementById("msg").appendChild(checkBoxError);
+        isError = true;
       }
       if (!addressRegex.test(address)) {
         var addressError = document.createElement("div");
         addressError.innerHTML = "Invalid address.";
         document.getElementById("msg").appendChild(addressError);
+        isError = true;
       }
       if (!nameRegex.test(shopName)) {
         var nameError = document.createElement("div");
         nameError.innerHTML = "Invalid Shop Name.";
         document.getElementById("msg").appendChild(nameError);
+        isError = true;
       }
       if (!this.isCorrect) {
         var phoneNumberError = document.createElement("div");
         phoneNumberError.innerHTML = "Invalid Phone Number.";
         document.getElementById("msg").appendChild(phoneNumberError);
+        isError = true;
       }
-      if (checkBox.checked && addressRegex.test(address) && nameRegex.test(shopName) && this.isCorrect) {
-        var self = this;
-        axios
-          .post("http://penguin.termina.linux.test:8080/shop", {
-            shopOwnerId: firebase.auth().currentUser.uid,
-            shopName: shopName,
-            address: address,
-            phoneNumber: phoneNo,
-            shopType: shopType
-          })
-          .then(function(response) {
-            // TODO: Exception handling.
-            // TODO: Clear phone number.
-            document.getElementById("msg").innerHTML = "Shop Added!";
-            document.getElementById("shopName").value = "";
-            document.getElementById("address").value = "";
-          });
+      if (isError) {
+        return;
       }
+      var self = this;
+      axios
+        .post("http://penguin.termina.linux.test:8080/shop", {
+          shopOwnerId: firebase.auth().currentUser.uid,
+          shopName: shopName,
+          address: address,
+          phoneNumber: phoneNo,
+          shopType: shopType
+        })
+        .then(function(response) {
+          // TODO: Exception handling.
+          // TODO: Clear phone number.
+          document.getElementById("msg").innerHTML = "Shop Added!";
+          document.getElementById("shopName").value = "";
+          document.getElementById("address").value = "";
+        });
     },
     onInput: function({ number, isValid }) {
       this.isCorrect = isValid;

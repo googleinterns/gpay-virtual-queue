@@ -48,4 +48,6 @@ public interface VirtualQueueRepository {
     public Token getTokenByTokenId(UUID tokenId);
 
     public AtomicInteger getCustomersAheadByTokenId(UUID tokenId);
+
+    public String getShopNameByTokenId(UUID tokenId);
 }

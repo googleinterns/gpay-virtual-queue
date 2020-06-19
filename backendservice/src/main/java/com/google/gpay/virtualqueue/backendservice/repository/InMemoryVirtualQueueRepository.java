@@ -150,4 +150,14 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 				"Tried to get customers ahead of a token which is not in the ACTIVE state.");
 		return customersAhead;
 	}
+
+	public String getShopNameByTokenId(UUID tokenId) {
+		if (tokenMap.get(tokenId).getStatus() == Status.ACTIVE) {
+			return shopMap.get(tokenMap.get(tokenId).getShopId()).getShopName();
+		}
+		// TODO: Throw exception here.
+		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
+				"Tried to get Shop name for a tokenId which is not in the ACTIVE state.");
+		return "";
+	}
 }

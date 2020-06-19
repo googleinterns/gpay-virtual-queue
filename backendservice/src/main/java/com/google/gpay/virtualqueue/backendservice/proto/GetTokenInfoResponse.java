@@ -25,4 +25,5 @@ import lombok.Data;
 public class GetTokenInfoResponse {
     private AtomicInteger customersAhead;
     private Token token;
+    private String shopName;
 }

@@ -13,8 +13,6 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.proto;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 
 import lombok.AllArgsConstructor;
@@ -24,5 +22,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class GetShopResponse {
     private Shop shop;
-    private AtomicInteger customersInQueue;
+    private long customersInQueue;
 }

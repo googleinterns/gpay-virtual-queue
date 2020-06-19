@@ -135,14 +135,8 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return new Shop();
 	}
 
-	public AtomicInteger getCustomersInQueue(UUID shopId) {
+	public long getCustomersInQueue(UUID shopId) {
 		List<Token> tokenList = shopIdToListOfTokensMap.get(shopId);
-		AtomicInteger customersInQueue = new AtomicInteger(0);
-		tokenList.stream().forEach(token -> {
-			if (token.getStatus() == Status.ACTIVE) {
-				customersInQueue.getAndIncrement();
-			}
-		});
-		return customersInQueue;
+		return tokenList.stream().filter(token -> token.getStatus() == Status.ACTIVE).count();
 	}
 }

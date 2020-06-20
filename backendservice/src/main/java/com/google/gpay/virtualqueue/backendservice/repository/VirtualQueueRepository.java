@@ -49,4 +49,8 @@ public interface VirtualQueueRepository {
     public long getCustomersAheadByTokenId(UUID tokenId);
 
     public String getShopNameByTokenId(UUID tokenId);
+
+    public Shop getShop(UUID shopId);
+
+    public long getCustomersInQueue(UUID shopId);
 }

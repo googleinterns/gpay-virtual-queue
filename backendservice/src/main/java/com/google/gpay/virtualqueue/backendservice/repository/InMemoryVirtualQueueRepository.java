@@ -96,6 +96,8 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 			Token newToken = new Token(uuid, shopId, newTokenNumber);
 			newToken.setStatus(Token.Status.ACTIVE);
 			tokenMap.put(uuid, newToken);
+			shopIdToListOfTokensMap.get(shopId).add(newToken);
+			shopIdToListOfTokensMap.put(shopId, shopIdToListOfTokensMap.get(shopId));
 			return newToken;
 		}
 		// TODO: Throw exception here.
@@ -155,5 +157,19 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
 				"Tried to get Shop name for a tokenId which is not in the ACTIVE state.");
 		return "";
+
+	public Shop getShop(UUID shopId) {
+		if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
+			return shopMap.get(shopId);
+		}
+		// TODO: Throw exception here.
+		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
+				"Tried to fetch information of a shop which is not in the ACTIVE state.");
+		return new Shop();
+	}
+
+	public long getCustomersInQueue(UUID shopId) {
+		List<Token> tokenList = shopIdToListOfTokensMap.get(shopId);
+		return tokenList.stream().filter(token -> token.getStatus() == Status.ACTIVE).count();
 	}
 }

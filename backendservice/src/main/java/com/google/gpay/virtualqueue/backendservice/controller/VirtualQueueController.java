@@ -21,6 +21,8 @@ import java.util.UUID;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetAllShopsResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.GetNewTokenResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.GetShopResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetTokensResponse;
@@ -51,14 +53,14 @@ public class VirtualQueueController {
 
     @GetMapping("/token/{shopId}")
     public GetTokensResponse getTokens(@PathVariable UUID shopId) {
-		return virtualQueueService.getTokens(shopId);
+        return virtualQueueService.getTokens(shopId);
     }
-    
+
     @GetMapping("/shop/{shopOwnerId}")
     public GetShopsByShopOwnerResponse getShopsByShopOwner(@PathVariable String shopOwnerId) {
         return virtualQueueService.getShopsByShopOwner(shopOwnerId);
     }
-    
+
     @GetMapping("/shops")
     public GetAllShopsResponse getAllShops() {
         return virtualQueueService.getAllShops();
@@ -73,4 +75,15 @@ public class VirtualQueueController {
     public UpdateShopStatusResponse updateShop(@RequestBody UpdateShopStatusRequest updateShopStatusRequest) {
         return virtualQueueService.updateShop(updateShopStatusRequest);
     }
+
+    @GetMapping("/shops/{shopId}")
+    public GetShopResponse getShop(@PathVariable UUID shopId) {
+        return virtualQueueService.getShop(shopId);
+    }
+
+    @PostMapping("/tokens/{shopId}")
+    public GetNewTokenResponse getNewToken(@PathVariable UUID shopId) {
+        return virtualQueueService.getNewToken(shopId);
+    }
+
 }

@@ -144,7 +144,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		// TODO: Throw exception here.
 		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
 				"Tried to get customers ahead of a token which is not in the ACTIVE state.");
-		return 0L;
+		return 0;
 	}
 
 	public String getShopNameByTokenId(UUID tokenId) {

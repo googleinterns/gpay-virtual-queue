@@ -17,8 +17,6 @@ limitations under the License.
 package com.google.gpay.virtualqueue.backendservice.proto;
 
 import java.util.List;
-
-import com.google.gpay.virtualqueue.backendservice.model.Shop;
 import com.google.gpay.virtualqueue.backendservice.model.ShopOwner;
 
 import lombok.AllArgsConstructor;
@@ -28,5 +26,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class GetShopsByShopOwnerResponse {
     ShopOwner shopOwner;
-    List<Shop> shops;
+    List<ShopInfo> shops;
 }

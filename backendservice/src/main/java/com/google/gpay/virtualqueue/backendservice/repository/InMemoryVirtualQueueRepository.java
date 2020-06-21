@@ -74,10 +74,8 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	}
 
 	public List<ShopInfo> getAllShops() {
-		List<ShopInfo> shops = new ArrayList<>();
-		shops = shopMap.values().stream().filter(shop -> ShopStatus.ACTIVE.equals(shop.getStatus()))
+		return shopMap.values().stream().filter(shop -> ShopStatus.ACTIVE.equals(shop.getStatus()))
 				.map(shop -> new ShopInfo(shop, getCustomersInQueue(shop.getShopId()))).collect(Collectors.toList());
-		return shops;
 	}
 
 	public List<Token> getTokens(UUID shopId) {
@@ -112,8 +110,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	// Method returns all shops keeping in mind the feature of restoring shops later
 	// on.
 	public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId) {
-		List<ShopInfo> shops = new ArrayList<>();
-		shops = shopMap.values().stream().filter(shop -> shop.getShopOwnerId().equals(shopOwnerId))
+		List<ShopInfo> shops = shopMap.values().stream().filter(shop -> shop.getShopOwnerId().equals(shopOwnerId))
 				.map(shop -> new ShopInfo(shop, getCustomersInQueue(shop.getShopId()))).collect(Collectors.toList());
 		return new GetShopsByShopOwnerResponse(shopOwnerMap.get(shopOwnerId), shops);
 	}

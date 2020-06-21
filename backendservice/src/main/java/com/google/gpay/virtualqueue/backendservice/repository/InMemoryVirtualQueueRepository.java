@@ -36,6 +36,7 @@ import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopsByShopOwnerResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.ShopInfo;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateShopStatusRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateShopStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
@@ -72,9 +73,9 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return newShop.getShopId();
 	}
 
-	public List<Shop> getAllShops() {
-		return shopMap.entrySet().stream().filter(shop -> ShopStatus.ACTIVE.equals(shop.getValue().getStatus()))
-				.map(Map.Entry::getValue).collect(Collectors.toList());
+	public List<ShopInfo> getAllShops() {
+		return shopMap.values().stream().filter(shop -> ShopStatus.ACTIVE.equals(shop.getStatus()))
+				.map(shop -> new ShopInfo(shop, getCustomersInQueue(shop.getShopId()))).collect(Collectors.toList());
 	}
 
 	public List<Token> getTokens(UUID shopId) {
@@ -109,9 +110,8 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	// Method returns all shops keeping in mind the feature of restoring shops later
 	// on.
 	public GetShopsByShopOwnerResponse getShopsByShopOwner(String shopOwnerId) {
-		List<Shop> shops = shopMap.entrySet().stream()
-				.filter(map -> map.getValue().getShopOwnerId().equals(shopOwnerId)).map(map -> map.getValue())
-				.collect(Collectors.toList());
+		List<ShopInfo> shops = shopMap.values().stream().filter(shop -> shop.getShopOwnerId().equals(shopOwnerId))
+				.map(shop -> new ShopInfo(shop, getCustomersInQueue(shop.getShopId()))).collect(Collectors.toList());
 		return new GetShopsByShopOwnerResponse(shopOwnerMap.get(shopOwnerId), shops);
 	}
 

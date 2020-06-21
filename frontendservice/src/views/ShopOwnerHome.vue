@@ -47,6 +47,7 @@ limitations under the License.
       </table>
     </div>
     <div v-if="isLoggedIn && !isVerified">
+      <!-- TODO: ikoder - Add other features for this page -->
       <router-link to="/verify"><button class="button is-primary">Verify Me!</button></router-link>
     </div>
   </div>

@@ -149,23 +149,21 @@ button{
   font-size: 2rem;
 }
 #search {
-  width: 50%;
   line-height: 2rem;
+  width: 50%;
 }
 #searchbar {
   border-width: 0.2em;
   border-radius: 0.7em;
-  width: 40rem;
   line-height: 2em;
-}
-#searchbar {
   margin-left: 2%;
+  width: 40rem;
 }
 .table {
   width: 100%;
 }
 .table tbody tr td button:hover {
-  cursor: pointer;
   background-color: aquamarine;
+  cursor: pointer;
 }
 </style>

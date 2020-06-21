@@ -19,5 +19,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class GetWaitingTimeResponse {
+    // The approximate waiting time in minutes per customer.
     private long waitingTimePerCustomer;
 }

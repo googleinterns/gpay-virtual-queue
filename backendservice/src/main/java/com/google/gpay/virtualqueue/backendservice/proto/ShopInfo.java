@@ -25,5 +25,5 @@ import lombok.Data;
 @Data
 public class ShopInfo {
     Shop shop;
-    Long numberOfActiveTokens;
+    long numberOfActiveTokens;
 }

@@ -153,8 +153,8 @@ button{
   width: 50%;
 }
 #searchbar {
-  border-width: 0.2em;
   border-radius: 0.7em;
+  border-width: 0.2em;
   line-height: 2em;
   margin-left: 2%;
   width: 40rem;

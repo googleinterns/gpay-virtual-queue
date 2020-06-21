@@ -67,9 +67,9 @@ public class VirtualQueueService {
 	}
 
 	public GetTokenInfoResponse getTokenInfo(UUID tokenId) {
-		return new GetTokenInfoResponse(virtualQueueRepository.getCustomersAheadByTokenId(tokenId),
-				virtualQueueRepository.getTokenByTokenId(tokenId),
-				virtualQueueRepository.getShopNameByTokenId(tokenId));
+		return new GetTokenInfoResponse(virtualQueueRepository.getCustomersAhead(tokenId),
+				virtualQueueRepository.getToken(tokenId), virtualQueueRepository.getShopName(tokenId));
+	}
 
 	public GetShopResponse getShop(UUID shopId) {
 		return new GetShopResponse(virtualQueueRepository.getShop(shopId),

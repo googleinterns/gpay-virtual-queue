@@ -44,11 +44,11 @@ public interface VirtualQueueRepository {
 
     public UpdateShopStatusResponse updateShop(UpdateShopStatusRequest updateShopStatusRequest);
 
-    public Token getTokenByTokenId(UUID tokenId);
+    public Token getToken(UUID tokenId);
 
-    public long getCustomersAheadByTokenId(UUID tokenId);
+    public long getCustomersAhead(UUID tokenId);
 
-    public String getShopNameByTokenId(UUID tokenId);
+    public String getShopName(UUID tokenId);
 
     public Shop getShop(UUID shopId);
 

@@ -77,8 +77,9 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 				.map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
-	public Long getWaitingTime() {
-		return 2L;
+	public long getWaitingTime() {
+		long waitingTime = 2L;
+		return waitingTime;
 	}
 
 	public List<Token> getTokens(UUID shopId) {

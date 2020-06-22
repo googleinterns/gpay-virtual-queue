@@ -14,17 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package com.google.gpay.virtualqueue.backendservice.proto;
+package com.google.gpay.virtualqueue.backendservice;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@Data
-@AllArgsConstructor
-public class CreateShopRequest {
-    private String shopOwnerId;
-    private String shopName;
-    private String address;
-    private String phoneNumber;
-    private String shopType;
+@SpringBootTest
+public class VirtualQueueServiceApplicationTest {
+    @Test
+	void contextLoads() {
+	}
 }

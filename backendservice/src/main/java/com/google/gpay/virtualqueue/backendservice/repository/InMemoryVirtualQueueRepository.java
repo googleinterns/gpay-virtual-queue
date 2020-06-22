@@ -53,6 +53,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	private Map<UUID, List<Token>> shopIdToListOfTokensMap = new HashMap<>();
 	private Map<UUID, AtomicInteger> shopIdToLastAllotedTokenMap = new HashMap<>();
 	private Map<String, ShopOwner> shopOwnerMap = new HashMap<>();
+	static final long WAITING_TIME_MINS = 4L;
 
 	public UUID createShop(CreateShopRequest createShopRequest) {
 		Shop newShop = new Shop();
@@ -76,6 +77,10 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	public List<ShopInfo> getAllShops() {
 		return shopMap.values().stream().filter(shop -> ShopStatus.ACTIVE.equals(shop.getStatus()))
 				.map(shop -> new ShopInfo(shop, getCustomersInQueue(shop.getShopId()))).collect(Collectors.toList());
+	}
+
+	public long getWaitingTime() {
+		return WAITING_TIME_MINS;
 	}
 
 	public List<Token> getTokens(UUID shopId) {
@@ -123,6 +128,25 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	public UpdateShopStatusResponse updateShop(UpdateShopStatusRequest updateShopStatusRequest) {
 		shopMap.get(updateShopStatusRequest.getShopId()).setStatus(updateShopStatusRequest.getShopStatus());
 		return new UpdateShopStatusResponse(shopMap.get(updateShopStatusRequest.getShopId()));
+	}
+
+	public Token getToken(UUID tokenId) {
+		return tokenMap.get(tokenId);
+	}
+
+	public long getCustomersAhead(UUID tokenId) {
+		if (tokenMap.get(tokenId).getStatus() == Status.ACTIVE) {
+			UUID shopId = tokenMap.get(tokenId).getShopId();
+			List<Token> tokenList = shopIdToListOfTokensMap.get(shopId).stream()
+					.takeWhile(token -> !token.getTokenId().equals(tokenId)).collect(Collectors.toList());
+			return tokenList.stream().filter(token -> Status.ACTIVE.equals(token.getStatus()))
+					.collect(Collectors.toList()).size();
+		}
+		return 0;
+	}
+
+	public String getShopName(UUID tokenId) {
+		return shopMap.get(tokenMap.get(tokenId).getShopId()).getShopName();
 	}
 
 	public Shop getShop(UUID shopId) {

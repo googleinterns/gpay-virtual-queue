@@ -13,7 +13,7 @@ specific language governing permissions and limitations under the License. */
     </div>
     <div class="navbar-menu is-active">
       <div class="navbar-start">
-        <a class="navbar-item" href="/shop-owner/shops">My Shops</a>
+        <a class="navbar-item" href="/shop-owner">My Shops</a>
         <a class="navbar-item" href="/shop-owner/about">About</a>
       </div>
       <div class="navbar-end">

@@ -11,11 +11,16 @@ specific language governing permissions and limitations under the License. */
     <NavBarCustomer></NavBarCustomer>
     <cookieinfo></cookieinfo>
     <cookieackno></cookieackno>
-    <div id="searchBarWrap" style="margin: 20px 0">
+    <div id="searchBarWrap" style="margin: 20px 0;">
       <div class="field has-addons">
         <div class="form-group has-feedback">
-          <i class="fa fa-search" style="font-size:32px"></i>
-          <input id="searchBar" class="input" type="text" placeholder="Find a shop" />
+          <i class="fa fa-search" style="font-size: 32px;"></i>
+          <input
+            id="searchBar"
+            class="input"
+            type="text"
+            placeholder="Find a shop"
+          />
         </div>
       </div>
     </div>
@@ -42,17 +47,21 @@ specific language governing permissions and limitations under the License. */
             <th>Active Customers</th>
           </thead>
           <tbody>
-            <tr v-for="shop in shops" :key="shop.shopId">
+            <tr v-for="shop in shops" :key="shop.shop.shopId">
               <td>
                 <a>
                   <router-link
-                    v-bind:to="{name: 'specificShop', params: {Id: shop.shop.shopId} }"
-                  >{{shop.shop.shopName}}</router-link>
+                    v-bind:to="{
+                      name: 'specificShop',
+                      params: { Id: shop.shop.shopId },
+                    }"
+                    >{{ shop.shop.shopName }}</router-link
+                  >
                 </a>
               </td>
-              <td>{{shop.shop.shopType}}</td>
-              <td>{{shop.shop.address}}</td>
-              <td>{{shop.numberOfActiveTokens}}</td>
+              <td>{{ shop.shop.shopType }}</td>
+              <td>{{ shop.shop.address }}</td>
+              <td>{{ shop.numberOfActiveTokens }}</td>
             </tr>
           </tbody>
         </table>
@@ -73,31 +82,30 @@ export default {
   components: {
     NavBarCustomer,
     cookieinfo,
-    cookieackno
+    cookieackno,
   },
 
   data() {
     return {
       isLoggedIn: false,
-      shops: []
+      shops: [],
     };
   },
 
   created() {
-    this.apifunction();
     var user = firebase.auth().currentUser;
     if (user) {
       this.isLoggedIn = true;
     }
-    setInterval(function() {
-      const self = this;
+    var self = this;
+    setInterval(function () {
       axios
-        .get("http://penguin.termina.linux.test:8085/shops")
-        .then(function(res) {
+        .get("http://penguin.termina.linux.test:8080/shops")
+        .then(function (res) {
           self.shops = res.data.shops;
         });
-    }, 2000 /*milliseconds */);
-  }
+    }, 500 /* milliseconds */);
+  },
 };
 </script>
 
@@ -159,4 +167,3 @@ h1 {
   width: 100%;
 }
 </style>
-

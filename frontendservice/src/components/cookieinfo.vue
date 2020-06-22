@@ -20,12 +20,6 @@ specific language governing permissions and limitations under the License. */
   </div>
 </template>
 
-
-
-
-<style>
-</style>
-
 <script>
 export default {
   name: "cookieinfo"

@@ -104,23 +104,24 @@ export default {
 
   methods: {
     getShopInfo() {
-      const t = this;
+      const self = this;
       axios
         .get("http://penguin.termina.linux.test:8085/shops/" + this.shopid)
         .then(function(res) {
-          t.shopinfo = res.data;
-          t.allCookieList = JSON.parse(Cookie.get("tokenid"));
+          self.shopinfo = res.data;
+          self.allCookieList = JSON.parse(Cookie.get("tokenid"));
           var i;
-          for (i = 0; i < t.allCookieList.length; i++) {
-            t.cookieValue = t.allCookieList[i].toString();
+          for (i = 0; i < self.allCookieList.length; i++) {
+            self.cookieValue = self.allCookieList[i].toString();
             axios({
               method: "GET",
               url:
-                "http://penguin.termina.linux.test:8085/token/" + t.cookieValue
+                "http://penguin.termina.linux.test:8085/token/" +
+                self.cookieValue
             }).then(function(res) {
-              if (res.data.token.shopId == t.shopid) {
-                t.flag = true;
-                t.tokeninfo = res.data;
+              if (res.data.token.shopId == self.shopid) {
+                self.flag = true;
+                self.tokeninfo = res.data;
               }
             });
           }
@@ -128,35 +129,35 @@ export default {
     },
 
     getToken() {
-      const t = this;
+      const self = this;
       axios({
         method: "POST",
         url: "http://penguin.termina.linux.test:8085/tokens/" + this.shopid
       }).then(function(res) {
-        t.token = res.data.token;
-        t.allCookieList.push(t.token.tokenId);
-        Cookie.set("tokenid", JSON.stringify(t.allCookieList), {
+        self.token = res.data.token;
+        self.allCookieList.push(self.token.tokenId);
+        Cookie.set("tokenid", JSON.stringify(self.allCookieList), {
           expires: 1
         });
-        t.flag = true;
-        t.getshopinfo();
+        self.flag = true;
+        self.getshopinfo();
       });
     },
 
     deleteToken() {
-      const t = this;
+      const self = this;
       axios
         .put("http://penguin.termina.linux.test:8085/token", {
-          tokenId: t.tokeninfo.token.tokenId,
+          tokenId: self.tokeninfo.token.tokenId,
           tokenStatus: "CANCELLED_BY_CUSTOMER"
         })
         .then(function(res) {
-          t.allCookieList.splice(
-            t.allCookieList.indexOf(t.tokeninfo.token.tokenId)
+          self.allCookieList.splice(
+            self.allCookieList.indexOf(self.tokeninfo.token.tokenId)
           );
-          Cookie.set("tokenid", JSON.stringify(t.allCookieList));
-          t.flag = false;
-          t.getshopinfo();
+          Cookie.set("tokenid", JSON.stringify(self.allCookieList));
+          self.flag = false;
+          self.getshopinfo();
         });
     },
 
@@ -171,7 +172,7 @@ export default {
 
   created() {
     this.getShopInfo();
-    this.timer = setInterval(this.getShopInfo, 1);
+    this.timer = setInterval(this.getShopInfo, 1 /*1 second*/);
   }
 };
 </script>

@@ -35,6 +35,8 @@ public interface VirtualQueueRepository {
 
     public List<ShopInfo> getAllShops();
 
+    public long getWaitingTime();
+
     public List<Token> getTokens(UUID shopId);
 
     public Token getNewToken(UUID shopId);

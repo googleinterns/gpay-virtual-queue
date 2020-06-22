@@ -53,6 +53,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	private Map<UUID, List<Token>> shopIdToListOfTokensMap = new HashMap<>();
 	private Map<UUID, AtomicInteger> shopIdToLastAllotedTokenMap = new HashMap<>();
 	private Map<String, ShopOwner> shopOwnerMap = new HashMap<>();
+	private static final long WAITING_TIME_MINS = 4L;
 
 	public UUID createShop(CreateShopRequest createShopRequest) {
 		Shop newShop = new Shop();
@@ -76,6 +77,10 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	public List<ShopInfo> getAllShops() {
 		return shopMap.values().stream().filter(shop -> ShopStatus.ACTIVE.equals(shop.getStatus()))
 				.map(shop -> new ShopInfo(shop, getCustomersInQueue(shop.getShopId()))).collect(Collectors.toList());
+	}
+
+	public long getWaitingTime() {
+		return WAITING_TIME_MINS;
 	}
 
 	public List<Token> getTokens(UUID shopId) {

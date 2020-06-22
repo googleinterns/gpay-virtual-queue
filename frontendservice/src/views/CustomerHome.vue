@@ -40,17 +40,17 @@ specific language governing permissions and limitations under the License. */
             <th>Contact Number</th>
           </thead>
           <tbody>
-            <tr v-for="shop in shops.shopList" :key="shop.shopId">
+            <tr v-for="shop in shops" :key="shop.shopId">
               <td>
                 <a>
                   <router-link
-                    v-bind:to="{name: 'specificShop', params: {Id: shop.shopId} }"
-                  >{{shop.shopName}}</router-link>
+                    v-bind:to="{name: 'specificShop', params: {Id: shop.shop.shopId} }"
+                  >{{shop.shop.shopName}}</router-link>
                 </a>
               </td>
-              <td>{{shop.shopType}}</td>
-              <td>{{shop.address}}</td>
-              <td>{{shop.phoneNumber}}</td>
+              <td>{{shop.shop.shopType}}</td>
+              <td>{{shop.shop.address}}</td>
+              <td>{{shop.numberOfActiveTokens}}</td>
             </tr>
           </tbody>
         </table>

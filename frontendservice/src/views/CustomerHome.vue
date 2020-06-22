@@ -7,48 +7,187 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License. */
 
 <template>
-  <div class="home">
-    <h1>Welcome customer!</h1>
-    <p>
-      This page will be Home page for the customers. 
-    </p>
-    <p>
-      ToDo: Implement CustomerHome page features including NavBar, Search Bar, MyTokens and AllShops.
-    </p>  
-    <div>
-      <router-link to="/my-tokens">My Tokens</router-link>
+  <div v-if="!isLoggedIn">
+    <NavBarCustomer></NavBarCustomer>
+    <cookieinfo></cookieinfo>
+    <cookieackno></cookieackno>
+    <div id="searchBarWrap" style="margin: 20px 0">
+      <div class="field has-addons">
+        <div class="form-group has-feedback">
+          <i class="fa fa-search" style="font-size:32px"></i>
+          <input id="searchBar" class="input" type="text" placeholder="Find a shop" />
+        </div>
+      </div>
     </div>
-    <div v-if="!isLoggedIn">
-      <router-link to="/about">Back</router-link>
+    <div id="wrap" class="control">
+      <div class="select">
+        <select>
+          <option>Select option</option>
+          <option>Medical</option>
+          <option>Grocery</option>
+          <option>Sports</option>
+          <option>Stationary</option>
+        </select>
+      </div>
     </div>
-    <br />
+    <div class="panel panel-default">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <th>Shop Name</th>
+            <th>Shop Type</th>
+            <th>Address</th>
+            <th>Contact Number</th>
+          </thead>
+          <tbody>
+            <tr v-for="shop in shops.shopList" :key="shop.shopId">
+              <td>
+                <a>
+                  <router-link
+                    v-bind:to="{name: 'specificShop', params: {Id: shop.shopId} }"
+                  >{{shop.shopName}}</router-link>
+                </a>
+              </td>
+              <td>{{shop.shopType}}</td>
+              <td>{{shop.address}}</td>
+              <td>{{shop.phoneNumber}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
-
+import NavBarCustomer from "@/components/NavBarCustomer";
+import cookieinfo from "@/components/cookieinfo";
+import cookieackno from "@/components/cookieackno";
+import axios from "axios";
+import Cookie from "js-cookie";
 export default {
   name: "customerHome",
-
+  components: {
+    NavBarCustomer,
+    cookieinfo,
+    cookieackno
+  },
   data() {
     return {
       isLoggedIn: false,
+      timer: "",
+      shops: [],
+      allCookieList: [],
+      cookieValue: "",
+      tokens: []
     };
   },
-  created() {
-    var user = firebase.auth().currentUser;
-    if (user) {
-      this.isLoggedIn = true;
+
+  methods: {
+    apifunction() {
+      var user = firebase.auth().currentUser;
+      if (user) {
+        this.isLoggedIn = true;
+      }
+      const t = this;
+      axios
+        .get("http://penguin.termina.linux.test:8085/shops")
+        .then(function(res) {
+          t.shops = res.data;
+        });
+    },
+
+    beforeDestroy() {
+      clearInterval(this.timer);
+    },
+
+    cancelAutoUpdate() {
+      clearInterval(this.timer);
+    },
+
+    tokenfunction() {
+      const t = this;
+      t.allCookieList = JSON.parse(Cookie.get("tokenid"));
+      for (var i = 0, ln = t.allCookieList.length; i < ln; i++) {
+        this.trial = i;
+        const t = this;
+        t.allCookieList = JSON.parse(Cookie.get("tokenid"));
+        t.cookieValue = t.allCookieList[i].toString();
+        axios({
+          method: "GET",
+          url: "http://penguin.termina.linux.test:8085/token/" + t.cookieValue
+        }).then(function(res) {
+          t.tokens.splice(i, 0, res.data);
+        });
+      }
     }
   },
+
+  created() {
+    this.apifunction();
+    this.tokenfunction();
+    this.timer = setInterval(this.apifunction, 1);
+  }
 };
 </script>
 
 <style scoped>
-a {
-  margin-top: 1%;
-  width: 10%;
-  cursor: pointer;
+.box {
+  opacity: 0.7;
+}
+
+.box:hover {
+  opacity: 0.9;
+}
+
+h1 {
+  color: #000;
+  font-size: 2rem;
+  text-align: center;
+}
+
+#searchBar {
+  border-width: 0.2em;
+  border-radius: 0.7em;
+  padding: 0.2em 0.2em 0.2em 0.5em;
+  width: 40em;
+  border-color: #000;
+  text-align: center;
+}
+
+#searchBarWrap {
+  display: flex;
+  justify-content: center;
+}
+
+.subtitle {
+  font-size: 1rem;
+  text-align: justify;
+  color: rgb(19, 15, 15);
+}
+
+.table {
+  width: 100%;
+}
+
+.table thead th,
+.table tbody tr td {
+  text-align: center;
+}
+
+.title {
+  font-size: 1.5rem;
+  color: white;
+}
+
+#wrap {
+  width: 100%;
+  height: auto;
+  margin: 0px;
+  padding: 0px;
+  float: left;
+  text-align: center;
 }
 </style>
+

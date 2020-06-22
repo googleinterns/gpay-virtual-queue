@@ -16,11 +16,12 @@ specific language governing permissions and limitations under the License. */
 import firebase from "firebase";
 
 export default {
-  name: "App",
+  name: "App"
 };
 </script>
 
 <style>
+@import "~bulma/css/bulma.css";
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

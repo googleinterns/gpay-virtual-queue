@@ -24,12 +24,12 @@ import Login from "@/views/Login";
 import SignUp from "@/views/SignUp";
 import Verify from "@/views/Verify";
 import ForgotPassword from "@/views/ForgotPassword";
-import CreateShop from "@/views/CreateShop"
+import CreateShop from "@/views/CreateShop";
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   routes: [
     {
       path: "*",
@@ -53,6 +53,11 @@ const router = new VueRouter({
       },
     },
     {
+      path: "/detailedcookie",
+      name: "detailedcookie",
+      component: () => import("@/views/detailedcookie"),
+    },
+    {
       path: "/shop-owner",
       name: "ShopOwnerHome",
       component: ShopOwnerHome,
@@ -66,7 +71,7 @@ const router = new VueRouter({
       component: Login,
       meta: {
         requiresLogout: true,
-      }
+      },
     },
     {
       path: "/forgot-password",
@@ -74,7 +79,7 @@ const router = new VueRouter({
       component: ForgotPassword,
       meta: {
         requiresLogout: true,
-      }
+      },
     },
     {
       path: "/signup",
@@ -82,7 +87,7 @@ const router = new VueRouter({
       component: SignUp,
       meta: {
         requiresLogout: true,
-      }
+      },
     },
     {
       path: "/verify",
@@ -90,16 +95,16 @@ const router = new VueRouter({
       component: Verify,
       meta: {
         requiresUnverified: true,
-      }
+      },
     },
     {
       path: "/shop-owner/createshop",
       name: "CreateShop",
       component: CreateShop,
       meta: {
-        requiresVerified: true
+        requiresVerified: true,
       },
-    }
+    },
   ],
 });
 
@@ -110,10 +115,16 @@ router.beforeEach((to, from, next) => {
     verified = currentUser.emailVerified;
   }
 
-  const requiresLogout = to.matched.some((record) => record.meta.requiresLogout);
+  const requiresLogout = to.matched.some(
+    (record) => record.meta.requiresLogout
+  );
   const requiresLogin = to.matched.some((record) => record.meta.requiresLogin);
-  const requiresUnverified = to.matched.some((record) => record.meta.requiresUnverified);
-  const requiresVerified = to.matched.some((record) => record.meta.requiresVerified);
+  const requiresUnverified = to.matched.some(
+    (record) => record.meta.requiresUnverified
+  );
+  const requiresVerified = to.matched.some(
+    (record) => record.meta.requiresVerified
+  );
 
   if (requiresLogout && currentUser) next("shop-owner");
   else if (requiresLogin && !currentUser) next("customer");
@@ -122,8 +133,7 @@ router.beforeEach((to, from, next) => {
   else if (requiresVerified && !verified) {
     if (currentUser) next("shop-owner");
     else next("customer");
-  }
-  else next();
+  } else next();
 });
 
 export default router;

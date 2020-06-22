@@ -16,6 +16,7 @@ import firebase from "firebase";
 import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
+import "bulma/css/bulma.css";
 
 Vue.config.productionTip = false;
 

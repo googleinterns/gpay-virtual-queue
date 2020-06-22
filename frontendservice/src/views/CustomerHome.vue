@@ -23,10 +23,12 @@ specific language governing permissions and limitations under the License. */
       <div class="select">
         <select>
           <option>Select option</option>
-          <option>Medical</option>
-          <option>Grocery</option>
-          <option>Sports</option>
+          <option>Food</option>
+          <option>Furniture</option>
+          <option>Electronics</option>
           <option>Stationary</option>
+          <option>Jewellery</option>
+          <option>Agriculture</option>
         </select>
       </div>
     </div>
@@ -37,7 +39,7 @@ specific language governing permissions and limitations under the License. */
             <th>Shop Name</th>
             <th>Shop Type</th>
             <th>Address</th>
-            <th>Contact Number</th>
+            <th>Active Customers</th>
           </thead>
           <tbody>
             <tr v-for="shop in shops" :key="shop.shopId">

@@ -77,10 +77,7 @@ export default {
     return {
       isLoggedIn: false,
       timer: "",
-      shops: [],
-      allCookieList: [],
-      cookieValue: "",
-      tokens: []
+      shops: []
     };
   },
 
@@ -94,7 +91,7 @@ export default {
       axios
         .get("http://penguin.termina.linux.test:8085/shops")
         .then(function(res) {
-          t.shops = res.data;
+          t.shops = res.data.shops;
         });
     },
 
@@ -104,29 +101,11 @@ export default {
 
     cancelAutoUpdate() {
       clearInterval(this.timer);
-    },
-
-    tokenfunction() {
-      const t = this;
-      t.allCookieList = JSON.parse(Cookie.get("tokenid"));
-      for (var i = 0, ln = t.allCookieList.length; i < ln; i++) {
-        this.trial = i;
-        const t = this;
-        t.allCookieList = JSON.parse(Cookie.get("tokenid"));
-        t.cookieValue = t.allCookieList[i].toString();
-        axios({
-          method: "GET",
-          url: "http://penguin.termina.linux.test:8085/token/" + t.cookieValue
-        }).then(function(res) {
-          t.tokens.splice(i, 0, res.data);
-        });
-      }
     }
   },
 
   created() {
     this.apifunction();
-    this.tokenfunction();
     this.timer = setInterval(this.apifunction, 1);
   }
 };

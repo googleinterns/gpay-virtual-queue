@@ -23,6 +23,7 @@ import SignUp from "@/views/SignUp";
 import Verify from "@/views/Verify";
 import ForgotPassword from "@/views/ForgotPassword";
 import CreateShop from "@/views/CreateShop"
+import ShopOwnerSpecificShop from "@/views/ShopOwnerSpecificShop"
 
 Vue.use(VueRouter);
 
@@ -96,6 +97,15 @@ const router = new VueRouter({
       component: CreateShop,
       meta: {
         requiresVerified: true
+      },
+    },
+    {
+      path: "/shop-owner/shops/:id",
+      name: "ShopOwnerSpecificShop",
+      props: true,
+      component: ShopOwnerSpecificShop,
+      meta: {
+        requiresVerified: true,
       },
     }
   ],

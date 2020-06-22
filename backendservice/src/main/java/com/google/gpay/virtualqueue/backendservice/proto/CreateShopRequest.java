@@ -16,9 +16,11 @@ limitations under the License.
 
 package com.google.gpay.virtualqueue.backendservice.proto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class CreateShopRequest {
     private String shopOwnerId;
     private String shopName;

@@ -93,6 +93,7 @@ export default {
             .then();
           this.renderComponent = false;
           var self = this;
+          // TODO : ikoder - Add error handling in case of server error.
           this.$nextTick(() => {
             axios
               .get(

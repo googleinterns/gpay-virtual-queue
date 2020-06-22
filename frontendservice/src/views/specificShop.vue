@@ -107,30 +107,30 @@ body {
 }
 
 #button {
+  color: #2c3e50;
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
+  margin-top: 60px;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1 {
-  margin: 40px 0 0;
   font: 30px Helvetica, Sans-Serif;
+  margin: 40px 0 0;
 }
 
 #mid {
+  color: #2c3e50;
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
+  margin-top: 60px;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  -webkit-font-smoothing: antialiased;
 }
 .table {
-  width: 100%;
   float: left;
+  width: 100%;
 }
 .table thead th,
 .table tbody tr td {

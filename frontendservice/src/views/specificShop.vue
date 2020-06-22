@@ -14,11 +14,11 @@ specific language governing permissions and limitations under the License. */
     <div class="card">
       <div class="card-content">
         <p class="title">{{shopinfo.shop.shopName}}</p>
+        <p v-if="flag" class="title">Number of People ahead in the queue are:</p>
         <p
-          v-if="flag"
+          v-else
           class="title"
-        >Number of People ahead in the queue are {{tokeninfo.peopleAhead}}</p>
-        <p v-else class="title">Number of people currently in queue are {{shopinfo.customerQueue}}</p>
+        >Number of people currently in queue are {{shopinfo.customersInQueue}}</p>
         <p class="subtitle">{{shopinfo.shop.shopType}}</p>
         <p class="subtitle">{{shopinfo.shop.address}}</p>
         <p class="subtitle">{{shopinfo.shop.phoneNumber}}</p>
@@ -28,14 +28,14 @@ specific language governing permissions and limitations under the License. */
           <button
             class="button is-primary is-medium"
             v-if="flag"
-            v-on:click="getshopinfo()"
+            v-on:click="getShopInfo()"
           >Refresh token</button>
-          <button class="button is-primary is-medium" v-else v-on:click="gettoken()">Take token</button>
+          <button class="button is-primary is-medium" v-else v-on:click="getToken()">Take token</button>
         </p>
         <p class="card-footer-item">
           <button
             class="button is-danger is-medium"
-            v-on:click="deletetoken()"
+            v-on:click="deleteToken()"
             v-if="flag"
           >Cancel token</button>
         </p>
@@ -67,7 +67,7 @@ export default {
   },
 
   methods: {
-    getshopinfo() {
+    getShopInfo() {
       const t = this;
       axios
         .get("http://penguin.termina.linux.test:8085/shops/" + this.shopid)
@@ -77,11 +77,11 @@ export default {
         });
     },
 
-    gettoken() {
+    getToken() {
       //TODO: write http client request to get token.
     },
 
-    deletetoken() {
+    deleteToken() {
       //TODO: write http client request to delete token.
     },
 
@@ -95,8 +95,8 @@ export default {
   },
 
   created() {
-    this.getshopinfo();
-    this.timer = setInterval(this.getshopinfo, 1);
+    this.getShopInfo();
+    this.timer = setInterval(this.getShopInfo, 1);
   }
 };
 </script>

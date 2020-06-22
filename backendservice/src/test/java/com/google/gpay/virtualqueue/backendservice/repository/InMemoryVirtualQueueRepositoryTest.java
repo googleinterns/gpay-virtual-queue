@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.UUID;
 
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
+import static com.google.gpay.virtualqueue.backendservice.repository.InMemoryVirtualQueueRepository.WAITING_TIME_MINS;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,6 @@ public class InMemoryVirtualQueueRepositoryTest {
     private static final String SHOP_ADDRESS = "address";
     private static final String PHONE_NUMBER = "+919012192800";
     private static final String SHOP_TYPE = "shopType";
-    private static final long WAITING_TIME_MINS = 4L;
 
     @BeforeEach
     public void setUp(){
@@ -66,6 +66,8 @@ public class InMemoryVirtualQueueRepositoryTest {
     
     @Test
     public void testGetWaitingTime() throws Exception {
-        assertEquals("Waiting Time per customer is", WAITING_TIME_MINS, inMemoryVirtualQueueRepository.getWaitingTime());
+        long waitingTime = inMemoryVirtualQueueRepository.getWaitingTime();
+        
+        assertEquals("Waiting Time per customer is", WAITING_TIME_MINS, waitingTime);
     }
 }

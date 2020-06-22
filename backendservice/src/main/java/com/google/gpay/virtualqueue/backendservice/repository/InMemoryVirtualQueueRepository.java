@@ -130,6 +130,25 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 		return new UpdateShopStatusResponse(shopMap.get(updateShopStatusRequest.getShopId()));
 	}
 
+	public Token getToken(UUID tokenId) {
+		return tokenMap.get(tokenId);
+	}
+
+	public long getCustomersAhead(UUID tokenId) {
+		if (tokenMap.get(tokenId).getStatus() == Status.ACTIVE) {
+			UUID shopId = tokenMap.get(tokenId).getShopId();
+			List<Token> tokenList = shopIdToListOfTokensMap.get(shopId).stream()
+					.takeWhile(token -> !token.getTokenId().equals(tokenId)).collect(Collectors.toList());
+			return tokenList.stream().filter(token -> Status.ACTIVE.equals(token.getStatus()))
+					.collect(Collectors.toList()).size();
+		}
+		return 0;
+	}
+
+	public String getShopName(UUID tokenId) {
+		return shopMap.get(tokenMap.get(tokenId).getShopId()).getShopName();
+	}
+
 	public Shop getShop(UUID shopId) {
 		if (shopMap.get(shopId).getStatus() == ShopStatus.ACTIVE) {
 			return shopMap.get(shopId);

@@ -14,7 +14,10 @@ specific language governing permissions and limitations under the License. */
     <div class="card">
       <div class="card-content">
         <p class="title">{{shopinfo.shop.shopName}}</p>
-        <p v-if="flag" class="title">Number of People ahead in the queue are:</p>
+        <p
+          v-if="flag"
+          class="title"
+        >Number of People ahead in the queue are: {{tokeninfo.customersAhead}}</p>
         <p
           v-else
           class="title"
@@ -40,6 +43,32 @@ specific language governing permissions and limitations under the License. */
           >Cancel token</button>
         </p>
       </footer>
+      <div v-if="flag==true">
+        <div v-if="tokeninfo.customersAhead == 0">
+          <shopTurn></shopTurn>
+        </div>
+      </div>
+      <div v-if="flag">
+        <div class="panel panel-default">
+          <div class="table-responsive">
+            <table class="table">
+              <caption>
+                <h1 style="margin: 20px 0" class="is-vcentered">Your Token information</h1>
+              </caption>
+              <thead>
+                <th id="head">Token Number</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <a>{{tokeninfo.token.tokenNumber}}</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -49,20 +78,27 @@ import NavBarCustomer from "@/components/NavBarCustomer";
 import cookieinfo from "@/components/cookieinfo";
 import cookieackno from "@/components/cookieackno";
 import axios from "axios";
+import shopTurn from "@/components/shopTurn";
+import Cookie from "js-cookie";
 
 export default {
   name: "specificShop",
   components: {
     NavBarCustomer,
     cookieinfo,
-    cookieackno
+    cookieackno,
+    shopTurn
   },
   data() {
     return {
       shopid: this.$route.params.Id,
       shopinfo: "",
       timer: "",
-      flag: false
+      flag: false,
+      tokeninfo: null,
+      allCookieList: [],
+      cookieValue: "",
+      token: null
     };
   },
 
@@ -73,16 +109,55 @@ export default {
         .get("http://penguin.termina.linux.test:8085/shops/" + this.shopid)
         .then(function(res) {
           t.shopinfo = res.data;
-          //TODO: write code related to tokenInfo here.
+          t.allCookieList = JSON.parse(Cookie.get("tokenid"));
+          var i;
+          for (i = 0; i < t.allCookieList.length; i++) {
+            t.cookieValue = t.allCookieList[i].toString();
+            axios({
+              method: "GET",
+              url:
+                "http://penguin.termina.linux.test:8085/token/" + t.cookieValue
+            }).then(function(res) {
+              if (res.data.token.shopId == t.shopid) {
+                t.flag = true;
+                t.tokeninfo = res.data;
+              }
+            });
+          }
         });
     },
 
     getToken() {
-      //TODO: write http client request to get token.
+      const t = this;
+      axios({
+        method: "POST",
+        url: "http://penguin.termina.linux.test:8085/tokens/" + this.shopid
+      }).then(function(res) {
+        t.token = res.data.token;
+        t.allCookieList.push(t.token.tokenId);
+        Cookie.set("tokenid", JSON.stringify(t.allCookieList), {
+          expires: 1
+        });
+        t.flag = true;
+        t.getshopinfo();
+      });
     },
 
     deleteToken() {
-      //TODO: write http client request to delete token.
+      const t = this;
+      axios
+        .delete(
+          "http://penguin.termina.linux.test:8085/token?tokenId=" +
+            t.tokeninfo.token.tokenId
+        )
+        .then(function(res) {
+          t.allCookieList.splice(
+            t.allCookieList.indexOf(t.tokeninfo.token.tokenId)
+          );
+          Cookie.set("tokenid", JSON.stringify(t.allCookieList));
+          t.flag = false;
+          t.getshopinfo();
+        });
     },
 
     cancelAutoUpdate() {

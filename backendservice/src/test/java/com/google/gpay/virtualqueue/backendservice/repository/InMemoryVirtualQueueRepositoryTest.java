@@ -39,6 +39,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     private static final String SHOP_ADDRESS = "address";
     private static final String PHONE_NUMBER = "+919012192800";
     private static final String SHOP_TYPE = "shopType";
+    private static final long WAITING_TIME_MINS = 4L;
 
     @BeforeEach
     public void setUp(){
@@ -61,5 +62,10 @@ public class InMemoryVirtualQueueRepositoryTest {
         assertEquals("Shop Address ", SHOP_ADDRESS, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getAddress());
         assertEquals("Shop Phone Number ", PHONE_NUMBER, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getPhoneNumber());
         assertEquals("Shop Type ", SHOP_TYPE, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopType());
+    }
+    
+    @Test
+    public void testGetWaitingTime() throws Exception {
+        assertEquals("Waiting Time per customer is", WAITING_TIME_MINS, inMemoryVirtualQueueRepository.getWaitingTime());
     }
 }

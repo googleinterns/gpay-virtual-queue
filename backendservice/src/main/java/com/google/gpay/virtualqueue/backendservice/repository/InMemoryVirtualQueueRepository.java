@@ -52,7 +52,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	private Map<UUID, List<Token>> shopIdToListOfTokensMap = new HashMap<>();
 	private Map<UUID, AtomicInteger> shopIdToLastAllotedTokenMap = new HashMap<>();
 	private Map<String, ShopOwner> shopOwnerMap = new HashMap<>();
-	private final static long WAITING_TIME_MINS = 4L;
+	private static final long WAITING_TIME_MINS = 4L;
 
 	public UUID createShop(CreateShopRequest createShopRequest) {
 		Shop newShop = new Shop();

@@ -34,6 +34,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class InMemoryVirtualQueueRepositoryTest {
     InMemoryVirtualQueueRepository inMemoryVirtualQueueRepository = new InMemoryVirtualQueueRepository();
 
+    private static final String shopOwnerId = "uid";
+    private static final String shopName = "shopName";
+    private static final String shopAddress = "address";
+    private static final String phoneNumber = "+919012192800";
+    private static final String shopType = "shopType";
+
     @BeforeEach
     public void setUp(){
         inMemoryVirtualQueueRepository.getTokenMap().clear();
@@ -45,16 +51,16 @@ public class InMemoryVirtualQueueRepositoryTest {
 
     @Test
     public void testCreateShop() throws Exception {
-        CreateShopRequest shop = new CreateShopRequest("uid", "shopName", "address", "+919012192800", "type");
+        CreateShopRequest shop = new CreateShopRequest(shopOwnerId, shopName, shopAddress, phoneNumber, shopType);
 
         UUID shopId = inMemoryVirtualQueueRepository.createShop(shop);
         int size = inMemoryVirtualQueueRepository.getShopMap().size();
-        
-        assertEquals("size ", 1, size);
-        assertEquals("Shop Owner Id ", "uid", inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopOwnerId());
-        assertEquals("Shop Name ", "shopName", inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopName());
-        assertEquals("Shop Address ", "address", inMemoryVirtualQueueRepository.getShopMap().get(shopId).getAddress());
-        assertEquals("Shop Phone Number ", "+919012192800", inMemoryVirtualQueueRepository.getShopMap().get(shopId).getPhoneNumber());
-        assertEquals("Shop Type ", "type", inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopType());
+
+        assertEquals("size of shopMap", 1, size);
+        assertEquals("Shop Owner Id ", shopOwnerId, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopOwnerId());
+        assertEquals("Shop Name ", shopName, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopName());
+        assertEquals("Shop Address ", shopAddress, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getAddress());
+        assertEquals("Shop Phone Number ", phoneNumber, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getPhoneNumber());
+        assertEquals("Shop Type ", shopType, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopType());
     }
 }

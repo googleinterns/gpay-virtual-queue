@@ -45,6 +45,7 @@ specific language governing permissions and limitations under the License. */
       <div class="field">
         <div class="control">
           <label class="checkbox">
+            <!-- TODO : ikoder - Add a page for terms and conditions -->
             <input type="checkbox" id="conditions-check" />
             I agree to the
             <a href="#">terms and conditions</a>

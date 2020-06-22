@@ -54,9 +54,8 @@ public class InMemoryVirtualQueueRepositoryTest {
         CreateShopRequest shop = new CreateShopRequest(shopOwnerId, shopName, shopAddress, phoneNumber, shopType);
 
         UUID shopId = inMemoryVirtualQueueRepository.createShop(shop);
-        int size = inMemoryVirtualQueueRepository.getShopMap().size();
 
-        assertEquals("size of shopMap", 1, size);
+        assertEquals("size of shopMap", 1, inMemoryVirtualQueueRepository.getShopMap().size());
         assertEquals("Shop Owner Id ", shopOwnerId, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopOwnerId());
         assertEquals("Shop Name ", shopName, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopName());
         assertEquals("Shop Address ", shopAddress, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getAddress());

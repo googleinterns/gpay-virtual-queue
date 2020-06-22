@@ -24,8 +24,8 @@ specific language governing permissions and limitations under the License. */
 
 <style>
 #footer {
-  position: fixed;
   bottom: 0;
+  position: fixed;
   width: 100%;
 }
 </style>

@@ -30,7 +30,7 @@ specific language governing permissions and limitations under the License. */
 }
 
 #nav {
-  background-color: white; /*turns nav bar white*/
+  background-color: white;
   color: white;
   width: 100%;
 }

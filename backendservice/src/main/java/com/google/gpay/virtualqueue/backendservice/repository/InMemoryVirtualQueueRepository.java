@@ -126,13 +126,7 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 	}
 
 	public Token getToken(UUID tokenId) {
-		if (tokenMap.get(tokenId).getStatus() == Status.ACTIVE) {
-			return tokenMap.get(tokenId);
-		}
-		// TODO: Throw exception here.
-		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
-				"Tried to get a token by tokenId which is not in the ACTIVE state.");
-		return new Token();
+		return tokenMap.get(tokenId);
 	}
 
 	public long getCustomersAhead(UUID tokenId) {
@@ -143,20 +137,11 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 			return tokenList.stream().filter(token -> Status.ACTIVE.equals(token.getStatus()))
 					.collect(Collectors.toList()).size();
 		}
-		// TODO: Throw exception here.
-		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
-				"Tried to get customers ahead of a token which is not in the ACTIVE state.");
 		return 0;
 	}
 
 	public String getShopName(UUID tokenId) {
-		if (tokenMap.get(tokenId).getStatus() == Status.ACTIVE) {
-			return shopMap.get(tokenMap.get(tokenId).getShopId()).getShopName();
-		}
-		// TODO: Throw exception here.
-		Logger.getLogger(InMemoryVirtualQueueRepository.class.getName()).log(Level.SEVERE,
-				"Tried to get Shop name for a tokenId which is not in the ACTIVE state.");
-		return "";
+		return shopMap.get(tokenMap.get(tokenId).getShopId()).getShopName();
 	}
 
 	public Shop getShop(UUID shopId) {

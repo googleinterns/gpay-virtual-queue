@@ -123,7 +123,7 @@ export default {
             firebase.auth().currentUser.uid
         )
         .then(response => (self.shopList = response.data.shops));
-    }, 2000);
+    }, 2000 /* milliseconds */);
   },
   computed: {
     filteredShops: function() {

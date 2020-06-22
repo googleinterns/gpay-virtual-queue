@@ -11,6 +11,21 @@ specific language governing permissions and limitations under the License. */
     <NavBarCustomer></NavBarCustomer>
     <cookieinfo></cookieinfo>
     <cookieackno></cookieackno>
+    <div class="tile is-ancestor">
+      <div v-for="token in tokens" :key="token">
+        <div class="tile is-parent">
+          <article class="tile is-child box one">
+            <p class="title">
+              <router-link
+                v-bind:to="{name: 'specificShop', params: {Id: token.token.shopId} }"
+              >Token Number: {{token.token.tokenNumber}}</router-link>
+            </p>
+            <p class="subtitle">Customers Ahead: {{token.customersAhead}}</p>
+            <p class="subtitle">{{token.shopName}}</p>
+          </article>
+        </div>
+      </div>
+    </div>
     <div id="searchBarWrap" style="margin: 20px 0">
       <div class="field has-addons">
         <div class="form-group has-feedback">
@@ -79,7 +94,10 @@ export default {
     return {
       isLoggedIn: false,
       timer: "",
-      shops: []
+      shops: [],
+      allCookieList: [],
+      cookieValue: "",
+      tokens: []
     };
   },
 
@@ -97,6 +115,23 @@ export default {
         });
     },
 
+    tokenfunction() {
+      const t = this;
+      t.allCookieList = JSON.parse(Cookie.get("tokenid"));
+      for (var i = 0, ln = t.allCookieList.length; i < ln; i++) {
+        this.trial = i;
+        const t = this;
+        t.allCookieList = JSON.parse(Cookie.get("tokenid"));
+        t.cookieValue = t.allCookieList[i].toString();
+        axios({
+          method: "GET",
+          url: "http://penguin.termina.linux.test:8085/token/" + t.cookieValue
+        }).then(function(res) {
+          t.tokens.splice(i, 0, res.data);
+        });
+      }
+    },
+
     beforeDestroy() {
       clearInterval(this.timer);
     },
@@ -109,6 +144,7 @@ export default {
   created() {
     this.apifunction();
     this.timer = setInterval(this.apifunction, 1);
+    this.tokenfunction();
   }
 };
 </script>

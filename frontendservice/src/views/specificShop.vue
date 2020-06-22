@@ -146,10 +146,10 @@ export default {
     deleteToken() {
       const t = this;
       axios
-        .delete(
-          "http://penguin.termina.linux.test:8085/token?tokenId=" +
-            t.tokeninfo.token.tokenId
-        )
+        .put("http://penguin.termina.linux.test:8085/token", {
+          tokenId: t.tokeninfo.token.tokenId,
+          tokenStatus: "CANCELLED_BY_CUSTOMER"
+        })
         .then(function(res) {
           t.allCookieList.splice(
             t.allCookieList.indexOf(t.tokeninfo.token.tokenId)

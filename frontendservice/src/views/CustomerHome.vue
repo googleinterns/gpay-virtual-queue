@@ -129,12 +129,12 @@ h1 {
 }
 
 #searchBar {
-  border-width: 0.2em;
-  border-radius: 0.7em;
-  padding: 0.2em 0.2em 0.2em 0.5em;
-  width: 40em;
   border-color: #000;
+  border-radius: 0.7em;
+  border-width: 0.2em;
+  padding: 0.2em 0.2em 0.2em 0.5em;
   text-align: center;
+  width: 40em;
 }
 
 #searchBarWrap {
@@ -143,9 +143,9 @@ h1 {
 }
 
 .subtitle {
+  color: rgb(19, 15, 15);
   font-size: 1rem;
   text-align: justify;
-  color: rgb(19, 15, 15);
 }
 
 .table {
@@ -158,17 +158,17 @@ h1 {
 }
 
 .title {
-  font-size: 1.5rem;
   color: white;
+  font-size: 1.5rem;
 }
 
 #wrap {
-  width: 100%;
+  float: left;
   height: auto;
   margin: 0px;
   padding: 0px;
-  float: left;
   text-align: center;
+  width: 100%;
 }
 </style>
 

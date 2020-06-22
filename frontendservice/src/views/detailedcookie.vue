@@ -57,11 +57,11 @@ div {
 }
 
 .subtitle {
-  font-size: 1rem;
-  text-align: justify;
-  display: flex;
   align-items: center;
+  display: flex;
+  font-size: 1rem;
   justify-content: center;
+  text-align: justify;
 }
 
 .three {
@@ -69,11 +69,11 @@ div {
 }
 
 .title {
-  font-size: 1.5rem;
-  text-align: center;
-  display: flex;
   align-items: center;
+  display: flex;
+  font-size: 1.5rem;
   justify-content: center;
+  text-align: center;
 }
 
 p {

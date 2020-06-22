@@ -75,40 +75,28 @@ export default {
     cookieinfo,
     cookieackno
   },
+
   data() {
     return {
       isLoggedIn: false,
-      timer: "",
       shops: []
     };
   },
 
-  methods: {
-    apifunction() {
-      var user = firebase.auth().currentUser;
-      if (user) {
-        this.isLoggedIn = true;
-      }
-      const t = this;
+  created() {
+    this.apifunction();
+    var user = firebase.auth().currentUser;
+    if (user) {
+      this.isLoggedIn = true;
+    }
+    setInterval(function() {
+      const self = this;
       axios
         .get("http://penguin.termina.linux.test:8085/shops")
         .then(function(res) {
-          t.shops = res.data.shops;
+          self.shops = res.data.shops;
         });
-    },
-
-    beforeDestroy() {
-      clearInterval(this.timer);
-    },
-
-    cancelAutoUpdate() {
-      clearInterval(this.timer);
-    }
-  },
-
-  created() {
-    this.apifunction();
-    this.timer = setInterval(this.apifunction, 1);
+    }, 2000 /*milliseconds */);
   }
 };
 </script>

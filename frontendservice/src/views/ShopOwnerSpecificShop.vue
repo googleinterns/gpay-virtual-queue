@@ -105,7 +105,7 @@ export default {
   text-align: center;
 }
 .table tbody tr td button:hover {
-  cursor: pointer;
   background-color: aquamarine;
+  cursor: pointer;
 }
 </style>

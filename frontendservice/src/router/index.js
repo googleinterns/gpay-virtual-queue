@@ -103,6 +103,11 @@ const router = new VueRouter({
         requiresVerified: true,
       },
     },
+    {
+      path: "/shops/:Id",
+      name: "specificShop",
+      component: () => import("@/views/specificShop"),
+    },
   ],
 });
 

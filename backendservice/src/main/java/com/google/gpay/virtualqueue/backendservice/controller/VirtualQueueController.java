@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopResponse;
+import com.google.gpay.virtualqueue.backendservice.proto.GetWaitingTimeResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetAllShopsResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetNewTokenResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.GetShopResponse;
@@ -49,6 +50,11 @@ public class VirtualQueueController {
     @PostMapping("/shop")
     public CreateShopResponse addShop(@RequestBody CreateShopRequest createShopRequest) {
         return virtualQueueService.createShop(createShopRequest);
+    }
+
+    @GetMapping("/waitingtime")
+    public GetWaitingTimeResponse getWaitingTime() {
+        return virtualQueueService.getWaitingTime();
     }
 
     @GetMapping("/token/{shopId}")

@@ -33,6 +33,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ContextConfiguration(classes = InMemoryVirtualQueueRepository.class)
 public class InMemoryVirtualQueueRepositoryTest {
     InMemoryVirtualQueueRepository inMemoryVirtualQueueRepository = new InMemoryVirtualQueueRepository();
+
     @BeforeEach
     public void setUp(){
         inMemoryVirtualQueueRepository.getTokenMap().clear();
@@ -45,8 +46,10 @@ public class InMemoryVirtualQueueRepositoryTest {
     @Test
     public void testCreateShop() throws Exception {
         CreateShopRequest shop = new CreateShopRequest("uid", "shopName", "address", "+919012192800", "type");
+
         UUID shopId = inMemoryVirtualQueueRepository.createShop(shop);
         int size = inMemoryVirtualQueueRepository.getShopMap().size();
+        
         assertEquals("size ", 1, size);
         assertEquals("Shop Owner Id ", "uid", inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopOwnerId());
         assertEquals("Shop Name ", "shopName", inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopName());

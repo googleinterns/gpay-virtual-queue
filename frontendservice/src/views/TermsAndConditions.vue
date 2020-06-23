@@ -12,13 +12,13 @@ specific language governing permissions and limitations under the License. */
     <h1 id="terms-and-conditions">Terms and Conditions</h1>
     <!-- TODO : ikoder - Add more Terms and Conditions. -->
     <article class="message is-info">
-      <div class="message-body">fskdjh</div>
+      <div class="message-body">Restriction on App Abuses</div>
     </article>
     <article class="message is-info">
-      <div class="message-body">dhfbvdhbfv</div>
+      <div class="message-body">Retention of Right to Terminate/Ban Users</div>
     </article>
     <article class="message is-info">
-      <div class="message-body">dhfbvdhbfv</div>
+      <div class="message-body">Disclaimer of Warranties and Liabilities</div>
     </article>
   </div>
 </template>

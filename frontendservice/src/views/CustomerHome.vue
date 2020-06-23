@@ -11,7 +11,6 @@ specific language governing permissions and limitations under the License. */
     <NavBarCustomer></NavBarCustomer>
     <cookieinfo></cookieinfo>
     <cookieackno></cookieackno>
-    <div>{{check}}</div>
     <div class="tile is-ancestor">
       <div v-for="token in tokens" :key="token">
         <div class="tile is-parent">
@@ -101,17 +100,15 @@ export default {
       shops: [],
       allCookieList: [],
       cookieValue: "",
-      tokens: [],
-      check: 0
+      tokens: []
     };
   },
 
   methods: {
     tokenfunction() {
-      this.check = 5;
       const self = this;
       self.allCookieList = JSON.parse(Cookie.get("tokenid"));
-      for (var i = 0, ln = t.allCookieList.length; i < ln; i++) {
+      for (var i = 0, ln = self.allCookieList.length; i < ln; i++) {
         self.allCookieList = JSON.parse(Cookie.get("tokenid"));
         self.cookieValue = self.allCookieList[i].toString();
         axios({

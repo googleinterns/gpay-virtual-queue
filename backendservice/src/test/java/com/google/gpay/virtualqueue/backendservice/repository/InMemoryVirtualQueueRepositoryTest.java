@@ -17,8 +17,15 @@ limitations under the License.
 package com.google.gpay.virtualqueue.backendservice.repository;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import com.google.gpay.virtualqueue.backendservice.model.Shop;
+import com.google.gpay.virtualqueue.backendservice.model.Token;
+import com.google.gpay.virtualqueue.backendservice.model.Shop.ShopStatus;
+import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import static com.google.gpay.virtualqueue.backendservice.repository.InMemoryVirtualQueueRepository.WAITING_TIME_MINS;
 
@@ -69,5 +76,21 @@ public class InMemoryVirtualQueueRepositoryTest {
         long waitingTime = inMemoryVirtualQueueRepository.getWaitingTime();
         
         assertEquals("Waiting Time per customer is", WAITING_TIME_MINS, waitingTime);
+    }
+
+    @Test
+    public void testGetTokens() throws Exception {
+        UUID shopId = UUID.randomUUID();
+        Shop shop = new Shop();
+        shop.setStatus(ShopStatus.ACTIVE);
+        inMemoryVirtualQueueRepository.getShopMap().put(shopId, shop);
+        
+        List<Token> tokens = new ArrayList<>();
+        tokens.add(new Token(UUID.randomUUID(), shopId, 1, Status.ACTIVE));
+        inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().put(shopId, tokens);
+
+        List<Token> getTokensResponse = inMemoryVirtualQueueRepository.getTokens(shopId);
+
+        assertEquals("Size of token list", getTokensResponse.size(), inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
     }
 }

@@ -26,21 +26,24 @@ limitations under the License.
         </thead>
         <tbody>
           <tr v-for="shop in filteredShops" :key="shop['shop'].shopId">
-            <td>
+            <td v-if="shop['shop'].status=='ACTIVE'">
               <a v-bind:href="'/shop-owner/shops/'+ shop['shop'].shopId" :shopId="shop['shop'].shopId">{{shop['shop'].shopName}}</a>
+            </td>
+            <td v-if="shop['shop'].status!='ACTIVE'">
+              <p>{{shop['shop'].shopName}}</p>
             </td>
             <td>{{shop['shop'].shopType}}</td>
             <td v-if="shop['shop'].status=='ACTIVE'">
               <a v-bind:href="'/shop-owner/shops/'+ shop.shopId" :id="shop.shopId">{{shop.numberOfActiveTokens}}</a>
             </td>
             <td v-if="shop['shop'].status!='ACTIVE'">
-              <a v-bind:href="'/shop-owner/shops/'+ shop.shopId" :id="shop.shopId">0</a>
+              <p>0</p>
             </td>
             <td v-if="shop['shop'].status=='ACTIVE'">
               <button @click="deleteshop(shop['shop'].shopId)">x</button>
             </td>
             <td v-if="shop['shop'].status!='ACTIVE'">
-              <button>restore</button>
+              <button @click="restoreshop(shop['shop'].shopId)">restore</button>
             </td>
           </tr>
         </tbody>
@@ -89,6 +92,38 @@ export default {
             .put("http://penguin.termina.linux.test:8080/shop/", {
               shopId: id,
               shopStatus: "DELETED"
+            })
+            .then();
+          this.renderComponent = false;
+          var self = this;
+          // TODO : ikoder - Add error handling in case of server error.
+          this.$nextTick(() => {
+            axios
+              .get(
+                "http://penguin.termina.linux.test:8080/shop/" +
+                  firebase.auth().currentUser.uid
+              )
+              .then(response => (self.shopList = response.data.shops));
+            self.renderComponent = true;
+          });
+        }
+      });
+    },
+    restoreshop: function(id) {
+      Swal.fire({
+        title: "Are you sure you want to restore it?",
+        text: "",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, restore it!"
+      }).then(result => {
+        if (result.isConfirmed == true) {
+          axios
+            .put("http://penguin.termina.linux.test:8080/shop/", {
+              shopId: id,
+              shopStatus: "ACTIVE"
             })
             .then();
           this.renderComponent = false;

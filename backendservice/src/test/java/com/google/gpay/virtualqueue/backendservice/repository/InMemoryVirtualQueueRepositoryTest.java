@@ -82,12 +82,13 @@ public class InMemoryVirtualQueueRepositoryTest {
 
         // Act
         Token newToken = inMemoryVirtualQueueRepository.getNewToken(shopId);
+        
+        // Assert
         UUID tokenId = newToken.getTokenId();
         int expectedTokenMapSize = inMemoryVirtualQueueRepository.getTokenMap().size();
         Integer expectedTokenNumber = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber();
         UUID expectedShopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
         
-        // Assert
         assertEquals("Size of tokenMap", TOKEN_MAP_SIZE, expectedTokenMapSize);
         assertEquals("Token number is", TOKEN_NUMBER, expectedTokenNumber);
         assertEquals("Shop id is", shopId, expectedShopId);

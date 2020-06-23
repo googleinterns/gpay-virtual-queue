@@ -106,7 +106,7 @@ export default {
     getShopInfo() {
       const self = this;
       axios
-        .get("http://penguin.termina.linux.test:8085/shops/" + this.shopid)
+        .get("http://penguin.termina.linux.test:8080/shops/" + this.shopid)
         .then(function(res) {
           self.shopinfo = res.data;
           self.allCookieList = JSON.parse(Cookie.get("tokenid"));

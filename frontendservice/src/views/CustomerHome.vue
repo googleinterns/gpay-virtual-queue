@@ -29,7 +29,7 @@ specific language governing permissions and limitations under the License. */
     <div id="searchBarWrap" style="margin: 20px 0">
       <div class="field has-addons">
         <div class="form-group has-feedback">
-          <i class="fa fa-search" style="font-size:32px"></i>
+          <i class="fa fa-search" style="font-size: 32px;"></i>
           <input id="searchBar" class="input" type="text" placeholder="Find a shop" />
         </div>
       </div>
@@ -57,17 +57,20 @@ specific language governing permissions and limitations under the License. */
             <th>Active Customers</th>
           </thead>
           <tbody>
-            <tr v-for="shop in shops" :key="shop.shopId">
+            <tr v-for="shop in shops" :key="shop.shop.shopId">
               <td>
                 <a>
                   <router-link
-                    v-bind:to="{name: 'specificShop', params: {Id: shop.shop.shopId} }"
-                  >{{shop.shop.shopName}}</router-link>
+                    v-bind:to="{
+                      name: 'specificShop',
+                      params: { Id: shop.shop.shopId },
+                    }"
+                  >{{ shop.shop.shopName }}</router-link>
                 </a>
               </td>
-              <td>{{shop.shop.shopType}}</td>
-              <td>{{shop.shop.address}}</td>
-              <td>{{shop.numberOfActiveTokens}}</td>
+              <td>{{ shop.shop.shopType }}</td>
+              <td>{{ shop.shop.address }}</td>
+              <td>{{ shop.numberOfActiveTokens }}</td>
             </tr>
           </tbody>
         </table>
@@ -90,6 +93,7 @@ export default {
     cookieinfo,
     cookieackno
   },
+
   data() {
     return {
       isLoggedIn: false,
@@ -101,20 +105,7 @@ export default {
     };
   },
 
-  methods: {
-    apifunction() {
-      var user = firebase.auth().currentUser;
-      if (user) {
-        this.isLoggedIn = true;
-      }
-      const t = this;
-      axios
-        .get("http://penguin.termina.linux.test:8085/shops")
-        .then(function(res) {
-          t.shops = res.data.shops;
-        });
-    },
-
+ methods: {
     tokenfunction() {
       const t = this;
       t.allCookieList = JSON.parse(Cookie.get("tokenid"));
@@ -142,8 +133,18 @@ export default {
   },
 
   created() {
-    this.apifunction();
-    this.timer = setInterval(this.apifunction, 1);
+    var user = firebase.auth().currentUser;
+    if (user) {
+      this.isLoggedIn = true;
+    }
+    var self = this;
+    setInterval(function() {
+      axios
+        .get("http://penguin.termina.linux.test:8080/shops")
+        .then(function(res) {
+          self.shops = res.data.shops;
+        });
+    }, 2000);
     this.tokenfunction();
   }
 };
@@ -207,4 +208,3 @@ h1 {
   width: 100%;
 }
 </style>
-

@@ -19,6 +19,7 @@ package com.google.gpay.virtualqueue.backendservice.repository;
 import static org.junit.Assert.assertEquals;
 import java.util.UUID;
 
+import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
 import static com.google.gpay.virtualqueue.backendservice.repository.InMemoryVirtualQueueRepository.WAITING_TIME_MINS;
 
@@ -40,9 +41,10 @@ public class InMemoryVirtualQueueRepositoryTest {
     private static final String SHOP_ADDRESS = "address";
     private static final String PHONE_NUMBER = "+919012192800";
     private static final String SHOP_TYPE = "shopType";
+    private static final Integer TOKEN_NUMBER = 1;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         inMemoryVirtualQueueRepository.getTokenMap().clear();
         inMemoryVirtualQueueRepository.getShopMap().clear();
         inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().clear();
@@ -63,11 +65,27 @@ public class InMemoryVirtualQueueRepositoryTest {
         assertEquals("Shop Phone Number ", PHONE_NUMBER, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getPhoneNumber());
         assertEquals("Shop Type ", SHOP_TYPE, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopType());
     }
-    
+
     @Test
     public void testGetWaitingTime() throws Exception {
         long waitingTime = inMemoryVirtualQueueRepository.getWaitingTime();
-        
+
         assertEquals("Waiting Time per customer is", WAITING_TIME_MINS, waitingTime);
+    }
+
+    @Test
+    public void testGetNewToken() {
+        CreateShopRequest shop = new CreateShopRequest(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
+
+        UUID shopId = inMemoryVirtualQueueRepository.createShop(shop);
+        Token newToken = inMemoryVirtualQueueRepository.getNewToken(shopId);
+        UUID tokenId = newToken.getTokenId();
+        int tokenMapSize = inMemoryVirtualQueueRepository.getTokenMap().size();
+        Integer tokenNumber = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber();
+        UUID shopIdActual = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
+
+        assertEquals("Size of tokenMap", 1, tokenMapSize);
+        assertEquals("Token number is", TOKEN_NUMBER, tokenNumber);
+        assertEquals("Shop id is", shopId, shopIdActual);
     }
 }

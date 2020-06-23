@@ -57,7 +57,7 @@ public class InMemoryVirtualQueueRepositoryTest {
         inMemoryVirtualQueueRepository.getShopOwnerMap().clear();
     }
 
-    public UUID AddShopToRepository(){
+    private UUID addShopToRepository(){
         Shop shop = new Shop(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         shop.setStatus(ShopStatus.ACTIVE);
         UUID shopId = UUID.randomUUID();
@@ -65,7 +65,7 @@ public class InMemoryVirtualQueueRepositoryTest {
         return shopId;
     }
 
-    public void AddTokenListToShop(UUID shopId){
+    private void addTokenListToShop(UUID shopId){
         List<Token> tokens = new ArrayList<>();
         tokens.add(new Token(UUID.randomUUID(), shopId, 1, Status.ACTIVE));
         inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().put(shopId, tokens);
@@ -98,10 +98,8 @@ public class InMemoryVirtualQueueRepositoryTest {
     @Test
     public void testGetTokens_forShop_success() throws Exception {
         // Arrange
-        // Add Shop
-        UUID shopId = AddShopToRepository();
-        // Add list of tokens
-        AddTokenListToShop(shopId);
+        UUID shopId = addShopToRepository();
+        addTokenListToShop(shopId);
 
         // Act
         List<Token> expectedGetTokensResponseList = inMemoryVirtualQueueRepository.getTokens(shopId);

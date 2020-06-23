@@ -47,9 +47,11 @@ limitations under the License.
   </div>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
 import shopOwnerNavbar from "../components/NavBar-ShopOwner";
 import axios from "axios";
+import Swal from "sweetalert2";
 export default {
   name: "ShopOwnerSpecificShop",
   components: {
@@ -63,21 +65,33 @@ export default {
       renderComponent: true
     };
   },
-  methods:{
+  methods: {
     deleteToken: function(tokenId) {
       // TODO : ikoder - error handling in case of server error.
-      axios
-        .put("http://penguin.termina.linux.test:8080/token/", {
-          tokenId: tokenId,
-          tokenStatus: "CANCELLED_BY_SHOP_OWNER"
-        });
-      this.renderComponent = false;
-      var self = this;
-      this.$nextTick(() => {
-        axios
-          .get("http://penguin.termina.linux.test:8080/tokens/" + self.id)
-          .then(response => (self.tokenList = response.data['tokenList']));
-        self.renderComponent = true;
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will not be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(result => {
+        if (result.isConfirmed == true) {
+          console.log("hi there!");
+          axios.put("http://penguin.termina.linux.test:8080/token/", {
+            tokenId: tokenId,
+            tokenStatus: "CANCELLED_BY_SHOP_OWNER"
+          });
+          this.renderComponent = false;
+          var self = this;
+          this.$nextTick(() => {
+            axios
+              .get("http://penguin.termina.linux.test:8080/tokens/" + self.id)
+              .then(response => (self.tokenList = response.data["tokenList"]));
+            self.renderComponent = true;
+          });
+        }
       });
     }
   },
@@ -90,7 +104,7 @@ export default {
     setInterval(function() {
       axios
         .get("http://penguin.termina.linux.test:8080/tokens/" + self.id)
-        .then(response => (self.tokenList = response.data['tokenList']));
+        .then(response => (self.tokenList = response.data["tokenList"]));
     }, 2000 /* milliseconds */);
   }
 };

@@ -43,10 +43,13 @@ specific language governing permissions and limitations under the License. */
           >Cancel token</button>
         </p>
       </footer>
-      <div v-if="flag==true">
+      <div v-if="flag">
         <div v-if="tokeninfo.customersAhead == 0">
           <shopTurn></shopTurn>
         </div>
+      </div>
+      <div v-if="statusFlag">
+        <statusUpdate></statusUpdate>
       </div>
       <div v-if="flag">
         <div class="panel panel-default">
@@ -61,7 +64,7 @@ specific language governing permissions and limitations under the License. */
               <tbody>
                 <tr>
                   <td>
-                    <a>{{tokeninfo.token.tokenNumber}}</a>
+                    <a>{{tokeninfo.token.tokenId}}</a>
                   </td>
                 </tr>
               </tbody>
@@ -80,6 +83,7 @@ import cookieackno from "@/components/cookieackno";
 import axios from "axios";
 import shopTurn from "@/components/shopTurn";
 import Cookie from "js-cookie";
+import statusUpdate from "@/components/statusUpdate";
 
 export default {
   name: "specificShop",
@@ -87,7 +91,8 @@ export default {
     NavBarCustomer,
     cookieinfo,
     cookieackno,
-    shopTurn
+    shopTurn,
+    statusUpdate
   },
   data() {
     return {
@@ -98,7 +103,8 @@ export default {
       tokeninfo: null,
       allCookieList: [],
       cookieValue: "",
-      token: null
+      token: null,
+      statusFlag: false
     };
   },
 
@@ -116,12 +122,18 @@ export default {
             axios({
               method: "GET",
               url:
-                "http://penguin.termina.linux.test:8085/token/" +
+                "http://penguin.termina.linux.test:8080/token/" +
                 self.cookieValue
             }).then(function(res) {
               if (res.data.token.shopId == self.shopid) {
-                self.flag = true;
-                self.tokeninfo = res.data;
+                if (res.data.token.status == "ACTIVE") {
+                  self.flag = true;
+                  self.tokeninfo = res.data;
+                }
+                if (res.data.token.status == "CANCELLED_BY_SHOP_OWNER") {
+                  self.flag = false;
+                  self.statusFlag = true;
+                }
               }
             });
           }
@@ -132,7 +144,7 @@ export default {
       const self = this;
       axios({
         method: "POST",
-        url: "http://penguin.termina.linux.test:8085/tokens/" + this.shopid
+        url: "http://penguin.termina.linux.test:8080/tokens/" + this.shopid
       }).then(function(res) {
         self.token = res.data.token;
         self.allCookieList.push(self.token.tokenId);
@@ -147,7 +159,7 @@ export default {
     deleteToken() {
       const self = this;
       axios
-        .put("http://penguin.termina.linux.test:8085/token", {
+        .put("http://penguin.termina.linux.test:8080/token", {
           tokenId: self.tokeninfo.token.tokenId,
           tokenStatus: "CANCELLED_BY_CUSTOMER"
         })

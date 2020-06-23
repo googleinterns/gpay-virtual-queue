@@ -105,7 +105,7 @@ export default {
     };
   },
 
- methods: {
+  methods: {
     tokenfunction() {
       const t = this;
       t.allCookieList = JSON.parse(Cookie.get("tokenid"));
@@ -116,7 +116,7 @@ export default {
         t.cookieValue = t.allCookieList[i].toString();
         axios({
           method: "GET",
-          url: "http://penguin.termina.linux.test:8085/token/" + t.cookieValue
+          url: "http://penguin.termina.linux.test:8080/token/" + t.cookieValue
         }).then(function(res) {
           t.tokens.splice(i, 0, res.data);
         });
@@ -144,7 +144,7 @@ export default {
         .then(function(res) {
           self.shops = res.data.shops;
         });
-    }, 2000);
+    }, 200);
     this.tokenfunction();
   }
 };

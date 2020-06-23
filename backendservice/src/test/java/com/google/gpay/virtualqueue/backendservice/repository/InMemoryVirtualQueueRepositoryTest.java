@@ -74,18 +74,18 @@ public class InMemoryVirtualQueueRepositoryTest {
     }
 
     @Test
-    public void testGetNewToken() {
+    public void testGetNewToken_success() {
         CreateShopRequest shop = new CreateShopRequest(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
 
         UUID shopId = inMemoryVirtualQueueRepository.createShop(shop);
         Token newToken = inMemoryVirtualQueueRepository.getNewToken(shopId);
         UUID tokenId = newToken.getTokenId();
-        int tokenMapSize = inMemoryVirtualQueueRepository.getTokenMap().size();
-        Integer tokenNumber = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber();
-        UUID shopIdActual = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
+        int actualTokenMapSize = inMemoryVirtualQueueRepository.getTokenMap().size();
+        Integer actualTokenNumber = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber();
+        UUID actualShopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
 
-        assertEquals("Size of tokenMap", 1, tokenMapSize);
-        assertEquals("Token number is", TOKEN_NUMBER, tokenNumber);
-        assertEquals("Shop id is", shopId, shopIdActual);
+        assertEquals("Size of tokenMap", 1, actualTokenMapSize);
+        assertEquals("Token number is", TOKEN_NUMBER, actualTokenNumber);
+        assertEquals("Shop id is", shopId, actualShopId);
     }
 }

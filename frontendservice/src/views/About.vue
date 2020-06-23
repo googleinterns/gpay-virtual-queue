@@ -8,7 +8,7 @@ specific language governing permissions and limitations under the License. */
 
 <template>
   <div class="about">
-    <h1>Virtual Queues</h1>
+    <h1 class="header">Virtual Queues</h1>
     <div class="tile is-ancestor">
       <div class="tile is-parent">
         <article class="tile is-child box one">
@@ -81,6 +81,9 @@ specific language governing permissions and limitations under the License. */
     <a v-if="isLoggedIn" class="button">
       <router-link to="/shop-owner">Continue to Home</router-link>
     </a>
+    <div>
+      <a v-bind:href="link" class="button share"><i class="fa fa-whatsapp"></i>Share on Whatsapp!</a>
+    </div>
   </div>
 </template>
 
@@ -94,6 +97,7 @@ export default {
       isLoggedIn: false,
       currentUser: false,
       isVerified: false,
+      link: "https://api.whatsapp.com/send?text="+window.location.href
     };
   },
   created() {
@@ -116,12 +120,12 @@ export default {
 .box:hover {
   opacity: 0.9;
 }
-.title {
-  font-size: 1.5rem;
+div {
+  padding: 1.25%;
 }
-.subtitle {
-  font-size: 1rem;
-  text-align: justify;
+a {
+  color: white;
+  background: purple;
 }
 .one {
   background: rgb(219, 68, 55);
@@ -135,19 +139,22 @@ export default {
 .four {
   background: rgb(15, 157, 88);
 }
-h1 {
+.header {
   color: purple;
   font-size: 3rem;
   text-align: center;
 }
-p {
+.share {
   color: white;
+  background: #4FCE5D;
 }
-div {
-  padding: 1.25%;
-}
-a {
+.subtitle {
   color: white;
-  background: purple;
+  font-size: 1rem;
+  text-align: justify;
+}
+.title {
+  color: white;
+  font-size: 1.5rem;
 }
 </style>

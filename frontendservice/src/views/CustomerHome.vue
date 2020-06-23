@@ -11,16 +11,12 @@ specific language governing permissions and limitations under the License. */
     <NavBarCustomer></NavBarCustomer>
     <cookieinfo></cookieinfo>
     <cookieackno></cookieackno>
+    <a>TODO: Implement responsive search</a>
     <div id="searchBarWrap" style="margin: 20px 0;">
       <div class="field has-addons">
         <div class="form-group has-feedback">
           <i class="fa fa-search" style="font-size: 32px;"></i>
-          <input
-            id="searchBar"
-            class="input"
-            type="text"
-            placeholder="Find a shop"
-          />
+          <input id="searchBar" class="input" type="text" placeholder="Find a shop" />
         </div>
       </div>
     </div>
@@ -55,8 +51,7 @@ specific language governing permissions and limitations under the License. */
                       name: 'specificShop',
                       params: { Id: shop.shop.shopId },
                     }"
-                    >{{ shop.shop.shopName }}</router-link
-                  >
+                  >{{ shop.shop.shopName }}</router-link>
                 </a>
               </td>
               <td>{{ shop.shop.shopType }}</td>
@@ -82,13 +77,13 @@ export default {
   components: {
     NavBarCustomer,
     cookieinfo,
-    cookieackno,
+    cookieackno
   },
 
   data() {
     return {
       isLoggedIn: false,
-      shops: [],
+      shops: []
     };
   },
 
@@ -98,14 +93,14 @@ export default {
       this.isLoggedIn = true;
     }
     var self = this;
-    setInterval(function () {
+    setInterval(function() {
       axios
         .get("http://penguin.termina.linux.test:8080/shops")
-        .then(function (res) {
+        .then(function(res) {
           self.shops = res.data.shops;
         });
     }, 500 /* milliseconds */);
-  },
+  }
 };
 </script>
 

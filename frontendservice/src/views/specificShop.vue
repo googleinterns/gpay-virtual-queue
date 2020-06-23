@@ -129,8 +129,14 @@ export default {
                 if (res.data.token.status == "ACTIVE") {
                   self.flag = true;
                   self.tokeninfo = res.data;
-                }
-                //TODO: change the value of tokenStatus flag if the token was deleted by the shop owner.
+                } else {
+                  self.allCookieList.splice(
+                    self.allCookieList.indexOf(res.data.token.tokenId)
+                  );
+                  Cookie.set("tokenid", JSON.stringify(self.allCookieList));
+                  self.flag = false;
+                  self.statusFlag = true;
+                } //TODO: change the value of tokenStatus flag if the token was deleted by the shop owner.
               }
             });
           }
@@ -148,6 +154,7 @@ export default {
         Cookie.set("tokenid", JSON.stringify(self.allCookieList), {
           expires: 1
         });
+        self.statusFlag = false;
         self.flag = true;
         self.getshopinfo();
       });
@@ -181,7 +188,7 @@ export default {
 
   created() {
     this.getShopInfo();
-    this.timer = setInterval(this.getShopInfo, 1 /*1 second*/);
+    this.timer = setInterval(this.getShopInfo, 0.1 /*1 second*/);
   }
 };
 </script>
@@ -221,4 +228,8 @@ h1 {
 .table tbody tr td {
   text-align: center;
 }
+
+/*      <div v-if="statusFlag">
+        <statusUpdate></statusUpdate>
+      </div> */
 </style>

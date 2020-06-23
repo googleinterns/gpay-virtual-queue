@@ -70,7 +70,7 @@ export default {
     getShopInfo() {
       const t = this;
       axios
-        .get("http://penguin.termina.linux.test:8085/shops/" + this.shopid)
+        .get("http://penguin.termina.linux.test:8080/shops/" + this.shopid)
         .then(function(res) {
           t.shopinfo = res.data;
           //TODO: write code related to tokenInfo here.

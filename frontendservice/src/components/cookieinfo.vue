@@ -7,35 +7,21 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License. */
 
 <template>
-  <div id="app">
-    <router-view />
+  <div>
+    <div class="notification is-danger is-light">
+      <button class="delete" onclick="this.parentElement.style.display='none'"></button>
+      If there is no activity of taking tokens for
+      <strong>1 day</strong>
+      continuously, the information of your previous tokens will be erased from your browser.
+      <a>
+        <router-link to="/detailedcookie">Click here for the detailed Information</router-link>
+      </a>
+    </div>
   </div>
 </template>
 
 <script>
-import firebase from "firebase";
-
 export default {
-  name: "App"
+  name: "cookieinfo"
 };
 </script>
-
-<style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>

@@ -7,48 +7,158 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License. */
 
 <template>
-  <div class="home">
-    <h1>Welcome customer!</h1>
-    <p>
-      This page will be Home page for the customers. 
-    </p>
-    <p>
-      ToDo: Implement CustomerHome page features including NavBar, Search Bar, MyTokens and AllShops.
-    </p>  
-    <div>
-      <router-link to="/my-tokens">My Tokens</router-link>
+  <div v-if="!isLoggedIn">
+    <NavBarCustomer></NavBarCustomer>
+    <cookieinfo></cookieinfo>
+    <cookieackno></cookieackno>
+    <a>TODO: Implement responsive search</a>
+    <div id="searchBarWrap" style="margin: 20px 0;">
+      <div class="field has-addons">
+        <div class="form-group has-feedback">
+          <i class="fa fa-search" style="font-size: 32px;"></i>
+          <input id="searchBar" class="input" type="text" placeholder="Find a shop" />
+        </div>
+      </div>
     </div>
-    <div v-if="!isLoggedIn">
-      <router-link to="/about">Back</router-link>
+    <div id="wrap" class="control">
+      <div class="select">
+        <select>
+          <option>Select option</option>
+          <option>Food</option>
+          <option>Furniture</option>
+          <option>Electronics</option>
+          <option>Stationary</option>
+          <option>Jewellery</option>
+          <option>Agriculture</option>
+        </select>
+      </div>
     </div>
-    <br />
+    <div class="panel panel-default">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <th>Shop Name</th>
+            <th>Shop Type</th>
+            <th>Address</th>
+            <th>Active Customers</th>
+          </thead>
+          <tbody>
+            <tr v-for="shop in shops" :key="shop.shop.shopId">
+              <td>
+                <a>
+                  <router-link
+                    v-bind:to="{
+                      name: 'specificShop',
+                      params: { Id: shop.shop.shopId },
+                    }"
+                  >{{ shop.shop.shopName }}</router-link>
+                </a>
+              </td>
+              <td>{{ shop.shop.shopType }}</td>
+              <td>{{ shop.shop.address }}</td>
+              <td>{{ shop.numberOfActiveTokens }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
-
+import NavBarCustomer from "@/components/NavBarCustomer";
+import cookieinfo from "@/components/cookieinfo";
+import cookieackno from "@/components/cookieackno";
+import axios from "axios";
+import Cookie from "js-cookie";
 export default {
   name: "customerHome",
+  components: {
+    NavBarCustomer,
+    cookieinfo,
+    cookieackno
+  },
 
   data() {
     return {
       isLoggedIn: false,
+      shops: []
     };
   },
+
   created() {
     var user = firebase.auth().currentUser;
     if (user) {
       this.isLoggedIn = true;
     }
-  },
+    var self = this;
+    setInterval(function() {
+      axios
+        .get("http://penguin.termina.linux.test:8080/shops")
+        .then(function(res) {
+          self.shops = res.data.shops;
+        });
+    }, 2000 /* milliseconds */);
+  }
 };
 </script>
 
 <style scoped>
-a {
-  margin-top: 1%;
-  width: 10%;
-  cursor: pointer;
+.box {
+  opacity: 0.7;
+}
+
+.box:hover {
+  opacity: 0.9;
+}
+
+h1 {
+  color: #000;
+  font-size: 2rem;
+  text-align: center;
+}
+
+#searchBar {
+  border-color: #000;
+  border-radius: 0.7em;
+  border-width: 0.2em;
+  padding: 0.2em 0.2em 0.2em 0.5em;
+  text-align: center;
+  width: 40em;
+}
+
+#searchBarWrap {
+  display: flex;
+  justify-content: center;
+}
+
+.subtitle {
+  color: rgb(19, 15, 15);
+  font-size: 1rem;
+  text-align: justify;
+}
+
+.table {
+  width: 100%;
+}
+
+.table thead th,
+.table tbody tr td {
+  text-align: center;
+}
+
+.title {
+  color: white;
+  font-size: 1.5rem;
+}
+
+#wrap {
+  float: left;
+  height: auto;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  width: 100%;
 }
 </style>

@@ -7,35 +7,31 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License. */
 
 <template>
-  <div id="app">
-    <router-view />
+  <div id="footer">
+    <div class="notification is-success is-light">
+      <button class="delete" onclick="this.parentElement.style.display='none'"></button>
+      We use
+      <strong>Cookies</strong>
+      that allow our website to recognize your device
+      and store details about your tokens.
+      The cookie is set once you take a token.
+      <a>
+        <router-link to="/detailedcookie">Click here for the detailed Information</router-link>
+      </a>
+    </div>
   </div>
 </template>
 
-<script>
-import firebase from "firebase";
-
-export default {
-  name: "App"
-};
-</script>
-
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-#nav a.router-link-exact-active {
-  color: #42b983;
+#footer {
+  bottom: 0;
+  position: fixed;
+  width: 100%;
 }
 </style>
+
+<script>
+export default {
+  name: "cookieackno"
+};
+</script>

@@ -78,7 +78,6 @@ export default {
         confirmButtonText: "Yes, delete it!"
       }).then(result => {
         if (result.isConfirmed == true) {
-          console.log("hi there!");
           axios.put("http://penguin.termina.linux.test:8080/token/", {
             tokenId: tokenId,
             tokenStatus: "CANCELLED_BY_SHOP_OWNER"

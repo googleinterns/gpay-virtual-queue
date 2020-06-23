@@ -76,9 +76,9 @@ public class InMemoryVirtualQueueRepositoryTest {
     @Test
     public void testGetNewToken_success() {
         CreateShopRequest shop = new CreateShopRequest(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
-
         UUID shopId = inMemoryVirtualQueueRepository.createShop(shop);
         Token newToken = inMemoryVirtualQueueRepository.getNewToken(shopId);
+        
         UUID tokenId = newToken.getTokenId();
         int actualTokenMapSize = inMemoryVirtualQueueRepository.getTokenMap().size();
         Integer actualTokenNumber = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber();

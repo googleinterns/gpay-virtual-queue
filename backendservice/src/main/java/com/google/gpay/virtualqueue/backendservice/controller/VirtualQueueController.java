@@ -58,7 +58,7 @@ public class VirtualQueueController {
         return virtualQueueService.getWaitingTime();
     }
 
-    @GetMapping("/token/{shopId}")
+    @GetMapping("/tokens/{shopId}")
     public GetTokensResponse getTokens(@PathVariable UUID shopId) {
         return virtualQueueService.getTokens(shopId);
     }

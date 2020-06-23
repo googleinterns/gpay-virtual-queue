@@ -79,18 +79,17 @@ public class InMemoryVirtualQueueRepositoryTest {
     }
 
     @Test
-    public void testGetTokens() throws Exception {
+    public void testGetTokens_success() throws Exception {
         UUID shopId = UUID.randomUUID();
         Shop shop = new Shop();
         shop.setStatus(ShopStatus.ACTIVE);
         inMemoryVirtualQueueRepository.getShopMap().put(shopId, shop);
-        
         List<Token> tokens = new ArrayList<>();
         tokens.add(new Token(UUID.randomUUID(), shopId, 1, Status.ACTIVE));
         inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().put(shopId, tokens);
 
-        List<Token> getTokensResponse = inMemoryVirtualQueueRepository.getTokens(shopId);
+        List<Token> expectedGetTokensResponseList = inMemoryVirtualQueueRepository.getTokens(shopId);
 
-        assertEquals("Size of token list", getTokensResponse.size(), inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
+        assertEquals("Size of token list", expectedGetTokensResponseList.size(), inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
     }
 }

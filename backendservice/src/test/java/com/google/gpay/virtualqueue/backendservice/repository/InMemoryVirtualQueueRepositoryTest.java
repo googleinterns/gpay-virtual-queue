@@ -57,12 +57,29 @@ public class InMemoryVirtualQueueRepositoryTest {
         inMemoryVirtualQueueRepository.getShopOwnerMap().clear();
     }
 
+    public UUID AddShopToRepository(){
+        Shop shop = new Shop(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
+        shop.setStatus(ShopStatus.ACTIVE);
+        UUID shopId = UUID.randomUUID();
+        inMemoryVirtualQueueRepository.getShopMap().put(shopId, shop);
+        return shopId;
+    }
+
+    public void AddTokenListToShop(UUID shopId){
+        List<Token> tokens = new ArrayList<>();
+        tokens.add(new Token(UUID.randomUUID(), shopId, 1, Status.ACTIVE));
+        inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().put(shopId, tokens);
+    }
+
     @Test
     public void testCreateShop() throws Exception {
+        // Arrange
         CreateShopRequest shop = new CreateShopRequest(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
 
+        // Act
         UUID shopId = inMemoryVirtualQueueRepository.createShop(shop);
 
+        // Assert
         assertEquals("Size of shopMap", 1, inMemoryVirtualQueueRepository.getShopMap().size());
         assertEquals("Shop Owner Id ", SHOP_OWNER_ID, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopOwnerId());
         assertEquals("Shop Name ", SHOP_NAME, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopName());
@@ -80,16 +97,16 @@ public class InMemoryVirtualQueueRepositoryTest {
 
     @Test
     public void testGetTokens_success() throws Exception {
-        UUID shopId = UUID.randomUUID();
-        Shop shop = new Shop();
-        shop.setStatus(ShopStatus.ACTIVE);
-        inMemoryVirtualQueueRepository.getShopMap().put(shopId, shop);
-        List<Token> tokens = new ArrayList<>();
-        tokens.add(new Token(UUID.randomUUID(), shopId, 1, Status.ACTIVE));
-        inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().put(shopId, tokens);
+        // Arrange
+        // Add Shop
+        UUID shopId = AddShopToRepository();
+        // Add list of tokens
+        AddTokenListToShop(shopId);
 
+        // Act
         List<Token> expectedGetTokensResponseList = inMemoryVirtualQueueRepository.getTokens(shopId);
 
+        // Assert
         assertEquals("Size of token list", expectedGetTokensResponseList.size(), inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
     }
 }

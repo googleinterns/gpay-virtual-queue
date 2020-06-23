@@ -96,7 +96,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     }
 
     @Test
-    public void testGetTokens_success() throws Exception {
+    public void testGetTokens_forShop_success() throws Exception {
         // Arrange
         // Add Shop
         UUID shopId = AddShopToRepository();

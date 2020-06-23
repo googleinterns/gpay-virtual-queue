@@ -24,6 +24,7 @@ import Verify from "@/views/Verify";
 import ForgotPassword from "@/views/ForgotPassword";
 import CreateShop from "@/views/CreateShop"
 import ShopOwnerSpecificShop from "@/views/ShopOwnerSpecificShop"
+import TermsAndConditions from "@/views/TermsAndConditions"
 
 Vue.use(VueRouter);
 
@@ -104,6 +105,14 @@ const router = new VueRouter({
       name: "ShopOwnerSpecificShop",
       props: true,
       component: ShopOwnerSpecificShop,
+      meta: {
+        requiresVerified: true,
+      },
+    },
+    {
+      path: "/terms-and-conditions",
+      name: "TermsAndConditions",
+      component: TermsAndConditions,
       meta: {
         requiresVerified: true,
       },

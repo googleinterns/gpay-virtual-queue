@@ -48,7 +48,7 @@ specific language governing permissions and limitations under the License. */
             <!-- TODO : ikoder - Add a page for terms and conditions -->
             <input type="checkbox" id="conditions-check" />
             I agree to the
-            <a href="#">terms and conditions</a>
+            <a href="/terms-and-conditions">terms and conditions</a>
           </label>
         </div>
         <div v-if="hidden" id="msg"></div>

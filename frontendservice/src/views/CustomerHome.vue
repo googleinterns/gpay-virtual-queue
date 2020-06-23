@@ -99,7 +99,7 @@ export default {
         .then(function(res) {
           self.shops = res.data.shops;
         });
-    }, 500 /* milliseconds */);
+    }, 2000 /* milliseconds */);
   }
 };
 </script>

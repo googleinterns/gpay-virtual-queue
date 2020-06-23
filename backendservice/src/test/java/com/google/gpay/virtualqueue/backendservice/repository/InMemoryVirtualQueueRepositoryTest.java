@@ -42,6 +42,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     private static final String PHONE_NUMBER = "+919012192800";
     private static final String SHOP_TYPE = "shopType";
     private static final Integer TOKEN_NUMBER = 1;
+    private static final int TOKEN_MAP_SIZE = 1;
 
     @BeforeEach
     public void setUp() {
@@ -78,14 +79,16 @@ public class InMemoryVirtualQueueRepositoryTest {
         // Arrange
         CreateShopRequest shop = new CreateShopRequest(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         UUID shopId = inMemoryVirtualQueueRepository.createShop(shop);
+
         // Act
         Token newToken = inMemoryVirtualQueueRepository.getNewToken(shopId);
         UUID tokenId = newToken.getTokenId();
         int expectedTokenMapSize = inMemoryVirtualQueueRepository.getTokenMap().size();
         Integer expectedTokenNumber = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber();
         UUID expectedShopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
+        
         // Assert
-        assertEquals("Size of tokenMap", 1, expectedTokenMapSize);
+        assertEquals("Size of tokenMap", TOKEN_MAP_SIZE, expectedTokenMapSize);
         assertEquals("Token number is", TOKEN_NUMBER, expectedTokenNumber);
         assertEquals("Shop id is", shopId, expectedShopId);
     }

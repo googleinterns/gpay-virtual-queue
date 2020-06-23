@@ -20,7 +20,6 @@ specific language governing permissions and limitations under the License. */
                 v-bind:to="{name: 'specificShop', params: {Id: token.token.shopId} }"
               >Token Number: {{token.token.tokenNumber}}</router-link>
             </p>
-            <p class="subtitle">Customers Ahead: {{token.customersAhead}}</p>
             <p class="subtitle">{{token.shopName}}</p>
           </article>
         </div>
@@ -107,18 +106,18 @@ export default {
 
   methods: {
     tokenfunction() {
-      const t = this;
-      t.allCookieList = JSON.parse(Cookie.get("tokenid"));
+      var self = this;
+      self.allCookieList = JSON.parse(Cookie.get("tokenid"));
       for (var i = 0, ln = t.allCookieList.length; i < ln; i++) {
-        this.trial = i;
-        const t = this;
-        t.allCookieList = JSON.parse(Cookie.get("tokenid"));
-        t.cookieValue = t.allCookieList[i].toString();
+        var self = this;
+        self.allCookieList = JSON.parse(Cookie.get("tokenid"));
+        self.cookieValue = self.allCookieList[i].toString();
         axios({
           method: "GET",
-          url: "http://penguin.termina.linux.test:8080/token/" + t.cookieValue
+          url:
+            "http://penguin.termina.linux.test:8080/token/" + self.cookieValue
         }).then(function(res) {
-          t.tokens.splice(i, 0, res.data);
+          self.tokens.splice(i, 0, res.data);
         });
       }
     },
@@ -144,7 +143,7 @@ export default {
         .then(function(res) {
           self.shops = res.data.shops;
         });
-    }, 200);
+    }, 2000);
     this.tokenfunction();
   }
 };

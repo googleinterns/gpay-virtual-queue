@@ -64,7 +64,7 @@ specific language governing permissions and limitations under the License. */
               <tbody>
                 <tr>
                   <td>
-                    <a>{{tokeninfo.token.tokenId}}</a>
+                    <a>{{tokeninfo.token.tokenNumber}}</a>
                   </td>
                 </tr>
               </tbody>
@@ -130,10 +130,7 @@ export default {
                   self.flag = true;
                   self.tokeninfo = res.data;
                 }
-                if (res.data.token.status == "CANCELLED_BY_SHOP_OWNER") {
-                  self.flag = false;
-                  self.statusFlag = true;
-                }
+                //TODO: change the value of tokenStatus flag if the token was deleted by the shop owner.
               }
             });
           }

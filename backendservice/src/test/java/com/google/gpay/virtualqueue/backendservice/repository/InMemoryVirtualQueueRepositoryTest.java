@@ -59,13 +59,13 @@ public class InMemoryVirtualQueueRepositoryTest {
 
     @Test
     public void testCreateShop() throws Exception {
-        // Arrange
+        // Arrange.
         CreateShopRequest shop = new CreateShopRequest(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
 
-        // Act
+        // Act.
         UUID shopId = inMemoryVirtualQueueRepository.createShop(shop);
 
-        // Assert
+        // Assert.
         assertEquals("Size of shopMap", 1, inMemoryVirtualQueueRepository.getShopMap().size());
         assertEquals("Shop Owner Id ", SHOP_OWNER_ID,
                 inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopOwnerId());

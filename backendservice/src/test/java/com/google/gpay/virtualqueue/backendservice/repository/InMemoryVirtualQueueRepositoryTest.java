@@ -169,7 +169,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     @Test
     public void testGetAllShops_success() throws Exception {
         // Arrange.
-        UUID shopId = addShopToRepository();
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         addTokenListToShop(shopId);
 
         // Act.
@@ -183,7 +183,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     @Test
     public void testGetShopName_success() throws Exception {
         // Arrange.
-        UUID shopId = addShopToRepository();
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         UUID tokenId = addTokenToShop(shopId);
 
         // Act.
@@ -192,9 +192,6 @@ public class InMemoryVirtualQueueRepositoryTest {
         // Assert.
         assertEquals("Name of Shop is", SHOP_NAME, expectedShopName);
     }
-
-    private UUID addShopToRepository() {
-        Shop shop = new Shop(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
 
     private UUID addShopToRepository(String shopOwnerId, String shopName, String shopAddress, String phoneNumber, String ShopType) {
         Shop shop = new Shop(shopOwnerId, shopName, shopAddress, phoneNumber, ShopType);

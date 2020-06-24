@@ -23,6 +23,7 @@ specific language governing permissions and limitations under the License. */
           class="title"
         >Number of people currently in queue are {{shopinfo.customersInQueue}}</p>
         <p v-if="totalWaitingTime != 0" class="title">Your waiting time is: {{totalWaitingTime}} mins</p>
+        <p class="subtitle">{{shopinfo.shop.shopType}}</p>
         <p class="subtitle">{{shopinfo.shop.address}}</p>
         <p class="subtitle">{{shopinfo.shop.phoneNumber}}</p>
       </div>
@@ -84,7 +85,6 @@ import axios from "axios";
 import shopTurn from "@/components/shopTurn";
 import Cookie from "js-cookie";
 import statusUpdate from "@/components/statusUpdate";
-
 export default {
   name: "specificShop",
   components: {
@@ -106,10 +106,9 @@ export default {
       token: null,
       statusFlag: false,
       waitingTimePerCustomer: 0, 
-      totalWaitingTime: 0 
+      totalWaitingTime: 0
     };
   },
-
   methods: {
     getShopInfo() {
       const self = this;
@@ -131,13 +130,21 @@ export default {
                 if (res.data.token.status == "ACTIVE") {
                   self.flag = true;
                   self.tokeninfo = res.data;
+                } else {
+                  self.allCookieList.splice(
+                    self.allCookieList.indexOf(res.data.token.tokenId),
+                    1
+                  );
+                  Cookie.set("tokenid", JSON.stringify(self.allCookieList));
+                  self.flag = false;
+                  self.statusFlag = true;
                 }
               }
             });
           }
         });
 
-        this.getWaitingTime();
+        self.getWaitingTime();
 
         if(this.flag) {
           this.totalWaitingTime = this.waitingTimePerCustomer * this.tokeninfo.customersAhead;
@@ -154,6 +161,7 @@ export default {
       }).then(function(res) {
         self.waitingTimePerCustomer = res.data.waitingTimePerCustomer;
       });
+      
     },
 
     getToken() {
@@ -167,11 +175,11 @@ export default {
         Cookie.set("tokenid", JSON.stringify(self.allCookieList), {
           expires: 1
         });
+        self.statusFlag = false;
         self.flag = true;
         self.getshopinfo();
       });
     },
-
     deleteToken() {
       const self = this;
       axios
@@ -189,18 +197,15 @@ export default {
           self.getshopinfo();
         });
     },
-
     cancelAutoUpdate() {
       clearInterval(this.timer);
     },
-
     beforeDestroy() {
       clearInterval(this.timer);
     }
   },
-
   created() {
-    this.getWaitingTime(); 
+    this.getWaitingTime();
     this.getShopInfo();
     this.timer = setInterval(this.getShopInfo, 1 /*1 second */);
   }
@@ -211,7 +216,6 @@ export default {
 body {
   padding: 40px;
 }
-
 #button {
   color: #2c3e50;
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -220,12 +224,10 @@ body {
   text-align: center;
   -webkit-font-smoothing: antialiased;
 }
-
 h1 {
   font: 30px Helvetica, Sans-Serif;
   margin: 40px 0 0;
 }
-
 #mid {
   color: #2c3e50;
   font-family: Avenir, Helvetica, Arial, sans-serif;

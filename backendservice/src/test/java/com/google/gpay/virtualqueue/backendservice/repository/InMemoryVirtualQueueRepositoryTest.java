@@ -86,6 +86,27 @@ public class InMemoryVirtualQueueRepositoryTest {
     }
 
     @Test
+    public void testGetNewToken_success() throws Exception {
+        // Arrange.
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
+        addTokenListToShop(shopId);
+
+        // Act.
+        Token newToken = inMemoryVirtualQueueRepository.getNewToken(shopId);
+
+        // Assert.
+        UUID tokenId = newToken.getTokenId();
+        int expectedTokenMapSize = 1;
+        Integer expectedTokenNumber = 1;
+        UUID expectedShopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
+
+        assertEquals("Size of tokenMap", inMemoryVirtualQueueRepository.getTokenMap().size(), expectedTokenMapSize);
+        assertEquals("Token number is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber(),
+                expectedTokenNumber);
+        assertEquals("Shop id is", shopId, expectedShopId);
+    }
+
+    @Test
     public void testGetTokensForShop_success() throws Exception {
         // Arrange.
         UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);

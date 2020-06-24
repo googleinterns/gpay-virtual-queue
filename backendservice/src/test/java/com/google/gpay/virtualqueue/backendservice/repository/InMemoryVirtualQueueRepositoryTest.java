@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
@@ -114,11 +115,12 @@ public class InMemoryVirtualQueueRepositoryTest {
         assertEquals("Shop Type ", SHOP_TYPE, newShop.getShopType());
     }
 
-    private UUID addShopToRepository(String SHOP_OWNER_ID, String SHOP_NAME, String SHOP_ADDRESS, String PHONE_NUMBER, String SHOP_TYPE) {
-        Shop shop = new Shop(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
+    private UUID addShopToRepository(String shopOwnerId, String shopName, String shopAddress, String phoneNumber, String ShopType) {
+        Shop shop = new Shop(shopOwnerId, shopName, shopAddress, phoneNumber, ShopType);
         shop.setStatus(ShopStatus.ACTIVE);
         UUID shopId = UUID.randomUUID();
         inMemoryVirtualQueueRepository.getShopMap().put(shopId, shop);
+        inMemoryVirtualQueueRepository.getShopIdToLastAllotedTokenMap().put(shopId, new AtomicInteger(0));
         return shopId;
     }
 

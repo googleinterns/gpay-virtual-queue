@@ -127,6 +127,12 @@ public class InMemoryVirtualQueueRepository implements VirtualQueueRepository {
 
 	public UpdateShopStatusResponse updateShop(UpdateShopStatusRequest updateShopStatusRequest) {
 		shopMap.get(updateShopStatusRequest.getShopId()).setStatus(updateShopStatusRequest.getShopStatus());
+		if (updateShopStatusRequest.getShopStatus() == ShopStatus.DELETED) {
+			shopIdToListOfTokensMap.get(updateShopStatusRequest.getShopId()).forEach(token -> {
+				token.setStatus(Status.EXPIRED);
+			});
+			shopIdToLastAllotedTokenMap.get(updateShopStatusRequest.getShopId()).set(0);
+		}
 		return new UpdateShopStatusResponse(shopMap.get(updateShopStatusRequest.getShopId()));
 	}
 

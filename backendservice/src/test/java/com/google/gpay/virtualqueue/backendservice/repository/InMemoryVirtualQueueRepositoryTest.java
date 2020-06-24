@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
@@ -144,12 +145,28 @@ public class InMemoryVirtualQueueRepositoryTest {
         UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         addTokenListToShop(shopId);
         UpdateShopStatusRequest updateShopStatusRequest = new UpdateShopStatusRequest(shopId, ShopStatus.DELETED);
-        
+
         // Act.
         UpdateShopStatusResponse updateShopStatusResponse = inMemoryVirtualQueueRepository.updateShop(updateShopStatusRequest);
 
         // Assert.
         assertEquals("Shop status is", inMemoryVirtualQueueRepository.getShopMap().get(shopId).getStatus(), updateShopStatusResponse.getShop().getStatus());
+    }
+    
+    @Test
+    public void testGetCustomersAhead_success() throws Exception {
+        // Arrange.
+        UUID tokenId = addTokenToTokenMap();
+        UUID shopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
+        addTokenListToShop(shopId);
+
+        // Act.
+        long customersAhead = inMemoryVirtualQueueRepository.getCustomersAhead(tokenId);
+    
+        // Assert.
+        List<Token> expectedTokensList = inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).stream().takeWhile(token -> !token.getTokenId().equals(tokenId)).collect(Collectors.toList());
+
+        assertEquals("Number of customers ahead is", expectedTokensList.stream().filter(token -> Status.ACTIVE.equals(token.getStatus())).count(), customersAhead);
     }
 
     @Test

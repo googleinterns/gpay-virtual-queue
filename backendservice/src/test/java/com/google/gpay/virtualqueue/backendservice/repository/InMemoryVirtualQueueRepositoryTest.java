@@ -86,15 +86,15 @@ public class InMemoryVirtualQueueRepositoryTest {
 
     @Test
     public void testGetTokens_forShop_success() throws Exception {
-        // Arrange
+        // Arrange.
         UUID shopId = addShopToRepository();
         addTokenListToShop(shopId);
 
-        // Act
-        List<Token> expectedGetTokensResponseList = inMemoryVirtualQueueRepository.getTokens(shopId);
+        // Act.
+        List<Token> getTokensResponseList = inMemoryVirtualQueueRepository.getTokens(shopId);
 
-        // Assert
-        assertEquals("Size of token list", expectedGetTokensResponseList.size(),
+        // Assert.
+        assertEquals("Size of token list", getTokensResponseList.size(),
                 inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
     }
 

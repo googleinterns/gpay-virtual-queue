@@ -10,7 +10,7 @@ specific language governing permissions and limitations under the License. */
   <div>
     <div class="notification is-danger">
       <button class="delete" onclick="this.parentElement.style.display='none'"></button>
-      <strong>Your token has been deleted by the shop owner!</strong>
+      <strong>Your token has been deleted!</strong>
     </div>
   </div>
 </template>

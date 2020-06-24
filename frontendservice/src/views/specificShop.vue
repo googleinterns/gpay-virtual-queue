@@ -129,6 +129,14 @@ export default {
                 if (res.data.token.status == "ACTIVE") {
                   self.flag = true;
                   self.tokeninfo = res.data;
+                } else {
+                  self.allCookieList.splice(
+                    self.allCookieList.indexOf(res.data.token.tokenId),
+                    1
+                  );
+                  Cookie.set("tokenid", JSON.stringify(self.allCookieList));
+                  self.flag = false;
+                  self.statusFlag = true;
                 }
               }
             });
@@ -147,6 +155,7 @@ export default {
         Cookie.set("tokenid", JSON.stringify(self.allCookieList), {
           expires: 1
         });
+        self.statusFlag = false;
         self.flag = true;
         self.getshopinfo();
       });

@@ -106,10 +106,9 @@ export default {
 
   methods: {
     tokenfunction() {
-      var self = this;
+      const self = this;
       self.allCookieList = JSON.parse(Cookie.get("tokenid"));
-      for (var i = 0, ln = t.allCookieList.length; i < ln; i++) {
-        var self = this;
+      for (var i = 0, ln = self.allCookieList.length; i < ln; i++) {
         self.allCookieList = JSON.parse(Cookie.get("tokenid"));
         self.cookieValue = self.allCookieList[i].toString();
         axios({
@@ -143,7 +142,7 @@ export default {
         .then(function(res) {
           self.shops = res.data.shops;
         });
-    }, 2000);
+    }, 2000 /* milliseconds */);
     this.tokenfunction();
   }
 };

@@ -130,7 +130,6 @@ export default {
                   self.flag = true;
                   self.tokeninfo = res.data;
                 }
-                //TODO: change the value of tokenStatus flag if the token was deleted by the shop owner.
               }
             });
           }

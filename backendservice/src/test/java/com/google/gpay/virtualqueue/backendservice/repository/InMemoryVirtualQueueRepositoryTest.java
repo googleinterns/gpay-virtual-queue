@@ -91,7 +91,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     @Test
     public void testGetNewToken_success() throws Exception {
         // Arrange.
-        UUID shopId = addShopToRepository();
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         addTokenListToShop(shopId);
 
         // Act.
@@ -104,14 +104,15 @@ public class InMemoryVirtualQueueRepositoryTest {
         UUID expectedShopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
 
         assertEquals("Size of tokenMap", inMemoryVirtualQueueRepository.getTokenMap().size(), expectedTokenMapSize);
-        assertEquals("Token number is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber(), expectedTokenNumber);
+        assertEquals("Token number is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber(),
+                expectedTokenNumber);
         assertEquals("Shop id is", shopId, expectedShopId);
     }
 
     @Test
     public void testGetTokensForShop_success() throws Exception {
         // Arrange.
-        UUID shopId = addShopToRepository();
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         addTokenListToShop(shopId);
 
         // Act.
@@ -144,8 +145,24 @@ public class InMemoryVirtualQueueRepositoryTest {
         return tokenId;
     }
 
-    private UUID addShopToRepository() {
-        Shop shop = new Shop(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
+    @Test
+    public void testGetShop_success() {
+        // Arrange.
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
+        
+        // Act.
+        Shop newShop = inMemoryVirtualQueueRepository.getShop(shopId);
+
+        // Assert.
+        assertEquals("Shop Owner Id ", SHOP_OWNER_ID, newShop.getShopOwnerId());
+        assertEquals("Shop Name ", SHOP_NAME, newShop.getShopName());
+        assertEquals("Shop Address ", SHOP_ADDRESS, newShop.getAddress());
+        assertEquals("Shop Phone Number ", PHONE_NUMBER, newShop.getPhoneNumber());
+        assertEquals("Shop Type ", SHOP_TYPE, newShop.getShopType());
+    }
+
+    private UUID addShopToRepository(String shopOwnerId, String shopName, String shopAddress, String phoneNumber, String ShopType) {
+        Shop shop = new Shop(shopOwnerId, shopName, shopAddress, phoneNumber, ShopType);
         shop.setStatus(ShopStatus.ACTIVE);
         UUID shopId = UUID.randomUUID();
         inMemoryVirtualQueueRepository.getShopMap().put(shopId, shop);

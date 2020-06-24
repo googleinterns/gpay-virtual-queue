@@ -85,6 +85,7 @@ export default {
   },
   methods: {
     createShop: function() {
+      document.getElementById("msg").innerHTML = "";
       var shopName = document.getElementById("shopName").value;
       var address = document.getElementById("address").value;
       var shopType = document.getElementById("shopType").value;

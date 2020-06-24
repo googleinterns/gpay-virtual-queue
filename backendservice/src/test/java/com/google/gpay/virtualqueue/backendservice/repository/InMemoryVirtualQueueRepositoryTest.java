@@ -87,7 +87,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     @Test
     public void testGetTokensForShop_success() throws Exception {
         // Arrange.
-        UUID shopId = addShopToRepository();
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         addTokenListToShop(shopId);
 
         // Act.
@@ -101,7 +101,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     @Test
     public void testGetShop_success() {
         // Arrange.
-        UUID shopId = addShopToRepository();
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         
         // Act.
         Shop newShop = inMemoryVirtualQueueRepository.getShop(shopId);
@@ -114,7 +114,7 @@ public class InMemoryVirtualQueueRepositoryTest {
         assertEquals("Shop Type ", SHOP_TYPE, newShop.getShopType());
     }
 
-    private UUID addShopToRepository() {
+    private UUID addShopToRepository(String SHOP_OWNER_ID, String SHOP_NAME, String SHOP_ADDRESS, String PHONE_NUMBER, String SHOP_TYPE) {
         Shop shop = new Shop(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         shop.setStatus(ShopStatus.ACTIVE);
         UUID shopId = UUID.randomUUID();

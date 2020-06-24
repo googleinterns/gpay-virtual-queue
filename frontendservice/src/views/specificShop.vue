@@ -15,7 +15,7 @@ specific language governing permissions and limitations under the License. */
       <div class="card-content">
         <p class="title">{{shopinfo.shop.shopName}}</p>
         <p
-          v-if="flag"
+          v-if="isTokenInCookie"
           class="title"
         >Number of People ahead in the queue are: {{tokeninfo.customersAhead}}</p>
         <p
@@ -30,7 +30,7 @@ specific language governing permissions and limitations under the License. */
         <p class="card-footer-item">
           <button
             class="button is-primary is-medium"
-            v-if="flag"
+            v-if="isTokenInCookie"
             v-on:click="getShopInfo()"
           >Refresh token</button>
           <button class="button is-primary is-medium" v-else v-on:click="getToken()">Take token</button>
@@ -39,19 +39,19 @@ specific language governing permissions and limitations under the License. */
           <button
             class="button is-danger is-medium"
             v-on:click="deleteToken()"
-            v-if="flag"
+            v-if="isTokenInCookie"
           >Cancel token</button>
         </p>
       </footer>
-      <div v-if="flag">
+      <div v-if="isTokenInCookie">
         <div v-if="tokeninfo.customersAhead == 0">
           <shopTurn></shopTurn>
         </div>
       </div>
-      <div v-if="statusFlag">
+      <div v-if="isTokenInActive">
         <statusUpdate></statusUpdate>
       </div>
-      <div v-if="flag">
+      <div v-if="isTokenInCookie">
         <div class="panel panel-default">
           <div class="table-responsive">
             <table class="table">
@@ -99,12 +99,12 @@ export default {
       shopid: this.$route.params.Id,
       shopinfo: "",
       timer: "",
-      flag: false,
+      isTokenInCookie: false,
       tokeninfo: null,
       allCookieList: [],
       cookieValue: "",
       token: null,
-      statusFlag: false
+      isTokenInActive: false
     };
   },
 
@@ -127,7 +127,7 @@ export default {
             }).then(function(res) {
               if (res.data.token.shopId == self.shopid) {
                 if (res.data.token.status == "ACTIVE") {
-                  self.flag = true;
+                  self.isTokenInCookie = true;
                   self.tokeninfo = res.data;
                 } else {
                   self.allCookieList.splice(
@@ -135,8 +135,8 @@ export default {
                     1
                   );
                   Cookie.set("tokenid", JSON.stringify(self.allCookieList));
-                  self.flag = false;
-                  self.statusFlag = true;
+                  self.isTokenInCookie = false;
+                  self.isTokenInActive = true;
                 }
               }
             });
@@ -155,8 +155,8 @@ export default {
         Cookie.set("tokenid", JSON.stringify(self.allCookieList), {
           expires: 1
         });
-        self.statusFlag = false;
-        self.flag = true;
+        self.isTokenInActive = false;
+        self.isTokenInCookie = true;
         self.getshopinfo();
       });
     },
@@ -174,7 +174,7 @@ export default {
             1
           );
           Cookie.set("tokenid", JSON.stringify(self.allCookieList));
-          self.flag = false;
+          self.isTokenInCookie = false;
           self.getshopinfo();
         });
     },

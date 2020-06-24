@@ -58,7 +58,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     }
 
     @Test
-    public void testCreateShop() throws Exception {
+    public void testCreateShop_success() throws Exception {
         // Arrange.
         CreateShopRequest shop = new CreateShopRequest(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
 
@@ -85,7 +85,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     }
 
     @Test
-    public void testGetTokens_forShop_success() throws Exception {
+    public void testGetTokensForShop_success() throws Exception {
         // Arrange.
         UUID shopId = addShopToRepository();
         addTokenListToShop(shopId);

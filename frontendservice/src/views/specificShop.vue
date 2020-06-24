@@ -170,7 +170,8 @@ export default {
         })
         .then(function(res) {
           self.allCookieList.splice(
-            self.allCookieList.indexOf(self.tokeninfo.token.tokenId)
+            self.allCookieList.indexOf(self.tokeninfo.token.tokenId),
+            1
           );
           Cookie.set("tokenid", JSON.stringify(self.allCookieList));
           self.flag = false;
@@ -189,7 +190,7 @@ export default {
 
   created() {
     this.getShopInfo();
-    this.timer = setInterval(this.getShopInfo, 1 /*1 second*/);
+    this.timer = setInterval(this.getShopInfo, 1 /*1 second */);
   }
 };
 </script>

@@ -142,7 +142,7 @@ export default {
         .then(function(res) {
           self.shops = res.data.shops;
         });
-    }, 2000);
+    }, 2000 /* milliseconds */);
     this.tokenfunction();
   }
 };

@@ -19,15 +19,20 @@ package com.google.gpay.virtualqueue.backendservice.repository;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.model.Shop.ShopStatus;
 import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.ShopInfo;
+
 import static com.google.gpay.virtualqueue.backendservice.repository.InMemoryVirtualQueueRepository.WAITING_TIME_MINS;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +41,8 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import jdk.jfr.Timestamp;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -101,7 +108,8 @@ public class InMemoryVirtualQueueRepositoryTest {
         UUID expectedShopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
 
         assertEquals("Size of tokenMap", inMemoryVirtualQueueRepository.getTokenMap().size(), expectedTokenMapSize);
-        assertEquals("Token number is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber(), expectedTokenNumber);
+        assertEquals("Token number is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber(),
+                expectedTokenNumber);
         assertEquals("Shop id is", shopId, expectedShopId);
     }
 
@@ -119,6 +127,37 @@ public class InMemoryVirtualQueueRepositoryTest {
                 inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
     }
 
+    @Test
+    public void testGetAllShops() throws Exception {
+        // Arrange
+        UUID shopId = addShopToRepository();
+        addTokenListToShop(shopId);
+
+        // Act
+        List<ShopInfo> expectedGetAllShopsResponseList = inMemoryVirtualQueueRepository.getAllShops();
+
+        // Assert
+        assertEquals("Size of shopInfo list", expectedGetAllShopsResponseList,
+                inMemoryVirtualQueueRepository
+                        .getShopMap().values().stream().map(shop -> new ShopInfo(shop, inMemoryVirtualQueueRepository
+                                .getShopIdToListOfTokensMap().get(shop.getShopId()).stream().count()))
+                        .collect(Collectors.toList()));
+    }
+
+    @Test
+    public void testGetShopName() throws Exception {
+        // Arrange
+        UUID shopId = addShopToRepository();
+        UUID tokenId = addTokenToShop(shopId);
+
+        // Act
+        String expectedShopName = inMemoryVirtualQueueRepository.getShopName(tokenId);
+
+        // Assert
+        assertEquals("Name of Shop", expectedShopName, inMemoryVirtualQueueRepository.getShopMap()
+                .get(inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId()).getShopName());
+    }
+
     private UUID addShopToRepository() {
         Shop shop = new Shop(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         shop.setStatus(ShopStatus.ACTIVE);
@@ -132,5 +171,15 @@ public class InMemoryVirtualQueueRepositoryTest {
         List<Token> tokens = new ArrayList<>();
         tokens.add(new Token(UUID.randomUUID(), shopId, 1, Status.ACTIVE));
         inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().put(shopId, tokens);
+    }
+
+    private UUID addTokenToShop(UUID shopId) {
+        List<Token> tokens = new ArrayList<>();
+        UUID uuid = UUID.randomUUID();
+        Token token = new Token(uuid, shopId, 1, Status.ACTIVE);
+        tokens.add(token);
+        Map<UUID, Token> tokenMap = new HashMap<>();
+        tokenMap.put(uuid, token);
+        return uuid;
     }
 }

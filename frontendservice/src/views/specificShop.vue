@@ -131,7 +131,8 @@ export default {
                   self.tokeninfo = res.data;
                 } else {
                   self.allCookieList.splice(
-                    self.allCookieList.indexOf(res.data.token.tokenId)
+                    self.allCookieList.indexOf(res.data.token.tokenId),
+                    1
                   );
                   Cookie.set("tokenid", JSON.stringify(self.allCookieList));
                   self.flag = false;

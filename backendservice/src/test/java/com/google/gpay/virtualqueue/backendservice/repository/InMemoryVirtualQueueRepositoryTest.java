@@ -158,7 +158,6 @@ public class InMemoryVirtualQueueRepositoryTest {
         UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         addTokenListToShop(shopId);
 
-        
         // Act.
         long customersInQueue = inMemoryVirtualQueueRepository.getCustomersInQueue(shopId);
 

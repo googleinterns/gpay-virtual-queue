@@ -48,7 +48,7 @@ specific language governing permissions and limitations under the License. */
           <shopTurn></shopTurn>
         </div>
       </div>
-      <div v-if="isTokenInActive">
+      <div v-if="!isTokenActive">
         <statusUpdate></statusUpdate>
       </div>
       <div v-if="isTokenInCookie">
@@ -104,7 +104,7 @@ export default {
       allCookieList: [],
       cookieValue: "",
       token: null,
-      isTokenInActive: false
+      isTokenActive: true
     };
   },
 
@@ -136,7 +136,7 @@ export default {
                   );
                   Cookie.set("tokenid", JSON.stringify(self.allCookieList));
                   self.isTokenInCookie = false;
-                  self.isTokenInActive = true;
+                  self.isTokenActive = false;
                 }
               }
             });
@@ -155,7 +155,7 @@ export default {
         Cookie.set("tokenid", JSON.stringify(self.allCookieList), {
           expires: 1
         });
-        self.isTokenInActive = false;
+        self.isTokenActive = true;
         self.isTokenInCookie = true;
         self.getshopinfo();
       });

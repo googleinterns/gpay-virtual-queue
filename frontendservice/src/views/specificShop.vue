@@ -143,14 +143,14 @@ export default {
             });
           }
         });
-        self.getWaitingTime();
+        self.getWaitingTimePerCustomer();
         if (this.isTokenInCookie) {
           this.totalWaitingTime = this.waitingTimePerCustomer * this.tokeninfo.customersAhead;
         } else {
           this.totalWaitingTime = this.waitingTimePerCustomer * this.shopinfo.customersInQueue;
         }
     },
-    getWaitingTime() {
+    getWaitingTimePerCustomer() {
       const self = this;
       axios({
         method: "GET",
@@ -200,9 +200,9 @@ export default {
     }
   },
   created() {
-    this.getWaitingTime();
+    this.getWaitingTimePerCustomer();
     this.getShopInfo();
-    this.timer = setInterval(this.getShopInfo, 1 /*1 second */);
+    this.timer = setInterval(this.getShopInfo, 1 /* 1 second */);
   }
 };
 </script>

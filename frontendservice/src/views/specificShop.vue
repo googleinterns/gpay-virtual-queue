@@ -22,6 +22,7 @@ specific language governing permissions and limitations under the License. */
           v-else
           class="title"
         >Number of people currently in queue are {{shopinfo.customersInQueue}}</p>
+        <p v-if="totalWaitingTime != 0" class="title">Approx. waiting time is: {{totalWaitingTime}} mins</p>
         <p class="subtitle">{{shopinfo.shop.shopType}}</p>
         <p class="subtitle">{{shopinfo.shop.address}}</p>
         <p class="subtitle">{{shopinfo.shop.phoneNumber}}</p>
@@ -84,7 +85,6 @@ import axios from "axios";
 import shopTurn from "@/components/shopTurn";
 import Cookie from "js-cookie";
 import statusUpdate from "@/components/statusUpdate";
-
 export default {
   name: "specificShop",
   components: {
@@ -104,10 +104,11 @@ export default {
       allCookieList: [],
       cookieValue: "",
       token: null,
-      isTokenActive: true
+      isTokenActive: true,
+      waitingTimePerCustomer: 0, 
+      totalWaitingTime: 0
     };
   },
-
   methods: {
     getShopInfo() {
       const self = this;
@@ -142,8 +143,22 @@ export default {
             });
           }
         });
+        self.getWaitingTimePerCustomer();
+        if (this.isTokenInCookie) {
+          this.totalWaitingTime = this.waitingTimePerCustomer * this.tokeninfo.customersAhead;
+        } else {
+          this.totalWaitingTime = this.waitingTimePerCustomer * this.shopinfo.customersInQueue;
+        }
     },
-
+    getWaitingTimePerCustomer() {
+      const self = this;
+      axios({
+        method: "GET",
+        url: "http://penguin.termina.linux.test:8080/waitingtime"
+      }).then(function(res) {
+        self.waitingTimePerCustomer = res.data.waitingTimePerCustomer;
+      });
+    },
     getToken() {
       const self = this;
       axios({
@@ -160,7 +175,6 @@ export default {
         self.getshopinfo();
       });
     },
-
     deleteToken() {
       const self = this;
       axios
@@ -178,19 +192,17 @@ export default {
           self.getshopinfo();
         });
     },
-
     cancelAutoUpdate() {
       clearInterval(this.timer);
     },
-
     beforeDestroy() {
       clearInterval(this.timer);
     }
   },
-
   created() {
+    this.getWaitingTimePerCustomer();
     this.getShopInfo();
-    this.timer = setInterval(this.getShopInfo, 1 /*1 second */);
+    this.timer = setInterval(this.getShopInfo, 1 /* 1 second */);
   }
 };
 </script>
@@ -199,7 +211,6 @@ export default {
 body {
   padding: 40px;
 }
-
 #button {
   color: #2c3e50;
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -208,12 +219,10 @@ body {
   text-align: center;
   -webkit-font-smoothing: antialiased;
 }
-
 h1 {
   font: 30px Helvetica, Sans-Serif;
   margin: 40px 0 0;
 }
-
 #mid {
   color: #2c3e50;
   font-family: Avenir, Helvetica, Arial, sans-serif;

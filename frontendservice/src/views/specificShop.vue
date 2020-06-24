@@ -14,7 +14,10 @@ specific language governing permissions and limitations under the License. */
     <div class="card">
       <div class="card-content">
         <p class="title">{{shopinfo.shop.shopName}}</p>
-        <p v-if="flag" class="title">Number of People ahead in the queue are:</p>
+        <p
+          v-if="flag"
+          class="title"
+        >Number of People ahead in the queue are: {{tokeninfo.customersAhead}}</p>
         <p
           v-else
           class="title"
@@ -40,6 +43,35 @@ specific language governing permissions and limitations under the License. */
           >Cancel token</button>
         </p>
       </footer>
+      <div v-if="flag">
+        <div v-if="tokeninfo.customersAhead == 0">
+          <shopTurn></shopTurn>
+        </div>
+      </div>
+      <div v-if="statusFlag">
+        <statusUpdate></statusUpdate>
+      </div>
+      <div v-if="flag">
+        <div class="panel panel-default">
+          <div class="table-responsive">
+            <table class="table">
+              <caption>
+                <h1 style="margin: 20px 0" class="is-vcentered">Your Token information</h1>
+              </caption>
+              <thead>
+                <th id="head">Token Number</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <a>{{tokeninfo.token.tokenNumber}}</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -49,40 +81,93 @@ import NavBarCustomer from "@/components/NavBarCustomer";
 import cookieinfo from "@/components/cookieinfo";
 import cookieackno from "@/components/cookieackno";
 import axios from "axios";
+import shopTurn from "@/components/shopTurn";
+import Cookie from "js-cookie";
+import statusUpdate from "@/components/statusUpdate";
 
 export default {
   name: "specificShop",
   components: {
     NavBarCustomer,
     cookieinfo,
-    cookieackno
+    cookieackno,
+    shopTurn,
+    statusUpdate
   },
   data() {
     return {
       shopid: this.$route.params.Id,
       shopinfo: "",
       timer: "",
-      flag: false
+      flag: false,
+      tokeninfo: null,
+      allCookieList: [],
+      cookieValue: "",
+      token: null,
+      statusFlag: false
     };
   },
 
   methods: {
     getShopInfo() {
-      const t = this;
+      const self = this;
       axios
         .get("http://penguin.termina.linux.test:8080/shops/" + this.shopid)
         .then(function(res) {
-          t.shopinfo = res.data;
-          //TODO: write code related to tokenInfo here.
+          self.shopinfo = res.data;
+          self.allCookieList = JSON.parse(Cookie.get("tokenid"));
+          var i;
+          for (i = 0; i < self.allCookieList.length; i++) {
+            self.cookieValue = self.allCookieList[i].toString();
+            axios({
+              method: "GET",
+              url:
+                "http://penguin.termina.linux.test:8080/token/" +
+                self.cookieValue
+            }).then(function(res) {
+              if (res.data.token.shopId == self.shopid) {
+                if (res.data.token.status == "ACTIVE") {
+                  self.flag = true;
+                  self.tokeninfo = res.data;
+                }
+              }
+            });
+          }
         });
     },
 
     getToken() {
-      //TODO: write http client request to get token.
+      const self = this;
+      axios({
+        method: "POST",
+        url: "http://penguin.termina.linux.test:8080/tokens/" + this.shopid
+      }).then(function(res) {
+        self.token = res.data.token;
+        self.allCookieList.push(self.token.tokenId);
+        Cookie.set("tokenid", JSON.stringify(self.allCookieList), {
+          expires: 1
+        });
+        self.flag = true;
+        self.getshopinfo();
+      });
     },
 
     deleteToken() {
-      //TODO: write http client request to delete token.
+      const self = this;
+      axios
+        .put("http://penguin.termina.linux.test:8080/token", {
+          tokenId: self.tokeninfo.token.tokenId,
+          tokenStatus: "CANCELLED_BY_CUSTOMER"
+        })
+        .then(function(res) {
+          self.allCookieList.splice(
+            self.allCookieList.indexOf(self.tokeninfo.token.tokenId),
+            1
+          );
+          Cookie.set("tokenid", JSON.stringify(self.allCookieList));
+          self.flag = false;
+          self.getshopinfo();
+        });
     },
 
     cancelAutoUpdate() {
@@ -96,7 +181,7 @@ export default {
 
   created() {
     this.getShopInfo();
-    this.timer = setInterval(this.getShopInfo, 1);
+    this.timer = setInterval(this.getShopInfo, 1 /*1 second */);
   }
 };
 </script>

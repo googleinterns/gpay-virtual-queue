@@ -11,8 +11,21 @@ specific language governing permissions and limitations under the License. */
     <NavBarCustomer></NavBarCustomer>
     <cookieinfo></cookieinfo>
     <cookieackno></cookieackno>
-    <a>TODO: Implement responsive search</a>
-    <div id="searchBarWrap" style="margin: 20px 0;">
+    <div class="tile is-ancestor">
+      <div v-for="token in tokens" :key="token">
+        <div class="tile is-parent">
+          <article class="tile is-child box one">
+            <p class="title">
+              <router-link
+                v-bind:to="{name: 'specificShop', params: {Id: token.token.shopId} }"
+              >Token Number: {{token.token.tokenNumber}}</router-link>
+            </p>
+            <p class="subtitle">{{token.shopName}}</p>
+          </article>
+        </div>
+      </div>
+    </div>
+    <div id="searchBarWrap" style="margin: 20px 0">
       <div class="field has-addons">
         <div class="form-group has-feedback">
           <i class="fa fa-search" style="font-size: 32px;"></i>
@@ -83,8 +96,38 @@ export default {
   data() {
     return {
       isLoggedIn: false,
-      shops: []
+      timer: "",
+      shops: [],
+      allCookieList: [],
+      cookieValue: "",
+      tokens: []
     };
+  },
+
+  methods: {
+    tokenfunction() {
+      const self = this;
+      self.allCookieList = JSON.parse(Cookie.get("tokenid"));
+      for (var i = 0, ln = self.allCookieList.length; i < ln; i++) {
+        self.allCookieList = JSON.parse(Cookie.get("tokenid"));
+        self.cookieValue = self.allCookieList[i].toString();
+        axios({
+          method: "GET",
+          url:
+            "http://penguin.termina.linux.test:8080/token/" + self.cookieValue
+        }).then(function(res) {
+          self.tokens.splice(i, 0, res.data);
+        });
+      }
+    },
+
+    beforeDestroy() {
+      clearInterval(this.timer);
+    },
+
+    cancelAutoUpdate() {
+      clearInterval(this.timer);
+    }
   },
 
   created() {
@@ -100,6 +143,7 @@ export default {
           self.shops = res.data.shops;
         });
     }, 2000 /* milliseconds */);
+    this.tokenfunction();
   }
 };
 </script>

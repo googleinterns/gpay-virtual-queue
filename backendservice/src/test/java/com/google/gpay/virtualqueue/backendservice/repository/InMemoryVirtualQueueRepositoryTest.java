@@ -28,6 +28,8 @@ import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.model.Shop.ShopStatus;
 import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateShopStatusRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateShopStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 
@@ -135,6 +137,20 @@ public class InMemoryVirtualQueueRepositoryTest {
         // Assert.
         assertEquals("token map status is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getStatus(), updateTokenStatusResponse.getUpdatedToken().getStatus());
     }
+    
+    @Test
+    public void testUpdateShop_success() throws Exception {
+        // Arrange.
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
+        addTokenListToShop(shopId);
+        UpdateShopStatusRequest updateShopStatusRequest = new UpdateShopStatusRequest(shopId, ShopStatus.DELETED);
+        
+        // Act.
+        UpdateShopStatusResponse updateShopStatusResponse = inMemoryVirtualQueueRepository.updateShop(updateShopStatusRequest);
+
+        // Assert.
+        assertEquals("Shop status is", inMemoryVirtualQueueRepository.getShopMap().get(shopId).getStatus(), updateShopStatusResponse.getShop().getStatus());
+    }
 
     @Test
     public void testGetShop_success() {
@@ -150,19 +166,6 @@ public class InMemoryVirtualQueueRepositoryTest {
         assertEquals("Shop Address ", SHOP_ADDRESS, newShop.getAddress());
         assertEquals("Shop Phone Number ", PHONE_NUMBER, newShop.getPhoneNumber());
         assertEquals("Shop Type ", SHOP_TYPE, newShop.getShopType());
-    }
-    
-    @Test
-    public void testGetShopName_success() {
-        // Arrange.
-        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
-        UUID tokenId = addTokenToRepository(shopId);
-
-        // Assert.
-        String shopName = inMemoryVirtualQueueRepository.getShopName(tokenId);
-
-        // Act.
-        assertEquals("Shop name is ", SHOP_NAME, shopName);
     }
 
     private UUID addShopToRepository(String shopOwnerId, String shopName, String shopAddress, String phoneNumber, String ShopType) {
@@ -186,13 +189,6 @@ public class InMemoryVirtualQueueRepositoryTest {
         Token token = new Token(tokenId, shopId, 1);
         token.setStatus(Status.ACTIVE);
         inMemoryVirtualQueueRepository.getTokenMap().put(tokenId, token);
-        return tokenId;
-    }
-
-    private UUID addTokenToRepository(UUID shopId) {
-        UUID tokenId = UUID.randomUUID();
-        Token newToken = new Token(tokenId, shopId, 1, Status.ACTIVE);
-        inMemoryVirtualQueueRepository.getTokenMap().put(tokenId, newToken);
         return tokenId;
     }
 }

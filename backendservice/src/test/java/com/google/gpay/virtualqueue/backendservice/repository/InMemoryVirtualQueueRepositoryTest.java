@@ -28,6 +28,9 @@ import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.model.Shop.ShopStatus;
 import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
+
 import static com.google.gpay.virtualqueue.backendservice.repository.InMemoryVirtualQueueRepository.WAITING_TIME_MINS;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -117,6 +120,28 @@ public class InMemoryVirtualQueueRepositoryTest {
         // Assert.
         assertEquals("Size of token list", getTokensResponseList.size(),
                 inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
+    }
+    
+    @Test
+    public void testUpdateToken_success() throws Exception {
+        // Arrange.
+        UUID tokenId = addTokenToTokenMap();
+        UpdateTokenStatusRequest updateTokenStatusRequest = new UpdateTokenStatusRequest(tokenId, Status.CANCELLED_BY_CUSTOMER);
+
+        // Act.
+        UpdateTokenStatusResponse updateTokenStatusResponse = inMemoryVirtualQueueRepository.updateToken(updateTokenStatusRequest);
+
+        // Assert.
+        assertEquals("token map status is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getStatus(), updateTokenStatusResponse.getUpdatedToken().getStatus());
+    }
+
+    private UUID addTokenToTokenMap() {
+        UUID tokenId = UUID.randomUUID();
+        UUID shopId = UUID.randomUUID();
+        Token token = new Token(tokenId, shopId, 1);
+        token.setStatus(Status.ACTIVE);
+        inMemoryVirtualQueueRepository.getTokenMap().put(tokenId, token);
+        return tokenId;
     }
 
     private UUID addShopToRepository() {

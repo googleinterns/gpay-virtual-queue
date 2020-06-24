@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gpay.virtualqueue.backendservice.model.Shop;
 import com.google.gpay.virtualqueue.backendservice.model.Token;
@@ -85,6 +86,26 @@ public class InMemoryVirtualQueueRepositoryTest {
     }
 
     @Test
+    public void testGetNewToken_success() throws Exception {
+        // Arrange.
+        UUID shopId = addShopToRepository();
+        addTokenListToShop(shopId);
+
+        // Act.
+        Token newToken = inMemoryVirtualQueueRepository.getNewToken(shopId);
+
+        // Assert.
+        UUID tokenId = newToken.getTokenId();
+        int expectedTokenMapSize = 1;
+        Integer expectedTokenNumber = 1;
+        UUID expectedShopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
+
+        assertEquals("Size of tokenMap", inMemoryVirtualQueueRepository.getTokenMap().size(), expectedTokenMapSize);
+        assertEquals("Token number is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber(), expectedTokenNumber);
+        assertEquals("Shop id is", shopId, expectedShopId);
+    }
+
+    @Test
     public void testGetTokensForShop_success() throws Exception {
         // Arrange.
         UUID shopId = addShopToRepository();
@@ -103,6 +124,7 @@ public class InMemoryVirtualQueueRepositoryTest {
         shop.setStatus(ShopStatus.ACTIVE);
         UUID shopId = UUID.randomUUID();
         inMemoryVirtualQueueRepository.getShopMap().put(shopId, shop);
+        inMemoryVirtualQueueRepository.getShopIdToLastAllotedTokenMap().put(shopId, new AtomicInteger(0));
         return shopId;
     }
 

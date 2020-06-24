@@ -143,16 +143,13 @@ export default {
             });
           }
         });
-
         self.getWaitingTime();
-
-        if(this.isTokenInCookie) {
+        if (this.isTokenInCookie) {
           this.totalWaitingTime = this.waitingTimePerCustomer * this.tokeninfo.customersAhead;
-        } else{
+        } else {
           this.totalWaitingTime = this.waitingTimePerCustomer * this.shopinfo.customersInQueue;
         }
     },
-
     getWaitingTime() {
       const self = this;
       axios({
@@ -161,9 +158,7 @@ export default {
       }).then(function(res) {
         self.waitingTimePerCustomer = res.data.waitingTimePerCustomer;
       });
-      
     },
-
     getToken() {
       const self = this;
       axios({

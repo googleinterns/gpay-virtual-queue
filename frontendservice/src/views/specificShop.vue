@@ -15,14 +15,14 @@ specific language governing permissions and limitations under the License. */
       <div class="card-content">
         <p class="title">{{shopinfo.shop.shopName}}</p>
         <p
-          v-if="flag"
+          v-if="isTokenInCookie"
           class="title"
         >Number of People ahead in the queue are: {{tokeninfo.customersAhead}}</p>
         <p
           v-else
           class="title"
         >Number of people currently in queue are {{shopinfo.customersInQueue}}</p>
-        <p v-if="totalWaitingTime != 0" class="title">Your waiting time is: {{totalWaitingTime}} mins</p>
+        <p v-if="totalWaitingTime != 0" class="title">Approx. waiting time is: {{totalWaitingTime}} mins</p>
         <p class="subtitle">{{shopinfo.shop.shopType}}</p>
         <p class="subtitle">{{shopinfo.shop.address}}</p>
         <p class="subtitle">{{shopinfo.shop.phoneNumber}}</p>
@@ -31,7 +31,7 @@ specific language governing permissions and limitations under the License. */
         <p class="card-footer-item">
           <button
             class="button is-primary is-medium"
-            v-if="flag"
+            v-if="isTokenInCookie"
             v-on:click="getShopInfo()"
           >Refresh token</button>
           <button class="button is-primary is-medium" v-else v-on:click="getToken()">Take token</button>
@@ -40,19 +40,19 @@ specific language governing permissions and limitations under the License. */
           <button
             class="button is-danger is-medium"
             v-on:click="deleteToken()"
-            v-if="flag"
+            v-if="isTokenInCookie"
           >Cancel token</button>
         </p>
       </footer>
-      <div v-if="flag">
+      <div v-if="isTokenInCookie">
         <div v-if="tokeninfo.customersAhead == 0">
           <shopTurn></shopTurn>
         </div>
       </div>
-      <div v-if="statusFlag">
+      <div v-if="!isTokenActive">
         <statusUpdate></statusUpdate>
       </div>
-      <div v-if="flag">
+      <div v-if="isTokenInCookie">
         <div class="panel panel-default">
           <div class="table-responsive">
             <table class="table">
@@ -99,12 +99,12 @@ export default {
       shopid: this.$route.params.Id,
       shopinfo: "",
       timer: "",
-      flag: false,
+      isTokenInCookie: false,
       tokeninfo: null,
       allCookieList: [],
       cookieValue: "",
       token: null,
-      statusFlag: false,
+      isTokenActive: true,
       waitingTimePerCustomer: 0, 
       totalWaitingTime: 0
     };
@@ -128,7 +128,7 @@ export default {
             }).then(function(res) {
               if (res.data.token.shopId == self.shopid) {
                 if (res.data.token.status == "ACTIVE") {
-                  self.flag = true;
+                  self.isTokenInCookie = true;
                   self.tokeninfo = res.data;
                 } else {
                   self.allCookieList.splice(
@@ -136,8 +136,8 @@ export default {
                     1
                   );
                   Cookie.set("tokenid", JSON.stringify(self.allCookieList));
-                  self.flag = false;
-                  self.statusFlag = true;
+                  self.isTokenInCookie = false;
+                  self.isTokenActive = false;
                 }
               }
             });
@@ -146,7 +146,7 @@ export default {
 
         self.getWaitingTime();
 
-        if(this.flag) {
+        if(this.isTokenInCookie) {
           this.totalWaitingTime = this.waitingTimePerCustomer * this.tokeninfo.customersAhead;
         } else{
           this.totalWaitingTime = this.waitingTimePerCustomer * this.shopinfo.customersInQueue;
@@ -175,8 +175,8 @@ export default {
         Cookie.set("tokenid", JSON.stringify(self.allCookieList), {
           expires: 1
         });
-        self.statusFlag = false;
-        self.flag = true;
+        self.isTokenActive = true;
+        self.isTokenInCookie = true;
         self.getshopinfo();
       });
     },
@@ -193,7 +193,7 @@ export default {
             1
           );
           Cookie.set("tokenid", JSON.stringify(self.allCookieList));
-          self.flag = false;
+          self.isTokenInCookie = false;
           self.getshopinfo();
         });
     },

@@ -21,7 +21,7 @@ limitations under the License.
         <thead>
           <th>Shop Name</th>
           <th>Shop Type</th>
-          <th>All Tokens of Shop</th>
+          <th>Active Customers</th>
           <th>Delete</th>
         </thead>
         <tbody>
@@ -34,7 +34,7 @@ limitations under the License.
             </td>
             <td>{{shop['shop'].shopType}}</td>
             <td v-if="shop['shop'].status=='ACTIVE'">
-              <a v-bind:href="'/shop-owner/shops/'+ shop.shopId" :id="shop.shopId">{{shop.numberOfActiveTokens}}</a>
+              <a v-bind:href="'/shop-owner/shops/'+ shop['shop'].shopId" :id="shop.shopId">{{shop.numberOfActiveTokens}}</a>
             </td>
             <td v-if="shop['shop'].status!='ACTIVE'">
               <p>0</p>

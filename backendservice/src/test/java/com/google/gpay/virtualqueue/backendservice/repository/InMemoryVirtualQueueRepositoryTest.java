@@ -157,7 +157,6 @@ public class InMemoryVirtualQueueRepositoryTest {
         // Arrange.
         UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         UUID tokenId = addTokenToRepository(shopId);
-        // UUID shopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
 
         // Assert.
         String shopName = inMemoryVirtualQueueRepository.getShopName(tokenId);

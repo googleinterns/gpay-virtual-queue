@@ -29,21 +29,14 @@ specific language governing permissions and limitations under the License. */
       <div class="field has-addons">
         <div class="form-group has-feedback">
           <i class="fa fa-search" style="font-size: 32px;"></i>
-          <input id="searchBar" class="input" type="text" placeholder="Find a shop" />
+          <input
+            id="searchBar"
+            v-model="searchResult"
+            class="input"
+            type="search"
+            placeholder="search shops"
+          />
         </div>
-      </div>
-    </div>
-    <div id="wrap" class="control">
-      <div class="select">
-        <select>
-          <option>Select option</option>
-          <option>Food</option>
-          <option>Furniture</option>
-          <option>Electronics</option>
-          <option>Stationary</option>
-          <option>Jewellery</option>
-          <option>Agriculture</option>
-        </select>
       </div>
     </div>
     <div class="panel panel-default">
@@ -56,19 +49,19 @@ specific language governing permissions and limitations under the License. */
             <th>Active Customers</th>
           </thead>
           <tbody>
-            <tr v-for="shop in shops" :key="shop.shop.shopId">
+            <tr v-for="shop in filteredShops" :key="shop['shop'].shopId">
               <td>
                 <a>
                   <router-link
                     v-bind:to="{
                       name: 'specificShop',
-                      params: { Id: shop.shop.shopId },
+                      params: { Id: shop['shop'].shopId },
                     }"
-                  >{{ shop.shop.shopName }}</router-link>
+                  >{{ shop['shop'].shopName }}</router-link>
                 </a>
               </td>
-              <td>{{ shop.shop.shopType }}</td>
-              <td>{{ shop.shop.address }}</td>
+              <td>{{ shop['shop'].shopType }}</td>
+              <td>{{ shop['shop'].address }}</td>
               <td>{{ shop.numberOfActiveTokens }}</td>
             </tr>
           </tbody>
@@ -100,7 +93,10 @@ export default {
       shops: [],
       allCookieList: [],
       cookieValue: "",
-      tokens: []
+      tokens: [],
+      searchResult: "",
+      renderComponent: true,
+      shopList: []
     };
   },
 
@@ -144,6 +140,16 @@ export default {
         });
     }, 2000 /* milliseconds */);
     this.tokenfunction();
+  },
+
+  computed: {
+    filteredShops: function() {
+      return this.shops.filter(shop => {
+        var result = this.searchResult.toLowerCase();
+        var shopName = shop["shop"].shopName.toLowerCase();
+        return shopName.match(result);
+      });
+    }
   }
 };
 </script>

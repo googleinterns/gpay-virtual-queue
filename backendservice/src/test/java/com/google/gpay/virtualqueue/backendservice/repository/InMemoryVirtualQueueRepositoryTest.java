@@ -49,26 +49,12 @@ public class InMemoryVirtualQueueRepositoryTest {
     private static final String SHOP_TYPE = "shopType";
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         inMemoryVirtualQueueRepository.getTokenMap().clear();
         inMemoryVirtualQueueRepository.getShopMap().clear();
         inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().clear();
         inMemoryVirtualQueueRepository.getShopIdToLastAllotedTokenMap().clear();
         inMemoryVirtualQueueRepository.getShopOwnerMap().clear();
-    }
-
-    private UUID addShopToRepository(){
-        Shop shop = new Shop(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
-        shop.setStatus(ShopStatus.ACTIVE);
-        UUID shopId = UUID.randomUUID();
-        inMemoryVirtualQueueRepository.getShopMap().put(shopId, shop);
-        return shopId;
-    }
-
-    private void addTokenListToShop(UUID shopId){
-        List<Token> tokens = new ArrayList<>();
-        tokens.add(new Token(UUID.randomUUID(), shopId, 1, Status.ACTIVE));
-        inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().put(shopId, tokens);
     }
 
     @Test
@@ -81,17 +67,20 @@ public class InMemoryVirtualQueueRepositoryTest {
 
         // Assert
         assertEquals("Size of shopMap", 1, inMemoryVirtualQueueRepository.getShopMap().size());
-        assertEquals("Shop Owner Id ", SHOP_OWNER_ID, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopOwnerId());
+        assertEquals("Shop Owner Id ", SHOP_OWNER_ID,
+                inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopOwnerId());
         assertEquals("Shop Name ", SHOP_NAME, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopName());
-        assertEquals("Shop Address ", SHOP_ADDRESS, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getAddress());
-        assertEquals("Shop Phone Number ", PHONE_NUMBER, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getPhoneNumber());
+        assertEquals("Shop Address ", SHOP_ADDRESS,
+                inMemoryVirtualQueueRepository.getShopMap().get(shopId).getAddress());
+        assertEquals("Shop Phone Number ", PHONE_NUMBER,
+                inMemoryVirtualQueueRepository.getShopMap().get(shopId).getPhoneNumber());
         assertEquals("Shop Type ", SHOP_TYPE, inMemoryVirtualQueueRepository.getShopMap().get(shopId).getShopType());
     }
-    
+
     @Test
     public void testGetWaitingTime() throws Exception {
         long waitingTime = inMemoryVirtualQueueRepository.getWaitingTime();
-        
+
         assertEquals("Waiting Time per customer is", WAITING_TIME_MINS, waitingTime);
     }
 
@@ -105,6 +94,21 @@ public class InMemoryVirtualQueueRepositoryTest {
         List<Token> expectedGetTokensResponseList = inMemoryVirtualQueueRepository.getTokens(shopId);
 
         // Assert
-        assertEquals("Size of token list", expectedGetTokensResponseList.size(), inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
+        assertEquals("Size of token list", expectedGetTokensResponseList.size(),
+                inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
+    }
+
+    private UUID addShopToRepository() {
+        Shop shop = new Shop(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
+        shop.setStatus(ShopStatus.ACTIVE);
+        UUID shopId = UUID.randomUUID();
+        inMemoryVirtualQueueRepository.getShopMap().put(shopId, shop);
+        return shopId;
+    }
+
+    private void addTokenListToShop(UUID shopId) {
+        List<Token> tokens = new ArrayList<>();
+        tokens.add(new Token(UUID.randomUUID(), shopId, 1, Status.ACTIVE));
+        inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().put(shopId, tokens);
     }
 }

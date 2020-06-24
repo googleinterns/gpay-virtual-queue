@@ -42,8 +42,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import jdk.jfr.Timestamp;
-
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = InMemoryVirtualQueueRepository.class)
@@ -55,6 +53,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     private static final String SHOP_ADDRESS = "address";
     private static final String PHONE_NUMBER = "+919012192800";
     private static final String SHOP_TYPE = "shopType";
+    private static final List<Shop> SHOP_LIST = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
@@ -128,34 +127,30 @@ public class InMemoryVirtualQueueRepositoryTest {
     }
 
     @Test
-    public void testGetAllShops() throws Exception {
-        // Arrange
+    public void testGetAllShops_success() throws Exception {
+        // Arrange.
         UUID shopId = addShopToRepository();
         addTokenListToShop(shopId);
 
-        // Act
-        List<ShopInfo> expectedGetAllShopsResponseList = inMemoryVirtualQueueRepository.getAllShops();
-
-        // Assert
-        assertEquals("Size of shopInfo list", expectedGetAllShopsResponseList,
-                inMemoryVirtualQueueRepository
-                        .getShopMap().values().stream().map(shop -> new ShopInfo(shop, inMemoryVirtualQueueRepository
-                                .getShopIdToListOfTokensMap().get(shop.getShopId()).stream().count()))
-                        .collect(Collectors.toList()));
+        // Act.
+        SHOP_LIST.add(new Shop(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE));
+        
+        // Assert.
+        assertEquals("Size of shopInfo list",
+                SHOP_LIST.size(), inMemoryVirtualQueueRepository.getAllShops().size());
     }
 
     @Test
-    public void testGetShopName() throws Exception {
-        // Arrange
+    public void testGetShopName_success() throws Exception {
+        // Arrange.
         UUID shopId = addShopToRepository();
         UUID tokenId = addTokenToShop(shopId);
 
-        // Act
+        // Act.
         String expectedShopName = inMemoryVirtualQueueRepository.getShopName(tokenId);
 
-        // Assert
-        assertEquals("Name of Shop", expectedShopName, inMemoryVirtualQueueRepository.getShopMap()
-                .get(inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId()).getShopName());
+        // Assert.
+        assertEquals("Name of Shop is", SHOP_NAME, expectedShopName);
     }
 
     private UUID addShopToRepository() {
@@ -174,12 +169,9 @@ public class InMemoryVirtualQueueRepositoryTest {
     }
 
     private UUID addTokenToShop(UUID shopId) {
-        List<Token> tokens = new ArrayList<>();
         UUID uuid = UUID.randomUUID();
         Token token = new Token(uuid, shopId, 1, Status.ACTIVE);
-        tokens.add(token);
-        Map<UUID, Token> tokenMap = new HashMap<>();
-        tokenMap.put(uuid, token);
+        inMemoryVirtualQueueRepository.getTokenMap().put(uuid, token);
         return uuid;
     }
 }

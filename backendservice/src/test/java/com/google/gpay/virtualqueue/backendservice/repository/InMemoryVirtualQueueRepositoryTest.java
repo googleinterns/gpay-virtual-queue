@@ -124,18 +124,21 @@ public class InMemoryVirtualQueueRepositoryTest {
         assertEquals("Size of token list", getTokensResponseList.size(),
                 inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
     }
-    
+
     @Test
     public void testUpdateToken_success() throws Exception {
         // Arrange.
         UUID tokenId = addTokenToTokenMap();
-        UpdateTokenStatusRequest updateTokenStatusRequest = new UpdateTokenStatusRequest(tokenId, Status.CANCELLED_BY_CUSTOMER);
+        UpdateTokenStatusRequest updateTokenStatusRequest = new UpdateTokenStatusRequest(tokenId,
+                Status.CANCELLED_BY_CUSTOMER);
 
         // Act.
-        UpdateTokenStatusResponse updateTokenStatusResponse = inMemoryVirtualQueueRepository.updateToken(updateTokenStatusRequest);
+        UpdateTokenStatusResponse updateTokenStatusResponse = inMemoryVirtualQueueRepository
+                .updateToken(updateTokenStatusRequest);
 
         // Assert.
-        assertEquals("token map status is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getStatus(), updateTokenStatusResponse.getUpdatedToken().getStatus());
+        assertEquals("token map status is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getStatus(),
+                updateTokenStatusResponse.getUpdatedToken().getStatus());
     }
 
     private UUID addTokenToTokenMap() {
@@ -151,7 +154,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     public void testGetShop_success() {
         // Arrange.
         UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
-        
+
         // Act.
         Shop newShop = inMemoryVirtualQueueRepository.getShop(shopId);
 
@@ -166,24 +169,26 @@ public class InMemoryVirtualQueueRepositoryTest {
     @Test
     public void testGetToken_success() throws Exception {
         // Arrange.
-        UUID shopId = addShopToRepository();
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         UUID tokenId = addTokenToShop(shopId);
 
         // Act.
         Token expectedToken = inMemoryVirtualQueueRepository.getToken(shopId);
 
         // Assert.
-        assertEquals("Token id is", expectedToken.getTokenId(),
-                inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenId());
+        assertEquals("Token id is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenId(),
+                expectedToken.getTokenId());
         assertEquals("Shop id is", expectedToken.getShopId(),
                 inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId());
         assertEquals("Token number is", expectedToken.getTokenNumber(),
                 inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber());
         assertEquals("Token status is", expectedToken.getStatus(),
                 inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getStatus());
+
     }
-  
-    private UUID addShopToRepository(String shopOwnerId, String shopName, String shopAddress, String phoneNumber, String ShopType) {
+
+    private UUID addShopToRepository(String shopOwnerId, String shopName, String shopAddress, String phoneNumber,
+            String ShopType) {
         Shop shop = new Shop(shopOwnerId, shopName, shopAddress, phoneNumber, ShopType);
         shop.setStatus(ShopStatus.ACTIVE);
         UUID shopId = UUID.randomUUID();
@@ -200,11 +205,11 @@ public class InMemoryVirtualQueueRepositoryTest {
 
     private UUID addTokenToShop(UUID shopId) {
         List<Token> tokens = new ArrayList<>();
-        UUID uuid = UUID.randomUUID();
-        Token token = new Token(uuid, shopId, 1, Status.ACTIVE);
+        UUID tokenId = UUID.randomUUID();
+        Token token = new Token(tokenId, shopId, 1, Status.ACTIVE);
         tokens.add(token);
-        Map<UUID, Token> tokenMap = new HashMap<>();
-        tokenMap.put(uuid, token);
-        return uuid;
+        inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().put(shopId, tokens);
+        inMemoryVirtualQueueRepository.getTokenMap().put(tokenId, token);
+        return tokenId;
     }
 }

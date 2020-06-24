@@ -22,7 +22,7 @@ specific language governing permissions and limitations under the License. */
           v-else
           class="title"
         >Number of people currently in queue are {{shopinfo.customersInQueue}}</p>
-        <p class="subtitle">{{shopinfo.shop.shopType}}</p>
+        <p v-if="totalWaitingTime != 0" class="title">Your waiting time is: {{totalWaitingTime}} mins</p>
         <p class="subtitle">{{shopinfo.shop.address}}</p>
         <p class="subtitle">{{shopinfo.shop.phoneNumber}}</p>
       </div>
@@ -104,7 +104,9 @@ export default {
       allCookieList: [],
       cookieValue: "",
       token: null,
-      statusFlag: false
+      statusFlag: false,
+      waitingTimePerCustomer: 0, 
+      totalWaitingTime: 0 
     };
   },
 
@@ -129,19 +131,29 @@ export default {
                 if (res.data.token.status == "ACTIVE") {
                   self.flag = true;
                   self.tokeninfo = res.data;
-                } else {
-                  self.allCookieList.splice(
-                    self.allCookieList.indexOf(res.data.token.tokenId),
-                    1
-                  );
-                  Cookie.set("tokenid", JSON.stringify(self.allCookieList));
-                  self.flag = false;
-                  self.statusFlag = true;
                 }
               }
             });
           }
         });
+
+        this.getWaitingTime();
+
+        if(this.flag) {
+          this.totalWaitingTime = this.waitingTimePerCustomer * this.tokeninfo.customersAhead;
+        } else{
+          this.totalWaitingTime = this.waitingTimePerCustomer * this.shopinfo.customersInQueue;
+        }
+    },
+
+    getWaitingTime() {
+      const self = this;
+      axios({
+        method: "GET",
+        url: "http://penguin.termina.linux.test:8080/waitingtime"
+      }).then(function(res) {
+        self.waitingTimePerCustomer = res.data.waitingTimePerCustomer;
+      });
     },
 
     getToken() {
@@ -155,7 +167,6 @@ export default {
         Cookie.set("tokenid", JSON.stringify(self.allCookieList), {
           expires: 1
         });
-        self.statusFlag = false;
         self.flag = true;
         self.getshopinfo();
       });
@@ -189,6 +200,7 @@ export default {
   },
 
   created() {
+    this.getWaitingTime(); 
     this.getShopInfo();
     this.timer = setInterval(this.getShopInfo, 1 /*1 second */);
   }

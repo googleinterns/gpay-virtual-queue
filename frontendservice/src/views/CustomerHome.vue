@@ -28,7 +28,6 @@ specific language governing permissions and limitations under the License. */
     <div id="searchBarWrap" style="margin: 20px 0">
       <div class="field has-addons">
         <div class="form-group has-feedback">
-          <i class="fa fa-search" style="font-size: 32px;"></i>
           <input
             id="searchBar"
             v-model="searchResult"
@@ -201,14 +200,5 @@ h1 {
 .title {
   color: white;
   font-size: 1.5rem;
-}
-
-#wrap {
-  float: left;
-  height: auto;
-  margin: 0px;
-  padding: 0px;
-  text-align: center;
-  width: 100%;
 }
 </style>

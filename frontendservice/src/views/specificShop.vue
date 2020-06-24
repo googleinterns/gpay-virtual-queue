@@ -181,7 +181,7 @@ export default {
 
   created() {
     this.getShopInfo();
-    this.timer = setInterval(this.getShopInfo, 1 /*1 second*/);
+    this.timer = setInterval(this.getShopInfo, 1 /*1 second */);
   }
 };
 </script>

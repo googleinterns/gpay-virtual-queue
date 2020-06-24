@@ -98,6 +98,22 @@ public class InMemoryVirtualQueueRepositoryTest {
                 inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
     }
 
+    @Test
+    public void testGetShop_success() {
+        // Arrange.
+        UUID shopId = addShopToRepository();
+        
+        // Act.
+        Shop newShop = inMemoryVirtualQueueRepository.getShop(shopId);
+
+        // Assert.
+        assertEquals("Shop Owner Id ", SHOP_OWNER_ID, newShop.getShopOwnerId());
+        assertEquals("Shop Name ", SHOP_NAME, newShop.getShopName());
+        assertEquals("Shop Address ", SHOP_ADDRESS, newShop.getAddress());
+        assertEquals("Shop Phone Number ", PHONE_NUMBER, newShop.getPhoneNumber());
+        assertEquals("Shop Type ", SHOP_TYPE, newShop.getShopType());
+    }
+
     private UUID addShopToRepository() {
         Shop shop = new Shop(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
         shop.setStatus(ShopStatus.ACTIVE);

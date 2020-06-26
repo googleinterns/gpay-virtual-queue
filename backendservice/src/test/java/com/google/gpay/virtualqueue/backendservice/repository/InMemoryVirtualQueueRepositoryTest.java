@@ -28,6 +28,8 @@ import com.google.gpay.virtualqueue.backendservice.model.Token;
 import com.google.gpay.virtualqueue.backendservice.model.Shop.ShopStatus;
 import com.google.gpay.virtualqueue.backendservice.model.Token.Status;
 import com.google.gpay.virtualqueue.backendservice.proto.CreateShopRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateShopStatusRequest;
+import com.google.gpay.virtualqueue.backendservice.proto.UpdateShopStatusResponse;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusRequest;
 import com.google.gpay.virtualqueue.backendservice.proto.UpdateTokenStatusResponse;
 
@@ -133,12 +135,40 @@ public class InMemoryVirtualQueueRepositoryTest {
         // Assert.
         assertEquals("token map status is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getStatus(), updateTokenStatusResponse.getUpdatedToken().getStatus());
     }
+    
+    @Test
+    public void testUpdateShop_success() throws Exception {
+        // Arrange.
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
+        addTokenListToShop(shopId);
+        UpdateShopStatusRequest updateShopStatusRequest = new UpdateShopStatusRequest(shopId, ShopStatus.DELETED);
+
+        // Act.
+        UpdateShopStatusResponse updateShopStatusResponse = inMemoryVirtualQueueRepository.updateShop(updateShopStatusRequest);
+
+        // Assert.
+        assertEquals("Shop status is", ShopStatus.DELETED, updateShopStatusResponse.getShop().getStatus());
+    }
+    
+    @Test
+    public void testGetCustomersAhead_success() throws Exception {
+        // Arrange.
+        UUID tokenId = addOneToken();
+        UUID shopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
+        addTokenListToShop(shopId);
+
+        // Act.
+        long customersAhead = inMemoryVirtualQueueRepository.getCustomersAhead(tokenId);
+    
+        // Assert.
+        assertEquals("Number of customers ahead is", 1, customersAhead);
+    }
 
     @Test
     public void testGetShop_success() {
         // Arrange.
         UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
-        
+
         // Act.
         Shop newShop = inMemoryVirtualQueueRepository.getShop(shopId);
 

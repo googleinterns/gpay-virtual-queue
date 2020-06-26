@@ -150,7 +150,7 @@ public class InMemoryVirtualQueueRepositoryTest {
         UpdateShopStatusResponse updateShopStatusResponse = inMemoryVirtualQueueRepository.updateShop(updateShopStatusRequest);
 
         // Assert.
-        assertEquals("Shop status is", inMemoryVirtualQueueRepository.getShopMap().get(shopId).getStatus(), updateShopStatusResponse.getShop().getStatus());
+        assertEquals("Shop status is", ShopStatus.DELETED, updateShopStatusResponse.getShop().getStatus());
     }
     
     @Test
@@ -164,9 +164,9 @@ public class InMemoryVirtualQueueRepositoryTest {
         long customersAhead = inMemoryVirtualQueueRepository.getCustomersAhead(tokenId);
     
         // Assert.
-        List<Token> expectedTokensList = inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).stream().takeWhile(token -> !token.getTokenId().equals(tokenId)).collect(Collectors.toList());
+        long expectedCustomersAhead = 1;
 
-        assertEquals("Number of customers ahead is", expectedTokensList.stream().filter(token -> Status.ACTIVE.equals(token.getStatus())).count(), customersAhead);
+        assertEquals("Number of customers ahead is", expectedCustomersAhead, customersAhead);
     }
 
     @Test

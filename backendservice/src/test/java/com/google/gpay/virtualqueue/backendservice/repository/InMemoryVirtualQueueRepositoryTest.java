@@ -162,9 +162,7 @@ public class InMemoryVirtualQueueRepositoryTest {
         long customersAhead = inMemoryVirtualQueueRepository.getCustomersAhead(tokenId);
     
         // Assert.
-        long expectedCustomersAhead = 1;
-
-        assertEquals("Number of customers ahead is", expectedCustomersAhead, customersAhead);
+        assertEquals("Number of customers ahead is", 1, customersAhead);
     }
 
     @Test

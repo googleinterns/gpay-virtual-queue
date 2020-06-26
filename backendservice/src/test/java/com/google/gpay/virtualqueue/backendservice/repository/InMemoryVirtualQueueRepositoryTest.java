@@ -126,7 +126,7 @@ public class InMemoryVirtualQueueRepositoryTest {
     @Test
     public void testUpdateToken_success() throws Exception {
         // Arrange.
-        UUID tokenId = addTokenToTokenMap();
+        UUID tokenId = addOneToken();
         UpdateTokenStatusRequest updateTokenStatusRequest = new UpdateTokenStatusRequest(tokenId, Status.CANCELLED_BY_CUSTOMER);
 
         // Act.
@@ -162,10 +162,10 @@ public class InMemoryVirtualQueueRepositoryTest {
         long customersInQueue = inMemoryVirtualQueueRepository.getCustomersInQueue(shopId);
 
         // Assert.
-        assertEquals("Customers in Queue is ", inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).stream().filter(token -> token.getStatus() == Status.ACTIVE).count(), customersInQueue);
+        assertEquals("Customers in Queue is ", 1, customersInQueue);
     }
 
-    private UUID addTokenToTokenMap() {
+    private UUID addOneToken() {
         UUID tokenId = UUID.randomUUID();
         UUID shopId = UUID.randomUUID();
         Token token = new Token(tokenId, shopId, 1);

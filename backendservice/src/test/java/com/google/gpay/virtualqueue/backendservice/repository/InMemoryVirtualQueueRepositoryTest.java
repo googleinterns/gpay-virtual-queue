@@ -103,10 +103,9 @@ public class InMemoryVirtualQueueRepositoryTest {
         Integer expectedTokenNumber = 1;
         UUID expectedShopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
 
-        assertEquals("Size of tokenMap", inMemoryVirtualQueueRepository.getTokenMap().size(), expectedTokenMapSize);
-        assertEquals("Token number is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber(),
-                expectedTokenNumber);
-        assertEquals("Shop id is", shopId, expectedShopId);
+        assertEquals("Size of tokenMap", expectedTokenMapSize, inMemoryVirtualQueueRepository.getTokenMap().size());
+        assertEquals("Token number is", expectedTokenNumber, inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber());
+        assertEquals("Shop id is", expectedShopId, shopId);
     }
 
     @Test
@@ -119,8 +118,7 @@ public class InMemoryVirtualQueueRepositoryTest {
         List<Token> getTokensResponseList = inMemoryVirtualQueueRepository.getTokens(shopId);
 
         // Assert.
-        assertEquals("Size of token list", getTokensResponseList.size(),
-                inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).stream().filter(token -> token.getStatus() == Status.ACTIVE).count());
+        assertEquals("Size of token list", inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).stream().filter(token -> token.getStatus() == Status.ACTIVE).count(), getTokensResponseList.size());
     }
     
     @Test

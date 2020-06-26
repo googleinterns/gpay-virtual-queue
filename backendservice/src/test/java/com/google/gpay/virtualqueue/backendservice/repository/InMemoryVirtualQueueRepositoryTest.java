@@ -103,10 +103,9 @@ public class InMemoryVirtualQueueRepositoryTest {
         Integer expectedTokenNumber = 1;
         UUID expectedShopId = inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getShopId();
 
-        assertEquals("Size of tokenMap", inMemoryVirtualQueueRepository.getTokenMap().size(), expectedTokenMapSize);
-        assertEquals("Token number is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber(),
-                expectedTokenNumber);
-        assertEquals("Shop id is", shopId, expectedShopId);
+        assertEquals("Size of tokenMap", expectedTokenMapSize, inMemoryVirtualQueueRepository.getTokenMap().size());
+        assertEquals("Token number is", expectedTokenNumber, inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getTokenNumber());
+        assertEquals("Shop id is", expectedShopId, shopId);
     }
 
     @Test
@@ -119,14 +118,13 @@ public class InMemoryVirtualQueueRepositoryTest {
         List<Token> getTokensResponseList = inMemoryVirtualQueueRepository.getTokens(shopId);
 
         // Assert.
-        assertEquals("Size of token list", getTokensResponseList.size(),
-                inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).size());
+        assertEquals("Size of token list", inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().get(shopId).stream().filter(token -> token.getStatus() == Status.ACTIVE).count(), getTokensResponseList.size());
     }
     
     @Test
     public void testUpdateToken_success() throws Exception {
         // Arrange.
-        UUID tokenId = addTokenToTokenMap();
+        UUID tokenId = addOneToken();
         UpdateTokenStatusRequest updateTokenStatusRequest = new UpdateTokenStatusRequest(tokenId, Status.CANCELLED_BY_CUSTOMER);
 
         // Act.
@@ -134,15 +132,6 @@ public class InMemoryVirtualQueueRepositoryTest {
 
         // Assert.
         assertEquals("token map status is", inMemoryVirtualQueueRepository.getTokenMap().get(tokenId).getStatus(), updateTokenStatusResponse.getUpdatedToken().getStatus());
-    }
-
-    private UUID addTokenToTokenMap() {
-        UUID tokenId = UUID.randomUUID();
-        UUID shopId = UUID.randomUUID();
-        Token token = new Token(tokenId, shopId, 1);
-        token.setStatus(Status.ACTIVE);
-        inMemoryVirtualQueueRepository.getTokenMap().put(tokenId, token);
-        return tokenId;
     }
 
     @Test
@@ -161,6 +150,28 @@ public class InMemoryVirtualQueueRepositoryTest {
         assertEquals("Shop Type ", SHOP_TYPE, newShop.getShopType());
     }
 
+    @Test
+    public void testCustomersInQueue_success() {
+        // Arrange.
+        UUID shopId = addShopToRepository(SHOP_OWNER_ID, SHOP_NAME, SHOP_ADDRESS, PHONE_NUMBER, SHOP_TYPE);
+        addTokenListToShop(shopId);
+
+        // Act.
+        long customersInQueue = inMemoryVirtualQueueRepository.getCustomersInQueue(shopId);
+
+        // Assert.
+        assertEquals("Customers in Queue is ", 1, customersInQueue);
+    }
+
+    private UUID addOneToken() {
+        UUID tokenId = UUID.randomUUID();
+        UUID shopId = UUID.randomUUID();
+        Token token = new Token(tokenId, shopId, 1);
+        token.setStatus(Status.ACTIVE);
+        inMemoryVirtualQueueRepository.getTokenMap().put(tokenId, token);
+        return tokenId;
+    }
+
     private UUID addShopToRepository(String shopOwnerId, String shopName, String shopAddress, String phoneNumber, String ShopType) {
         Shop shop = new Shop(shopOwnerId, shopName, shopAddress, phoneNumber, ShopType);
         shop.setStatus(ShopStatus.ACTIVE);
@@ -173,6 +184,8 @@ public class InMemoryVirtualQueueRepositoryTest {
     private void addTokenListToShop(UUID shopId) {
         List<Token> tokens = new ArrayList<>();
         tokens.add(new Token(UUID.randomUUID(), shopId, 1, Status.ACTIVE));
+        tokens.add(new Token(UUID.randomUUID(), shopId, 1, Status.EXPIRED));
+        tokens.add(new Token(UUID.randomUUID(), shopId, 1, Status.CANCELLED_BY_CUSTOMER));
         inMemoryVirtualQueueRepository.getShopIdToListOfTokensMap().put(shopId, tokens);
     }
 }
